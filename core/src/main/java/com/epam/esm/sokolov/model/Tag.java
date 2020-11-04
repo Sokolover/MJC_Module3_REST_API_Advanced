@@ -10,6 +10,7 @@ import java.util.Set;
 @EqualsAndHashCode
 @ToString
 @AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "tag")
 public class Tag {
@@ -20,4 +21,9 @@ public class Tag {
     private String name;
     @ManyToMany(mappedBy = "tags")
     private Set<GiftCertificate> giftCertificates;
+
+    public Tag(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 }

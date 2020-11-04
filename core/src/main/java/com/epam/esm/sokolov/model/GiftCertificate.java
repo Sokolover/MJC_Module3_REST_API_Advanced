@@ -5,7 +5,6 @@ import lombok.*;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -13,6 +12,7 @@ import java.util.Set;
 @EqualsAndHashCode
 @ToString
 @AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "gift_certificate")
 public class GiftCertificate {

@@ -10,6 +10,7 @@ import java.util.Set;
 @EqualsAndHashCode
 @ToString
 @AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "user_account")
 public class User {
