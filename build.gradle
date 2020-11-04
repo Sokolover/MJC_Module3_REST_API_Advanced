@@ -1,21 +1,17 @@
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-}
-
 plugins {
     id 'java-library'
     id 'org.springframework.boot' version "${springBoot}"
     id 'io.spring.dependency-management' version "${dependencyManagement}"
 }
-dependencies {
-    compile group: 'org.projectlombok', name: 'lombok', version: '1.18.16'
-}
+
 allprojects {
     group = 'com.epam.esm'
     version = '0.0.1-SNAPSHOT'
     sourceCompatibility = '1.8'
+}
+
+repositories {
+    mavenCentral()
 }
 
 subprojects {
@@ -29,15 +25,23 @@ subprojects {
         mavenCentral()
     }
     dependencies {
-        compile group: 'org.projectlombok', name: 'lombok', version: '1.18.16'
+        compileOnly group: 'org.projectlombok', name: 'lombok', version: "${lombokVersion}"
+        annotationProcessor group: 'org.projectlombok', name: 'lombok', version: "${lombokVersion}"
     }
     test {
         useJUnitPlatform()
     }
 }
 
+dependencies {
+    implementation('org.springframework.boot:spring-boot-starter-web')
+    compile project(":api")
+    compile project(":core")
+}
+
 bootJar {
-    enabled = false
+    enabled = true
+    mainClassName = 'com.epam.esm.sokolov.MyWebApplication'
 }
 
 
