@@ -29,7 +29,7 @@ public class GiftCertificateController {
         return giftCertificateService.findAll();
     }
 
-    @PostMapping
+    @PostMapping//todo make status codes (201 create)
     public GiftCertificateDTO save(@RequestBody GiftCertificateDTO giftCertificateDTO) {
         return giftCertificateService.save(giftCertificateDTO);
     }
