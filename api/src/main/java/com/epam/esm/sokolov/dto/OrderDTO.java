@@ -4,10 +4,7 @@ import com.epam.esm.sokolov.converter.CustomDateDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.ZonedDateTimeSerializer;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
@@ -15,34 +12,20 @@ import java.util.Set;
 
 @Getter
 @Setter
-//@ToString
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class GiftCertificateDTO {
+public class OrderDTO {
 
     private Long id;
-    private String name;
-    private String description;
-    private BigDecimal price;
+    private BigDecimal cost;
     @JsonSerialize(using = ZonedDateTimeSerializer.class)
     @JsonDeserialize(using = CustomDateDeserializer.class)
     private ZonedDateTime createDate;
     @JsonSerialize(using = ZonedDateTimeSerializer.class)
     @JsonDeserialize(using = CustomDateDeserializer.class)
     private ZonedDateTime lastUpdateDate;
-    private Integer duration;
-    private Set<TagDTO> tags;
+    private UserDTO userDTO;
+    private Set<GiftCertificateDTO> giftCertificateDTOs;
 
-    @Override
-    public String toString() {
-        return "GiftCertificateDTO{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", price=" + price +
-                ", createDate=" + createDate +
-                ", lastUpdateDate=" + lastUpdateDate +
-                ", duration=" + duration +
-                '}';
-    }
 }

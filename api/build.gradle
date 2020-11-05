@@ -1,19 +1,19 @@
-plugins {
-    id 'net.ltgt.apt' version '0.21'
-    id 'net.ltgt.apt-idea' version '0.21'
-}
-
-apply plugin: 'net.ltgt.apt-idea'
+//plugins {
+//    id 'net.ltgt.apt' version '0.21'
+//    id 'net.ltgt.apt-idea' version '0.21'
+//}
+//
+//apply plugin: 'net.ltgt.apt-idea'
 
 dependencies {
 
-    compile group: 'org.mapstruct', name: 'mapstruct', version: "${mapstructVersion}"
-    annotationProcessor group: 'org.mapstruct', name: 'mapstruct-processor', version: "${mapstructVersion}"
-    compile group: 'org.mapstruct', name: 'mapstruct-jdk8', version: "${mapstructVersion}"
-    testCompile group: 'org.mapstruct', name: 'mapstruct-jdk8', version: "${mapstructVersion}"
-    annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.1.Final'
-    testAnnotationProcessor 'org.mapstruct:mapstruct-processor:1.4.1.Final' // if you are using mapstruct in test code
-    compile group: 'net.ltgt.gradle', name: 'gradle-apt-plugin', version: '0.21'
+//    compile group: 'org.mapstruct', name: 'mapstruct', version: "${mapstructVersion}"
+//    annotationProcessor group: 'org.mapstruct', name: 'mapstruct-processor', version: "${mapstructVersion}"
+//    compile group: 'org.mapstruct', name: 'mapstruct-jdk8', version: "${mapstructVersion}"
+//    testCompile group: 'org.mapstruct', name: 'mapstruct-jdk8', version: "${mapstructVersion}"
+//    annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.1.Final'
+//    testAnnotationProcessor 'org.mapstruct:mapstruct-processor:1.4.1.Final' // if you are using mapstruct in test code
+//    compile group: 'net.ltgt.gradle', name: 'gradle-apt-plugin', version: '0.21'
 
     compile group: 'io.springfox', name: 'springfox-swagger-ui', version: "${swaggerVersion}"
     compile group: 'io.springfox', name: 'springfox-swagger2', version: "${swaggerVersion}"

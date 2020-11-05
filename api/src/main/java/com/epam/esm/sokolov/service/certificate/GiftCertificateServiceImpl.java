@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class GiftCertificateServiceImpl implements GiftCertificateService {
@@ -33,13 +34,17 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     }
 
     @Override
-    public GiftCertificate save(GiftCertificateDTO dto) {
-        return null;
+    public GiftCertificateDTO save(GiftCertificateDTO dto) {
+        GiftCertificate giftCertificateToSave = giftCertificateConverter.convert(dto);
+        GiftCertificate savedGiftCertificate = giftCertificateRepository.save(giftCertificateToSave);
+        return giftCertificateConverter.convert(savedGiftCertificate);
     }
 
     @Override
-    public List<GiftCertificate> findAll() {
-        return giftCertificateRepository.findAll();
+    public List<GiftCertificateDTO> findAll() {
+        return giftCertificateRepository.findAll().stream()
+                .map(giftCertificate -> giftCertificateConverter.convert(giftCertificate))
+                .collect(Collectors.toList());
     }
 
 }

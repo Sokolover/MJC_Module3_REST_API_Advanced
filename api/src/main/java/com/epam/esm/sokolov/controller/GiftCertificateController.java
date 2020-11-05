@@ -4,13 +4,12 @@ import com.epam.esm.sokolov.dto.GiftCertificateDTO;
 import com.epam.esm.sokolov.service.certificate.GiftCertificateService;
 import io.swagger.annotations.Api;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
-@RequestMapping("/api/gift-certificate")
+@RequestMapping("/api/gift-certificates")
 @Api(value = "GiftCertificateControllerApi", produces = MediaType.APPLICATION_JSON_VALUE)
 public class GiftCertificateController {
 
@@ -23,5 +22,15 @@ public class GiftCertificateController {
     @PatchMapping
     public GiftCertificateDTO update(@RequestBody GiftCertificateDTO giftCertificateDTO) {
         return giftCertificateService.update(giftCertificateDTO);
+    }
+
+    @GetMapping
+    public List<GiftCertificateDTO> findAll() {
+        return giftCertificateService.findAll();
+    }
+
+    @PostMapping
+    public GiftCertificateDTO save(@RequestBody GiftCertificateDTO giftCertificateDTO) {
+        return giftCertificateService.save(giftCertificateDTO);
     }
 }

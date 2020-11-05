@@ -5,6 +5,7 @@ import com.epam.esm.sokolov.dto.TagDTO;
 import com.epam.esm.sokolov.model.GiftCertificate;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.Set;
 
@@ -19,8 +20,16 @@ public class GiftCertificateConverter {
         GiftCertificateDTO giftCertificateDTO = new GiftCertificateDTO();
         giftCertificateDTO.setId(source.getId());
         giftCertificateDTO.setName(source.getName());
-        giftCertificateDTO.setCreateDate(DateConverter.getZonedDateTime(source.getCreateDate(), source.getCreateDateTimeZone()));
-        giftCertificateDTO.setLastUpdateDate(DateConverter.getZonedDateTime(source.getLastUpdateDate(), source.getLastUpdateDateTimeZone()));
+        LocalDateTime createDate = source.getCreateDate();
+        String createDateTimeZone = source.getCreateDateTimeZone();
+        if (createDate != null && createDateTimeZone != null) {
+            giftCertificateDTO.setCreateDate(DateConverter.getZonedDateTime(createDate, createDateTimeZone));
+        }
+        LocalDateTime lastUpdateDate = source.getLastUpdateDate();
+        String lastUpdateDateTimeZone = source.getLastUpdateDateTimeZone();
+        if (lastUpdateDate != null && lastUpdateDateTimeZone != null) {
+            giftCertificateDTO.setLastUpdateDate(DateConverter.getZonedDateTime(lastUpdateDate, lastUpdateDateTimeZone));
+        }
         giftCertificateDTO.setDescription(source.getDescription());
         giftCertificateDTO.setPrice(source.getPrice());
         giftCertificateDTO.setDuration(source.getDuration());
@@ -38,7 +47,7 @@ public class GiftCertificateConverter {
             giftCertificate.setCreateDateTimeZone(createDate.getZone().toString());
         }
         ZonedDateTime lastUpdateDate = source.getLastUpdateDate();
-        if (nonNull(createDate)) {
+        if (nonNull(lastUpdateDate)) {
             giftCertificate.setLastUpdateDate(DateConverter.getLocalDate(lastUpdateDate));
             giftCertificate.setLastUpdateDateTimeZone(lastUpdateDate.getZone().toString());
         }
