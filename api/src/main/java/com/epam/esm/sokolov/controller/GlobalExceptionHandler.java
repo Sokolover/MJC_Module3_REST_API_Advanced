@@ -1,6 +1,10 @@
 package com.epam.esm.sokolov.controller;
 
+import com.epam.esm.sokolov.repository.GiftCertificateRepository;
+import com.epam.esm.sokolov.repository.RepositoryException;
+import com.epam.esm.sokolov.repository.TagRepository;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -25,21 +29,21 @@ class GlobalExceptionHandler {
         return errorMap;
     }
 
-//    @ExceptionHandler(RepositoryException.class)
-//    public ResponseEntity handleRepositoryException(RepositoryException e) {
-//        Map<String, String> errorMap = new HashMap<>();
-//        errorMap.put(ERROR_MESSAGE, e.getMessage());
-//
-//        if (e.getRepositoryClass() == TagRepositoryImpl.class) {
-//            errorMap.put(ERROR_CODE, e.getStatusCode().value() + TAG_ERROR_CODE);
-//        }
-//
-//        if (e.getRepositoryClass() == GiftCertificateRepositoryImpl.class) {
-//            errorMap.put(ERROR_CODE, e.getStatusCode().value() + GIFT_CERTIFICATE_ERROR_CODE);
-//        }
-//
-//        return ResponseEntity
-//                .status(e.getStatusCode())
-//                .body(errorMap);
-//    }
+    @ExceptionHandler(RepositoryException.class)
+    public ResponseEntity handleRepositoryException(RepositoryException e) {
+        Map<String, String> errorMap = new HashMap<>();
+        errorMap.put(ERROR_MESSAGE, e.getMessage());
+
+        if (e.getRepositoryClass() == TagRepository.class) {
+            errorMap.put(ERROR_CODE, e.getStatusCode().value() + TAG_ERROR_CODE);
+        }
+
+        if (e.getRepositoryClass() == GiftCertificateRepository.class) {
+            errorMap.put(ERROR_CODE, e.getStatusCode().value() + GIFT_CERTIFICATE_ERROR_CODE);
+        }
+
+        return ResponseEntity
+                .status(e.getStatusCode())
+                .body(errorMap);
+    }
 }
