@@ -2,18 +2,30 @@ package com.epam.esm.sokolov.converter;
 
 import com.epam.esm.sokolov.dto.TagDTO;
 import com.epam.esm.sokolov.model.Tag;
+import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-class TagConverter {
+@Service
+public class TagConverter {
 
-    private TagConverter() {
-
+    public TagDTO convert(Tag source) {
+        TagDTO tagDTO = new TagDTO();
+        tagDTO.setId(source.getId());
+        tagDTO.setName(source.getName());
+        return tagDTO;
     }
 
-    static Set<TagDTO> convertTagsDtosFromTag(Set<Tag> tags) {
+    public Tag convert(TagDTO source) {
+        Tag tag = new Tag();
+        tag.setId(source.getId());
+        tag.setName(source.getName());
+        return tag;
+    }
+
+    public Set<TagDTO> convertTagDtosFromTags(Set<Tag> tags) {
         if (tags == null) {
             return new HashSet<>();
         }
@@ -22,7 +34,7 @@ class TagConverter {
                 .collect(Collectors.toSet());
     }
 
-    static Set<Tag> convertTagsFromTagDtos(Set<TagDTO> tagDTOS) {
+    public Set<Tag> convertTagsFromTagDtos(Set<TagDTO> tagDTOS) {
         if (tagDTOS == null) {
             return new HashSet<>();
         }

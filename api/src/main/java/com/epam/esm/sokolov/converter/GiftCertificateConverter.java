@@ -9,12 +9,16 @@ import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.Set;
 
-import static com.epam.esm.sokolov.converter.TagConverter.convertTagsDtosFromTag;
-import static com.epam.esm.sokolov.converter.TagConverter.convertTagsFromTagDtos;
 import static java.util.Objects.nonNull;
 
 @Service
 public class GiftCertificateConverter {
+
+    private TagConverter tagConverter;
+
+    public GiftCertificateConverter(TagConverter tagConverter) {
+        this.tagConverter = tagConverter;
+    }
 
     public GiftCertificateDTO convert(GiftCertificate source) {
         GiftCertificateDTO giftCertificateDTO = new GiftCertificateDTO();
@@ -33,7 +37,7 @@ public class GiftCertificateConverter {
         giftCertificateDTO.setDescription(source.getDescription());
         giftCertificateDTO.setPrice(source.getPrice());
         giftCertificateDTO.setDuration(source.getDuration());
-        giftCertificateDTO.setTags(convertTagsDtosFromTag(source.getTags()));
+        giftCertificateDTO.setTags(tagConverter.convertTagDtosFromTags(source.getTags()));
         return giftCertificateDTO;
     }
 
@@ -56,7 +60,7 @@ public class GiftCertificateConverter {
         giftCertificate.setDuration(source.getDuration());
         Set<TagDTO> tags = source.getTags();
         if (nonNull(tags)) {
-            giftCertificate.setTags(convertTagsFromTagDtos(tags));
+            giftCertificate.setTags(tagConverter.convertTagsFromTagDtos(tags));
         }
         return giftCertificate;
 
