@@ -1,7 +1,6 @@
 package com.epam.esm.sokolov.controller;
 
 import com.epam.esm.sokolov.dto.TagDTO;
-import com.epam.esm.sokolov.model.Tag;
 import com.epam.esm.sokolov.service.tag.TagService;
 import io.swagger.annotations.Api;
 import org.springframework.http.MediaType;
@@ -21,7 +20,7 @@ public class TagController {
     }
 
     @GetMapping("/the-most-widely-used-tag")
-    public TagDTO findTheMostWidelyUsedTag(){
+    public TagDTO findTheMostWidelyUsedTag() {
         return tagService.findTheMostWidelyUsedTag();
     }
 }

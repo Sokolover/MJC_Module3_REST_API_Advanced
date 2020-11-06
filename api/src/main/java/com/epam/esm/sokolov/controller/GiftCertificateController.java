@@ -33,4 +33,10 @@ public class GiftCertificateController {
     public GiftCertificateDTO save(@RequestBody GiftCertificateDTO giftCertificateDTO) {
         return giftCertificateService.save(giftCertificateDTO);
     }
+
+    //    https://www.baeldung.com/spring-request-param
+    @GetMapping("/tag-names")//todo ask if it is ok mapping?
+    public List<GiftCertificateDTO> findAllByTagNames(@RequestParam(name = "tagName") List<String> tagNames) {
+        return giftCertificateService.findAllByTagNames(tagNames);
+    }
 }

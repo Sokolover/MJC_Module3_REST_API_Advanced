@@ -7,6 +7,8 @@ import com.epam.esm.sokolov.repository.GiftCertificateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,6 +45,16 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     @Override
     public List<GiftCertificateDTO> findAll() {
         return giftCertificateRepository.findAll().stream()
+                .map(giftCertificate -> giftCertificateConverter.convert(giftCertificate))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<GiftCertificateDTO> findAllByTagNames(List<String> tagNames) {
+        List<GiftCertificate> giftCertificates = new ArrayList<>();
+        tagNames.forEach(tagName -> giftCertificates.addAll(giftCertificateRepository.findAllByTagsName(tagName)));
+        giftCertificates.sort(Comparator.comparing(GiftCertificate::getId));
+        return giftCertificates.stream()
                 .map(giftCertificate -> giftCertificateConverter.convert(giftCertificate))
                 .collect(Collectors.toList());
     }

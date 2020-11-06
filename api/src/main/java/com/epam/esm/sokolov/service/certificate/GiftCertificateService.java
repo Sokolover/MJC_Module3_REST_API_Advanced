@@ -13,4 +13,6 @@ public interface GiftCertificateService {
     GiftCertificateDTO save(GiftCertificateDTO dto);
 
     List<GiftCertificateDTO> findAll();
+
+    List<GiftCertificateDTO> findAllByTagNames(List<String> tagNames);
 }
