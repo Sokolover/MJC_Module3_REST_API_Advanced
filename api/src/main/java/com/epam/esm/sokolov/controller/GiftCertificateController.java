@@ -35,6 +35,7 @@ public class GiftCertificateController {
     }
 
     //    https://www.baeldung.com/spring-request-param
+    // todo 4)
     @GetMapping("/tag-names")//todo ask if it is ok mapping?
     public List<GiftCertificateDTO> findAllByTagNames(@RequestParam(name = "tagName") List<String> tagNames) {
         return giftCertificateService.findAllByTagNames(tagNames);

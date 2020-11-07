@@ -17,5 +17,5 @@ public interface UserService {
 
     List<OrderDTO> findAllOrdersByUserId(Long id);
 
-    ResponseEntity<Map<String, String>> findOneOrderByUserIdAndOrderId(Long userId, Long orderId);
+    Map<String, String> findOneOrderByUserIdAndOrderId(Long userId, Long orderId);
 }

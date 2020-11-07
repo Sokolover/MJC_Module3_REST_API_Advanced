@@ -57,7 +57,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<Map<String, String>> findOneOrderByUserIdAndOrderId(Long userId, Long orderId) {
+    public Map<String, String> findOneOrderByUserIdAndOrderId(Long userId, Long orderId) {
         Order order = orderRepository.findOneOrderByUserIdAndOrderId(userId, orderId)
                 .orElse(new Order());
         if (order.getId() == null) {
@@ -69,8 +69,6 @@ public class UserServiceImpl implements UserService {
         orderParamMap.put("cost", orderDTO.getCost().toString());
         orderParamMap.put("createDate", orderDTO.getCreateDate().toString());
         orderParamMap.put("lastUpdateDate", orderDTO.getLastUpdateDate().toString());
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(orderParamMap);
+        return orderParamMap;
     }
 }

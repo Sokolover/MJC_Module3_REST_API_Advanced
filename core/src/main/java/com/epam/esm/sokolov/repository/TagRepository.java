@@ -26,7 +26,6 @@ public interface TagRepository extends JpaRepository<Tag, Long> {
             "                               from user_order\n" +
             "                               group by user_order.user_account_id\n" +
             "                               order by sum_cost desc) as max_cost) as user_acc_id_with_max_order_cost)) as max_sum_orders\n" +
-            "\n" +
             "      where max_sum_orders.id = user_order_has_gift_certificate.user_order_id\n" +
             "        and gift_certificate.id = user_order_has_gift_certificate.gift_certificate_id) as max_sum_certificates\n" +
             "where tag.id = tag_has_gift_certificate.tag_id\n" +

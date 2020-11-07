@@ -19,7 +19,7 @@ public class TagController {
         this.tagService = tagService;
     }
 
-    @GetMapping("/the-most-widely-used-tag")
+    @GetMapping("/the-most-widely-used-tag")//todo 3) maybe think about shorter mapping
     public TagDTO findTheMostWidelyUsedTag() {
         return tagService.findTheMostWidelyUsedTag();
     }
