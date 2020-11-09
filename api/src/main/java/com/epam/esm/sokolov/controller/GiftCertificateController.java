@@ -3,6 +3,7 @@ package com.epam.esm.sokolov.controller;
 import com.epam.esm.sokolov.dto.GiftCertificateDTO;
 import com.epam.esm.sokolov.service.certificate.GiftCertificateService;
 import io.swagger.annotations.Api;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,18 +26,19 @@ public class GiftCertificateController {
     }
 
     @GetMapping
+    @ResponseStatus(HttpStatus.OK)
     public List<GiftCertificateDTO> findAll() {
         return giftCertificateService.findAll();
     }
 
-    @PostMapping//todo make status codes (201 create)
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public GiftCertificateDTO save(@RequestBody GiftCertificateDTO giftCertificateDTO) {
         return giftCertificateService.save(giftCertificateDTO);
     }
 
-    //    https://www.baeldung.com/spring-request-param
-    // todo 4)
-    @GetMapping("/tag-names")//todo ask if it is ok mapping?
+    @GetMapping("/tag-names")
+    @ResponseStatus(HttpStatus.OK)
     public List<GiftCertificateDTO> findAllByTagNames(@RequestParam(name = "tagName") List<String> tagNames) {
         return giftCertificateService.findAllByTagNames(tagNames);
     }
