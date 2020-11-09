@@ -4,31 +4,32 @@ import com.epam.esm.sokolov.converter.GiftCertificateConverter;
 import com.epam.esm.sokolov.dto.GiftCertificateDTO;
 import com.epam.esm.sokolov.model.GiftCertificate;
 import com.epam.esm.sokolov.repository.GiftCertificateRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.epam.esm.sokolov.service.ServiceException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class GiftCertificateServiceImpl implements GiftCertificateService {
 
-    @Autowired
-    private GiftCertificateRepository giftCertificateRepository;
+    private final GiftCertificateRepository giftCertificateRepository;
+    private final GiftCertificateConverter giftCertificateConverter;
     //    @Autowired
 //    private GiftCertificateMapper  giftCertificateMapper;
-    @Autowired
-    private GiftCertificateConverter giftCertificateConverter;
+
+    public GiftCertificateServiceImpl(GiftCertificateRepository giftCertificateRepository, GiftCertificateConverter giftCertificateConverter) {
+        this.giftCertificateRepository = giftCertificateRepository;
+        this.giftCertificateConverter = giftCertificateConverter;
+    }
 
     public GiftCertificateDTO update(GiftCertificateDTO dto) {
         GiftCertificate giftCertificateFromDatabase = giftCertificateRepository.findById(dto.getId())
-                .orElse(new GiftCertificate());
-//                .orElseThrow(() -> {
-//                    String message = String.format("Requested resource not found (id = %s)", dto.getId());
-//                    throw new RepositoryException(message, HttpStatus.NOT_FOUND, this.getClass());
-//                });
+                .<ServiceException>orElseThrow(() -> {
+                    String message = String.format("Requested resource not found (id = %s)", dto.getId());
+                    throw new ServiceException(message, HttpStatus.NOT_FOUND, this.getClass());
+                });
         GiftCertificate giftCertificateFromController = giftCertificateConverter.convert(dto);
 //        giftCertificateFromDatabase = giftCertificateMapper.updateGiftCertificateFromDto(giftCertificateFromController);
         GiftCertificate savedGiftCertificate = giftCertificateRepository.save(giftCertificateFromDatabase);
@@ -45,18 +46,15 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     @Override
     public List<GiftCertificateDTO> findAll() {
         return giftCertificateRepository.findAll().stream()
-                .map(giftCertificate -> giftCertificateConverter.convert(giftCertificate))
+                .map(giftCertificateConverter::convert)
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<GiftCertificateDTO> findAllByTagNames(List<String> tagNames) {
-        List<GiftCertificate> giftCertificates = new ArrayList<>();
-        tagNames.forEach(tagName -> giftCertificates.addAll(giftCertificateRepository.findAllByTagsName(tagName)));
-        giftCertificates.sort(Comparator.comparing(GiftCertificate::getId));
+        List<GiftCertificate> giftCertificates = giftCertificateRepository.findAllByTagsName(tagNames);
         return giftCertificates.stream()
-                .map(giftCertificate -> giftCertificateConverter.convert(giftCertificate))
+                .map(giftCertificateConverter::convert)
                 .collect(Collectors.toList());
     }
-
 }

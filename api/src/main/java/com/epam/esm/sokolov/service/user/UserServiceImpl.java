@@ -10,7 +10,6 @@ import com.epam.esm.sokolov.repository.OrderRepository;
 import com.epam.esm.sokolov.repository.UserRepository;
 import com.epam.esm.sokolov.service.ServiceException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -20,6 +19,10 @@ import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
+
+    private static final String COST = "cost";
+    private static final String CREATE_DATE = "createDate";
+    private static final String LAST_UPDATE_DATE = "lastUpdateDate";
 
     private UserRepository userRepository;
     private UserConverter userConverter;
@@ -59,16 +62,19 @@ public class UserServiceImpl implements UserService {
     @Override
     public Map<String, String> findOneOrderByUserIdAndOrderId(Long userId, Long orderId) {
         Order order = orderRepository.findOneOrderByUserIdAndOrderId(userId, orderId)
-                .orElse(new Order());
-        if (order.getId() == null) {
-            String message = String.format("Requested resource not found (id = %s)", orderId);
-            throw new ServiceException(message, HttpStatus.NOT_FOUND, this.getClass());
-        }
+                .<ServiceException>orElseThrow(() -> {
+                    String message = String.format("Requested resource not found (order id = %s)", orderId);
+                    throw new ServiceException(message, HttpStatus.NOT_FOUND, this.getClass());
+                });
         OrderDTO orderDTO = orderConverter.convert(order);
+        return populateOrderParamMap(orderDTO);
+    }
+
+    private Map<String, String> populateOrderParamMap(OrderDTO orderDTO) {
         Map<String, String> orderParamMap = new HashMap<>();
-        orderParamMap.put("cost", orderDTO.getCost().toString());
-        orderParamMap.put("createDate", orderDTO.getCreateDate().toString());
-        orderParamMap.put("lastUpdateDate", orderDTO.getLastUpdateDate().toString());
+        orderParamMap.put(COST, orderDTO.getCost().toString());
+        orderParamMap.put(CREATE_DATE, orderDTO.getCreateDate().toString());
+        orderParamMap.put(LAST_UPDATE_DATE, orderDTO.getLastUpdateDate().toString());
         return orderParamMap;
     }
 }

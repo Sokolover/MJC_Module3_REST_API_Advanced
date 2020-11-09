@@ -23,7 +23,7 @@ public class TagServiceImpl implements TagService {
     public TagDTO findTheMostWidelyUsedTag() {
         Tag tag = tagRepository.findTheMostWidelyUsedTag().<ServiceException>orElseThrow(() -> {
             throw new ServiceException("Requested resource not found", HttpStatus.NOT_FOUND, this.getClass());
-        });//todo make throwing ServiceException in similar cases (!) read about <ServiceException>orElseThrow
+        });
         return tagConverter.convert(tag);
     }
 }
