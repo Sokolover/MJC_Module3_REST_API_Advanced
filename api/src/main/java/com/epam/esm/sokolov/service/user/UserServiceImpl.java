@@ -52,8 +52,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<OrderDTO> findAllOrdersByUserId(Long id) {
-        return orderRepository.findAllByUserAccountId(id)
+    public List<OrderDTO> findAllOrdersByUserId(Long id, Long size, Long page) {
+        if(size == null || page == null){//todo this exception handle as 500 error in controller tier
+            throw new ServiceException("size or page wasn't set in URI correctly", HttpStatus.BAD_REQUEST, this.getClass());
+        }
+        page *= size;
+        return orderRepository.findAllByUserAccountId(id, size, page)
                 .stream()
                 .map(order -> orderConverter.convert(order))
                 .collect(Collectors.toList());

@@ -21,6 +21,9 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @Api(value = "UserControllerApi", produces = MediaType.APPLICATION_JSON_VALUE)
 public class UserController {
 
+    private static final Long DEFAULT_PAGE_SIZE = 10L;
+    private static final Long DEFAULT_PAGE_NUMBER = 0L;
+
     private UserService userService;
 
     public UserController(UserService userService) {
@@ -38,7 +41,7 @@ public class UserController {
     public CollectionModel<UserDTO> findAll() {
         List<UserDTO> userDTOS = userService.findAll();
         userDTOS.forEach(userDTO -> userDTO
-                .add(linkTo(methodOn(UserController.class).findAllOrders(userDTO.getId())).withSelfRel())
+                .add(linkTo(methodOn(UserController.class).findAllOrders(userDTO.getId(), DEFAULT_PAGE_SIZE, DEFAULT_PAGE_NUMBER)).withSelfRel())
         );
         Link link = linkTo(UserController.class).withSelfRel();
         return CollectionModel.of(userDTOS, link);
@@ -46,8 +49,11 @@ public class UserController {
 
     @GetMapping("/{id}/orders")
     @ResponseStatus(HttpStatus.OK)
-    public List<OrderDTO> findAllOrders(@PathVariable Long id) {
-        return userService.findAllOrdersByUserId(id);
+    public List<OrderDTO> findAllOrders(@PathVariable Long id,
+                                        @RequestParam Long size,
+                                        @RequestParam Long page
+    ) {//todo tell if page size is Long or Integer
+        return userService.findAllOrdersByUserId(id, size, page);
     }
 
     @GetMapping("/{id}/orders/{orderId}")

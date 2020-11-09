@@ -15,13 +15,13 @@ dependencies {
 //    testAnnotationProcessor 'org.mapstruct:mapstruct-processor:1.4.1.Final' // if you are using mapstruct in test code
 //    compile group: 'net.ltgt.gradle', name: 'gradle-apt-plugin', version: '0.21'
 
-    implementation 'org.springframework.boot:spring-boot-starter-hateoas'
 
     compile group: 'io.springfox', name: 'springfox-swagger-ui', version: "${swaggerVersion}"
     compile group: 'io.springfox', name: 'springfox-swagger2', version: "${swaggerVersion}"
 
     compile project(":core")
 
+    implementation 'org.springframework.boot:spring-boot-starter-hateoas'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
