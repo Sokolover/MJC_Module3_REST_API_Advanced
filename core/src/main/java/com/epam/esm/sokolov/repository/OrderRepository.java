@@ -15,4 +15,6 @@ public interface OrderRepository {
     List<Order> findAll();
 
     Order save(Order order);
+
+    Long findOrderAmountByUserId(Long id);
 }

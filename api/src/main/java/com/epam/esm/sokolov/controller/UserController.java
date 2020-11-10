@@ -25,9 +25,11 @@ public class UserController {
     private static final Long DEFAULT_PAGE_NUMBER = 0L;
 
     private UserService userService;
+    private PaginationUtil paginationUtil;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, PaginationUtil paginationUtil) {
         this.userService = userService;
+        this.paginationUtil = paginationUtil;
     }
 
     @PostMapping
@@ -49,11 +51,21 @@ public class UserController {
 
     @GetMapping("/{id}/orders")
     @ResponseStatus(HttpStatus.OK)
-    public List<OrderDTO> findAllOrders(@PathVariable Long id,
-                                        @RequestParam Long size,
-                                        @RequestParam Long page
+    public CollectionModel<OrderDTO> findAllOrders(@PathVariable Long id,
+                                                   @RequestParam Long size,
+                                                   @RequestParam Long page
     ) {//todo tell if page size is Long or Integer
-        return userService.findAllOrdersByUserId(id, size, page);
+
+        List<OrderDTO> orderDTOS = userService.findAllOrdersByUserId(id, size, page);
+        CollectionModel<OrderDTO> collectionModelOrderDTOs = CollectionModel.of(orderDTOS);
+        paginationUtil.addPaginationLinks(
+                id,
+                collectionModelOrderDTOs,
+                page,
+                userService.findOrderAmountByUserId(id) / size,
+                size
+        );
+        return collectionModelOrderDTOs;
     }
 
     @GetMapping("/{id}/orders/{orderId}")

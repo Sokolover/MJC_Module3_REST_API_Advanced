@@ -10,6 +10,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
+import java.math.BigInteger;
 import java.util.List;
 import java.util.Optional;
 
@@ -65,5 +66,14 @@ public class OrderRepositoryImpl implements OrderRepository {
     public Order save(Order order) {
         entityManager.persist(order);
         return order;
+    }
+
+    @Override
+    public Long findOrderAmountByUserId(Long id) {
+        BigInteger result = (BigInteger) entityManager.createNativeQuery(
+                "SELECT COUNT(*) FROM user_order WHERE user_order.user_account_id = ?")
+                .setParameter(1, id)
+                .getSingleResult();
+        return result.longValue();
     }
 }

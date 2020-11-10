@@ -17,4 +17,6 @@ public interface UserService {
     List<OrderDTO> findAllOrdersByUserId(Long id, Long size, Long page);
 
     Map<String, String> findOneOrderByUserIdAndOrderId(Long userId, Long orderId);
+
+    Long findOrderAmountByUserId(Long id);
 }
