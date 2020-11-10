@@ -4,14 +4,15 @@ import com.epam.esm.sokolov.converter.OrderConverter;
 import com.epam.esm.sokolov.converter.UserConverter;
 import com.epam.esm.sokolov.dto.OrderDTO;
 import com.epam.esm.sokolov.dto.UserDTO;
+import com.epam.esm.sokolov.exception.ServiceException;
 import com.epam.esm.sokolov.model.Order;
 import com.epam.esm.sokolov.model.User;
 import com.epam.esm.sokolov.repository.OrderRepository;
 import com.epam.esm.sokolov.repository.UserRepository;
-import com.epam.esm.sokolov.service.ServiceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,8 +53,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public List<OrderDTO> findAllOrdersByUserId(Long id, Long size, Long page) {
-        if(size == null || page == null){//todo this exception handle as 500 error in controller tier
+        if (size == null || page == null) {//todo this exception handle as 500 error in controller tier
             throw new ServiceException("size or page wasn't set in URI correctly", HttpStatus.BAD_REQUEST, this.getClass());
         }
         page *= size;

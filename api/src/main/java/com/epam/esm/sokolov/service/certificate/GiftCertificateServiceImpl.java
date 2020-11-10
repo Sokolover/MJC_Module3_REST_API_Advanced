@@ -2,9 +2,9 @@ package com.epam.esm.sokolov.service.certificate;
 
 import com.epam.esm.sokolov.converter.GiftCertificateConverter;
 import com.epam.esm.sokolov.dto.GiftCertificateDTO;
+import com.epam.esm.sokolov.exception.ServiceException;
 import com.epam.esm.sokolov.model.GiftCertificate;
 import com.epam.esm.sokolov.repository.GiftCertificateRepository;
-import com.epam.esm.sokolov.service.ServiceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 

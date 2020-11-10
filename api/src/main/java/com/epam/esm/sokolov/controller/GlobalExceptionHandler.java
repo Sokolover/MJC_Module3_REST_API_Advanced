@@ -1,6 +1,12 @@
 package com.epam.esm.sokolov.controller;
 
-import com.epam.esm.sokolov.service.ServiceException;
+import com.epam.esm.sokolov.exception.CertificateAppException;
+import com.epam.esm.sokolov.exception.RepositoryException;
+import com.epam.esm.sokolov.exception.ServiceException;
+import com.epam.esm.sokolov.repository.GiftCertificateRepositoryImpl;
+import com.epam.esm.sokolov.repository.OrderRepositoryImpl;
+import com.epam.esm.sokolov.repository.TagRepositoryImpl;
+import com.epam.esm.sokolov.repository.UserRepositoryImpl;
 import com.epam.esm.sokolov.service.certificate.GiftCertificateServiceImpl;
 import com.epam.esm.sokolov.service.order.OrderServiceImpl;
 import com.epam.esm.sokolov.service.tag.TagServiceImpl;
@@ -33,24 +39,24 @@ class GlobalExceptionHandler {
         return errorMap;
     }
 
-    @ExceptionHandler(ServiceException.class)
-    public ResponseEntity<Map<String, String>> handleRepositoryException(ServiceException e) {
+    @ExceptionHandler({ServiceException.class, RepositoryException.class})
+    public ResponseEntity<Map<String, String>> handleRepositoryException(CertificateAppException e) {
         Map<String, String> errorMap = new HashMap<>();
         errorMap.put(ERROR_MESSAGE, e.getMessage());
 
-        if (e.getRepositoryClass() == TagServiceImpl.class) {
+        if (e.getRepositoryClass() == TagServiceImpl.class || e.getRepositoryClass() == TagRepositoryImpl.class) {
             errorMap.put(ERROR_CODE, e.getStatusCode().value() + TAG_ERROR_CODE);
         }
 
-        if (e.getRepositoryClass() == GiftCertificateServiceImpl.class) {
+        if (e.getRepositoryClass() == GiftCertificateServiceImpl.class || e.getRepositoryClass() == GiftCertificateRepositoryImpl.class) {
             errorMap.put(ERROR_CODE, e.getStatusCode().value() + GIFT_CERTIFICATE_ERROR_CODE);
         }
 
-        if (e.getRepositoryClass() == UserServiceImpl.class) {
+        if (e.getRepositoryClass() == UserServiceImpl.class || e.getRepositoryClass() == UserRepositoryImpl.class) {
             errorMap.put(ERROR_CODE, e.getStatusCode().value() + USER_ERROR_CODE);
         }
 
-        if (e.getRepositoryClass() == OrderServiceImpl.class) {
+        if (e.getRepositoryClass() == OrderServiceImpl.class || e.getRepositoryClass() == OrderRepositoryImpl.class) {
             errorMap.put(ERROR_CODE, e.getStatusCode().value() + ORDER_ERROR_CODE);
         }
 
