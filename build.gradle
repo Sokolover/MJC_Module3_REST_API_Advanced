@@ -41,5 +41,5 @@ dependencies {
 
 bootJar {
     enabled = true
-    mainClassName = 'com.epam.esm.sokolov.MyWebApplication'
+    mainClassName = 'com.epam.esm.sokolov.Module3'
 }

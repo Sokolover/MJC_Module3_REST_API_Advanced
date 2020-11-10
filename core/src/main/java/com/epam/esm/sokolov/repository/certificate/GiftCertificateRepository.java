@@ -1,4 +1,4 @@
-package com.epam.esm.sokolov.repository;
+package com.epam.esm.sokolov.repository.certificate;
 
 import com.epam.esm.sokolov.model.GiftCertificate;
 import org.springframework.stereotype.Repository;
@@ -9,7 +9,7 @@ import java.util.Optional;
 @Repository
 public interface GiftCertificateRepository {
 
-    List<GiftCertificate> findAllByTagsName(List<String> tagNamesCondition);
+    List<GiftCertificate> findByTagsNames(List<String> tagNamesCondition, Long pageSize, Long pageOffsetInQuery);
 
     Optional<GiftCertificate> findById(Long id);
 
@@ -18,4 +18,6 @@ public interface GiftCertificateRepository {
     List<GiftCertificate> findAll();
 
     List<GiftCertificate> findAllById(List<Long> ids);
+
+    Long findGiftCertificateAmountByTagNames(List<String> tagNamesCondition);
 }

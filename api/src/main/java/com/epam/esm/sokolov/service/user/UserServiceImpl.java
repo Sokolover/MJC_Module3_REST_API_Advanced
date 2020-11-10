@@ -7,8 +7,8 @@ import com.epam.esm.sokolov.dto.UserDTO;
 import com.epam.esm.sokolov.exception.ServiceException;
 import com.epam.esm.sokolov.model.Order;
 import com.epam.esm.sokolov.model.User;
-import com.epam.esm.sokolov.repository.OrderRepository;
-import com.epam.esm.sokolov.repository.UserRepository;
+import com.epam.esm.sokolov.repository.order.OrderRepository;
+import com.epam.esm.sokolov.repository.user.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -54,11 +54,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public List<OrderDTO> findAllOrdersByUserId(Long id, Long size, Long page) {
-        if (size == null || page == null) {//todo this exception handle as 500 error in controller tier
+    public List<OrderDTO> findAllOrdersByUserId(Long id, Long pageSize, Long pageNumber) {
+        if (pageSize == null || pageNumber == null) {//todo this exception handle as 500 error in controller tier
             throw new ServiceException("Size or page wasn't set in URI correctly", HttpStatus.BAD_REQUEST, this.getClass());
         }
-        return orderRepository.findAllByUserAccountId(id, size, page * size)
+        Long pageOffsetInQuery = pageNumber * pageSize;
+        return orderRepository.findAllByUserAccountId(id, pageSize, pageOffsetInQuery)
                 .stream()
                 .map(order -> orderConverter.convert(order))
                 .collect(Collectors.toList());
@@ -73,7 +74,7 @@ public class UserServiceImpl implements UserService {
     public Map<String, String> findOneOrderByUserIdAndOrderId(Long userId, Long orderId) {
         Order order = orderRepository.findOneOrderByUserIdAndOrderId(userId, orderId)
                 .<ServiceException>orElseThrow(() -> {
-                    String message = String.format("Requested resource not found (order id = %s)", orderId);
+                    String message = String.format("Resource not found (order id = %s)", orderId);
                     throw new ServiceException(message, HttpStatus.NOT_FOUND, this.getClass());
                 });
         OrderDTO orderDTO = orderConverter.convert(order);

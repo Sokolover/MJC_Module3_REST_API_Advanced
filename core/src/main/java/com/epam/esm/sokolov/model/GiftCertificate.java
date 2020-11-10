@@ -35,7 +35,7 @@ public class GiftCertificate {
     private Integer duration;
     @ManyToMany(mappedBy = "giftCertificates", cascade = {CascadeType.ALL})
     private Set<Order> orders;
-    @ManyToMany(cascade = {CascadeType.ALL})
+    @ManyToMany(cascade = {CascadeType.MERGE})
     @JoinTable(
             name = "tag_has_gift_certificate",
             joinColumns = @JoinColumn(name = "gift_certificate_id"),

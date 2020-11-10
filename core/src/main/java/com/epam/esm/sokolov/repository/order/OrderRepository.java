@@ -1,4 +1,4 @@
-package com.epam.esm.sokolov.repository;
+package com.epam.esm.sokolov.repository.order;
 
 import com.epam.esm.sokolov.model.Order;
 import org.springframework.stereotype.Repository;

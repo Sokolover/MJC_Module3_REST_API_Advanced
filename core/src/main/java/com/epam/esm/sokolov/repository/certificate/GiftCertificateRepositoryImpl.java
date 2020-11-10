@@ -1,19 +1,23 @@
-package com.epam.esm.sokolov.repository;
+package com.epam.esm.sokolov.repository.certificate;
 
+import com.epam.esm.sokolov.exception.RepositoryException;
 import com.epam.esm.sokolov.model.GiftCertificate;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
+import java.math.BigInteger;
 import java.util.List;
 import java.util.Optional;
 
-import static java.util.stream.Collectors.toList;
+import static java.lang.String.format;
 
 @Repository
 @Transactional
@@ -23,8 +27,8 @@ public class GiftCertificateRepositoryImpl implements GiftCertificateRepository 
     EntityManager entityManager;
 
     @Override
-    public List<GiftCertificate> findAllByTagsName(List<String> tagNamesCondition) {
-        List list = entityManager.createNativeQuery(
+    public List<GiftCertificate> findByTagsNames(List<String> tagNamesCondition, Long pageSize, Long pageOffsetInQuery) {
+        return entityManager.createNativeQuery(
                 "select distinct gift_certificate.*\n" +
                         "from gift_certificate\n" +
                         "         inner join tag_has_gift_certificate\n" +
@@ -32,23 +36,27 @@ public class GiftCertificateRepositoryImpl implements GiftCertificateRepository 
                         "         inner join tag\n" +
                         "                    on tag.id = tag_has_gift_certificate.tag_id\n" +
                         "where tag.name in :tagNamesCondition " +
-                        "order by gift_certificate.id;",
+                        "order by gift_certificate.id " +
+                        "limit :pageSize " +
+                        "offset :pageOffsetInQuery ",
                 GiftCertificate.class
         ).setParameter("tagNamesCondition", tagNamesCondition)
+                .setParameter("pageSize", pageSize)
+                .setParameter("pageOffsetInQuery", pageOffsetInQuery)
                 .getResultList();
-        list.stream()
-                .filter(GiftCertificate.class::isInstance)
-                .map(GiftCertificate.class::cast)
-                .collect(toList());
-        return list;
     }
 
     @Override
     public Optional<GiftCertificate> findById(Long id) {
-        return Optional.ofNullable(entityManager
-                .createNamedQuery("findById", GiftCertificate.class)
-                .setParameter("id", id)
-                .getSingleResult());
+        try {
+            return Optional.ofNullable((GiftCertificate) entityManager
+                    .createNativeQuery("SELECT * FROM gift_certificate WHERE gift_certificate.id = :id", GiftCertificate.class)
+                    .setParameter("id", id)
+                    .getSingleResult());
+        } catch (NoResultException e) {
+            String message = format("Resource not found (id = %s)", id);
+            throw new RepositoryException(message, HttpStatus.NOT_FOUND, this.getClass());
+        }
     }
 
     @Override
@@ -73,5 +81,20 @@ public class GiftCertificateRepositoryImpl implements GiftCertificateRepository 
                 "SELECT * FROM gift_certificate WHERE gift_certificate.id IN :ids", GiftCertificate.class)
                 .setParameter("ids", ids)
                 .getResultList();
+    }
+
+    @Override
+    public Long findGiftCertificateAmountByTagNames(List<String> tagNamesCondition) {
+        BigInteger result = (BigInteger) entityManager.createNativeQuery(
+                "select distinct count(*)\n" +
+                        "from gift_certificate\n" +
+                        "         inner join tag_has_gift_certificate\n" +
+                        "                    on gift_certificate.id = tag_has_gift_certificate.gift_certificate_id\n" +
+                        "         inner join tag\n" +
+                        "                    on tag.id = tag_has_gift_certificate.tag_id\n" +
+                        "where tag.name in :tagNamesCondition ")
+                .setParameter("tagNamesCondition", tagNamesCondition)
+                .getSingleResult();
+        return result.longValue();
     }
 }

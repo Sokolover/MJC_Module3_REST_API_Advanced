@@ -1,4 +1,4 @@
-package com.epam.esm.sokolov.repository;
+package com.epam.esm.sokolov.repository.tag;
 
 import com.epam.esm.sokolov.model.Tag;
 import org.springframework.stereotype.Repository;

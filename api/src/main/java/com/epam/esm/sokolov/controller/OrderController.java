@@ -7,8 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/api/orders")
 @Api(value = "OrderControllerApi", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -26,9 +24,9 @@ public class OrderController {
         return orderService.save(orderDTO);
     }
 
-    @GetMapping
-    @ResponseStatus(HttpStatus.OK)
-    public List<OrderDTO> findAll() {
-        return orderService.findAll();
-    }
+//    @GetMapping
+//    @ResponseStatus(HttpStatus.OK)
+//    public List<OrderDTO> findAll() {
+//        return orderService.findAll();
+//    }
 }

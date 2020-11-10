@@ -24,7 +24,7 @@ public class Tag {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    @ManyToMany(mappedBy = "tags", cascade = {CascadeType.ALL})
+    @ManyToMany(mappedBy = "tags", cascade = {CascadeType.MERGE})
     private Set<GiftCertificate> giftCertificates;
 
     public Tag(Long id, String name) {

@@ -4,39 +4,43 @@ import com.epam.esm.sokolov.converter.GiftCertificateConverter;
 import com.epam.esm.sokolov.dto.GiftCertificateDTO;
 import com.epam.esm.sokolov.exception.ServiceException;
 import com.epam.esm.sokolov.model.GiftCertificate;
-import com.epam.esm.sokolov.repository.GiftCertificateRepository;
+import com.epam.esm.sokolov.repository.certificate.GiftCertificateRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class GiftCertificateServiceImpl implements GiftCertificateService {
 
-    private final GiftCertificateRepository giftCertificateRepository;
-    private final GiftCertificateConverter giftCertificateConverter;
-    //    @Autowired
-//    private GiftCertificateMapper  giftCertificateMapper;
+    private GiftCertificateRepository giftCertificateRepository;
+    private GiftCertificateConverter giftCertificateConverter;
+    private GiftCertificateMapper giftCertificateMapper;
 
-    public GiftCertificateServiceImpl(GiftCertificateRepository giftCertificateRepository, GiftCertificateConverter giftCertificateConverter) {
+    public GiftCertificateServiceImpl(GiftCertificateRepository giftCertificateRepository, GiftCertificateConverter giftCertificateConverter, GiftCertificateMapper giftCertificateMapper) {
         this.giftCertificateRepository = giftCertificateRepository;
         this.giftCertificateConverter = giftCertificateConverter;
+        this.giftCertificateMapper = giftCertificateMapper;
     }
 
-    public GiftCertificateDTO update(GiftCertificateDTO dto) {
-        GiftCertificate giftCertificateFromDatabase = giftCertificateRepository.findById(dto.getId())
+    @Override
+    @Transactional
+    public GiftCertificateDTO update(Long id, GiftCertificateDTO dto) {
+        GiftCertificate giftCertificateFromDatabase = giftCertificateRepository.findById(id)
                 .<ServiceException>orElseThrow(() -> {
-                    String message = String.format("Requested resource not found (id = %s)", dto.getId());
+                    String message = String.format("Resource not found (id = %s)", id);
                     throw new ServiceException(message, HttpStatus.NOT_FOUND, this.getClass());
                 });
         GiftCertificate giftCertificateFromController = giftCertificateConverter.convert(dto);
-//        giftCertificateFromDatabase = giftCertificateMapper.updateGiftCertificateFromDto(giftCertificateFromController);
+        giftCertificateMapper.updateGiftCertificateFromDto(giftCertificateFromDatabase, giftCertificateFromController);
         GiftCertificate savedGiftCertificate = giftCertificateRepository.save(giftCertificateFromDatabase);
         return giftCertificateConverter.convert(savedGiftCertificate);
     }
 
     @Override
+    @Transactional
     public GiftCertificateDTO save(GiftCertificateDTO dto) {
         GiftCertificate giftCertificateToSave = giftCertificateConverter.convert(dto);
         GiftCertificate savedGiftCertificate = giftCertificateRepository.save(giftCertificateToSave);
@@ -51,10 +55,16 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     }
 
     @Override
-    public List<GiftCertificateDTO> findAllByTagNames(List<String> tagNames) {
-        List<GiftCertificate> giftCertificates = giftCertificateRepository.findAllByTagsName(tagNames);
+    public List<GiftCertificateDTO> findByTagNames(List<String> tagNames, Long pageSize, Long pageNumber) {
+        Long pageOffsetInQuery = pageNumber * pageSize;
+        List<GiftCertificate> giftCertificates = giftCertificateRepository.findByTagsNames(tagNames, pageSize, pageOffsetInQuery);
         return giftCertificates.stream()
                 .map(giftCertificateConverter::convert)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Long findGiftCertificateAmountByTagNames(List<String> tagNames) {
+        return giftCertificateRepository.findGiftCertificateAmountByTagNames(tagNames);
     }
 }

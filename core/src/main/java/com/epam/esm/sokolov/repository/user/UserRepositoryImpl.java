@@ -1,4 +1,4 @@
-package com.epam.esm.sokolov.repository;
+package com.epam.esm.sokolov.repository.user;
 
 import com.epam.esm.sokolov.model.User;
 import org.springframework.stereotype.Repository;

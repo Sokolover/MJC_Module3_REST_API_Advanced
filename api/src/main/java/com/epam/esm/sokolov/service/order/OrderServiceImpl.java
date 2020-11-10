@@ -4,8 +4,8 @@ import com.epam.esm.sokolov.converter.OrderConverter;
 import com.epam.esm.sokolov.dto.OrderDTO;
 import com.epam.esm.sokolov.model.GiftCertificate;
 import com.epam.esm.sokolov.model.Order;
-import com.epam.esm.sokolov.repository.GiftCertificateRepository;
-import com.epam.esm.sokolov.repository.OrderRepository;
+import com.epam.esm.sokolov.repository.certificate.GiftCertificateRepository;
+import com.epam.esm.sokolov.repository.order.OrderRepository;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
