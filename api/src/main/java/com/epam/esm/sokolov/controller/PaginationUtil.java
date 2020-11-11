@@ -2,6 +2,7 @@ package com.epam.esm.sokolov.controller;
 
 import com.epam.esm.sokolov.dto.GiftCertificateDTO;
 import com.epam.esm.sokolov.dto.OrderDTO;
+import com.epam.esm.sokolov.dto.UserDTO;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Link;
 import org.springframework.stereotype.Service;
@@ -61,12 +62,36 @@ class PaginationUtil {
         }
     }
 
+    void addPaginationLinksToUserDTO(
+            CollectionModel<UserDTO> userDTOS,
+            final Long pageNumber,
+            final Long totalPages,
+            final Long pageSize) {
+
+        if (hasNextPage(pageNumber, totalPages)) {
+            userDTOS.add(getLinkToFindAllUsersMethod(pageSize, pageNumber + 1, NEXT_PAGE));
+        }
+        if (hasPreviousPage(pageNumber)) {
+            userDTOS.add(getLinkToFindAllUsersMethod(pageSize, pageNumber - 1, PREV_PAGE));
+        }
+        if (hasFirstPage(pageNumber)) {
+            userDTOS.add(getLinkToFindAllUsersMethod(pageSize, 0L, FIRST_PAGE));
+        }
+        if (hasLastPage(pageNumber, totalPages)) {
+            userDTOS.add(getLinkToFindAllUsersMethod(pageSize, totalPages - 1, LAST_PAGE));
+        }
+    }
+
     private Link getLinkToFindAllByTagNamesMethod(List<String> tagNames, Long pageSize, Long pageNumber, String linkName) {
         return linkTo(methodOn(GiftCertificateController.class).findByTagNames(tagNames, pageSize, pageNumber)).withSelfRel().withName(linkName);
     }
 
     private Link getLinkToFindAllOrdersMethod(Long id, Long pageSize, Long pageNumber, String linkName) {
         return linkTo(methodOn(UserController.class).findAllOrders(id, pageSize, pageNumber)).withSelfRel().withName(linkName);
+    }
+
+    private Link getLinkToFindAllUsersMethod(Long pageSize, Long pageNumber, String linkName) {
+        return linkTo(methodOn(UserController.class).findAll(pageSize, pageNumber)).withSelfRel().withName(linkName);
     }
 
     private boolean hasNextPage(final Long pageNumber, final Long totalPages) {

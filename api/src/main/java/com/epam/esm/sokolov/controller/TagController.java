@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 @RestController
 @RequestMapping("/api/tags")
 @Api(value = "TagControllerApi", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -21,9 +24,12 @@ public class TagController {
         this.tagService = tagService;
     }
 
-    @GetMapping("/the-most-widely-used-tag")//todo 3) maybe think about shorter mapping
+    @GetMapping("/the-most-widely-used-tag")
     @ResponseStatus(HttpStatus.OK)
     public TagDTO findTheMostWidelyUsedTag() {
-        return tagService.findTheMostWidelyUsedTag();
+        TagDTO tagDTO = tagService.findTheMostWidelyUsedTag();
+        tagDTO.add(linkTo(methodOn(TagController.class)
+                .findTheMostWidelyUsedTag()).withSelfRel());
+        return tagDTO;
     }
 }

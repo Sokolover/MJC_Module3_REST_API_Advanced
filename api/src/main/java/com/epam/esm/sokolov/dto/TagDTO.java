@@ -1,16 +1,17 @@
 package com.epam.esm.sokolov.dto;
 
 import com.epam.esm.sokolov.model.Tag;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.springframework.hateoas.RepresentationModel;
+
+import java.util.Objects;
 
 @Getter
 @Setter
+@EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
-public class TagDTO {
+public class TagDTO  extends RepresentationModel<OrderDTO> {
 
     private Long id;
     private String name;

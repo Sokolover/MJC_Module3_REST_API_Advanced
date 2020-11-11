@@ -17,7 +17,7 @@ import java.util.Set;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderDTO extends RepresentationModel<UserDTO> {
+public class OrderDTO extends RepresentationModel<OrderDTO> {
 
     private Long id;
     private BigDecimal cost;

@@ -10,10 +10,6 @@ public interface GiftCertificateService {
 
     GiftCertificateDTO update(Long id, GiftCertificateDTO dto);
 
-    GiftCertificateDTO save(GiftCertificateDTO dto);
-
-    List<GiftCertificateDTO> findAll();
-
     List<GiftCertificateDTO> findByTagNames(List<String> tagNames, Long size, Long page);
 
     Long findGiftCertificateAmountByTagNames(List<String> tagNames);

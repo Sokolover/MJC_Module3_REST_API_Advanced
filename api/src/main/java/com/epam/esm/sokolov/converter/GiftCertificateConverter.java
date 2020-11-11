@@ -3,6 +3,7 @@ package com.epam.esm.sokolov.converter;
 import com.epam.esm.sokolov.dto.GiftCertificateDTO;
 import com.epam.esm.sokolov.dto.TagDTO;
 import com.epam.esm.sokolov.model.GiftCertificate;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -11,6 +12,7 @@ import java.util.Set;
 
 import static java.util.Objects.nonNull;
 
+@NoArgsConstructor
 @Service
 public class GiftCertificateConverter {
 

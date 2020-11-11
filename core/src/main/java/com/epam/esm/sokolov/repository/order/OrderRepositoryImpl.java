@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import javax.transaction.Transactional;
 import java.math.BigInteger;
 import java.util.List;
@@ -57,12 +56,6 @@ public class OrderRepositoryImpl implements OrderRepository {
     }
 
     @Override
-    public List<Order> findAll() {
-        Query query = entityManager.createNativeQuery("SELECT * FROM user_order", Order.class);
-        return query.getResultList();
-    }
-
-    @Override
     public Order save(Order order) {
         entityManager.persist(order);
         return order;
@@ -76,4 +69,6 @@ public class OrderRepositoryImpl implements OrderRepository {
                 .getSingleResult();
         return result.longValue();
     }
+
+
 }

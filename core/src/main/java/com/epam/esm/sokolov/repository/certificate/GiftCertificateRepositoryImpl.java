@@ -8,10 +8,6 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 import java.math.BigInteger;
 import java.util.List;
@@ -63,16 +59,6 @@ public class GiftCertificateRepositoryImpl implements GiftCertificateRepository 
     public GiftCertificate save(GiftCertificate giftCertificate) {
         entityManager.persist(giftCertificate);
         return giftCertificate;
-    }
-
-    @Override
-    public List<GiftCertificate> findAll() {
-        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<GiftCertificate> criteriaQuery = criteriaBuilder.createQuery(GiftCertificate.class);
-        Root<GiftCertificate> rootEntry = criteriaQuery.from(GiftCertificate.class);
-        CriteriaQuery<GiftCertificate> all = criteriaQuery.select(rootEntry);
-        TypedQuery<GiftCertificate> allQuery = entityManager.createQuery(all);
-        return allQuery.getResultList();
     }
 
     @Override

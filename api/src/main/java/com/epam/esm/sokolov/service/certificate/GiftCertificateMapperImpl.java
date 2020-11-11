@@ -12,8 +12,7 @@ import java.util.Set;
 public class GiftCertificateMapperImpl implements GiftCertificateMapper {
 
     @Override
-    public GiftCertificate updateGiftCertificateFromDto(GiftCertificate giftCertificateFromDatabase, GiftCertificate giftCertificateFromController) {
-
+    public void updateGiftCertificateFromDto(GiftCertificate giftCertificateFromDatabase, GiftCertificate giftCertificateFromController) {
         String name = giftCertificateFromController.getName();
         if (name != null) {
             giftCertificateFromDatabase.setName(name);
@@ -47,10 +46,8 @@ public class GiftCertificateMapperImpl implements GiftCertificateMapper {
             giftCertificateFromDatabase.setDuration(duration);
         }
         Set<Tag> tags = giftCertificateFromController.getTags();
-        if(tags != null){
+        if (tags != null) {
             giftCertificateFromDatabase.setTags(tags);
         }
-
-        return giftCertificateFromDatabase;
     }
 }

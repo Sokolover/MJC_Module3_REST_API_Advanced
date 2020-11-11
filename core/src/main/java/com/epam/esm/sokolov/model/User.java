@@ -11,8 +11,6 @@ import java.util.Set;
 
 @Getter
 @Setter
-//@EqualsAndHashCode
-//@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -20,7 +18,6 @@ import java.util.Set;
 public class User {
 
     @Id
-//    @GeneratedValue(strategy = GenerationType.AUTO)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String username;

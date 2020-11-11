@@ -15,8 +15,6 @@ public interface GiftCertificateRepository {
 
     GiftCertificate save(GiftCertificate giftCertificate);
 
-    List<GiftCertificate> findAll();
-
     List<GiftCertificate> findAllById(List<Long> ids);
 
     Long findGiftCertificateAmountByTagNames(List<String> tagNamesCondition);

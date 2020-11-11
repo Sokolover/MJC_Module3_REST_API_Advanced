@@ -2,6 +2,7 @@ package com.epam.esm.sokolov.converter;
 
 import com.epam.esm.sokolov.dto.OrderDTO;
 import com.epam.esm.sokolov.model.Order;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.ZonedDateTime;
@@ -9,6 +10,7 @@ import java.util.stream.Collectors;
 
 import static java.util.Objects.nonNull;
 
+@NoArgsConstructor
 @Service
 public class OrderConverter {
 
@@ -21,6 +23,9 @@ public class OrderConverter {
     }
 
     public OrderDTO convert(Order source) {
+        if (source == null) {
+            return new OrderDTO();
+        }
         OrderDTO orderDTO = new OrderDTO();
         orderDTO.setId(source.getId());
         orderDTO.setCost(source.getCost());
@@ -36,6 +41,9 @@ public class OrderConverter {
     }
 
     public Order convert(OrderDTO source) {
+        if (source == null) {
+            return new Order();
+        }
         Order order = new Order();
         order.setId(source.getId());
         order.setCost(source.getCost());

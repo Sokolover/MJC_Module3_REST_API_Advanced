@@ -7,6 +7,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 @RestController
 @RequestMapping("/api/orders")
 @Api(value = "OrderControllerApi", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -21,12 +24,8 @@ public class OrderController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public OrderDTO save(@RequestBody OrderDTO orderDTO) {
-        return orderService.save(orderDTO);
+        OrderDTO savedOrderDTO = orderService.save(orderDTO);
+        return savedOrderDTO.add(linkTo(methodOn(OrderController.class)
+                .save(orderDTO)).withSelfRel().withType("POST"));
     }
-
-//    @GetMapping
-//    @ResponseStatus(HttpStatus.OK)
-//    public List<OrderDTO> findAll() {
-//        return orderService.findAll();
-//    }
 }

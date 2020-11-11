@@ -8,7 +8,7 @@ import java.util.List;
 @Repository
 public interface UserRepository {
 
-    User save(User order);
+    List<User> findAll(Long pageSize, Long pageNumber);
 
-    List<User> findAll();
+    Long findUserAmount();
 }
