@@ -53,7 +53,7 @@ class OrderServiceImplTest {
     private TagConverter tagConverter;
 
     @Test
-    void save() {//todo ask about testing when we have ZonedDateTime.now() in service
+    void save() {
         OrderDTO orderDTOFromController = createOrderDTOFromController();
         Order orderFromController = orderConverter.convert(orderDTOFromController);
         List<Long> giftCertificateIds = orderFromController.getGiftCertificates()

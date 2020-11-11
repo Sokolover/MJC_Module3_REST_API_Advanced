@@ -24,7 +24,6 @@ public class OrderRepositoryImpl implements OrderRepository {
 
     @Override
     public List<Order> findAllByUserAccountId(Long id, Long size, Long page) {
-        //todo read why it is better then SessionFactory
         return entityManager.createNativeQuery(
                 "SELECT * " +
                         "FROM user_order " +

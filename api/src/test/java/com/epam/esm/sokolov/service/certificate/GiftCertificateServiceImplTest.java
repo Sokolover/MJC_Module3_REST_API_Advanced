@@ -58,18 +58,6 @@ class GiftCertificateServiceImplTest {
         Assertions.assertEquals(giftCertificateDTOFromController, updatedGiftCertificateDTOFromController);
     }
 
-    public GiftCertificateDTO update(Long id, GiftCertificateDTO dto) {
-        GiftCertificate giftCertificateFromDatabase = giftCertificateRepository.findById(id)
-                .<ServiceException>orElseThrow(() -> {
-                    String message = String.format("Resource not found (id = %s)", id);
-                    throw new ServiceException(message, HttpStatus.NOT_FOUND, this.getClass());
-                });
-        GiftCertificate giftCertificateFromController = giftCertificateConverter.convert(dto);
-        giftCertificateMapper.updateGiftCertificateFromDto(giftCertificateFromDatabase, giftCertificateFromController);
-        GiftCertificate savedGiftCertificate = giftCertificateRepository.save(giftCertificateFromDatabase);
-        return giftCertificateConverter.convert(savedGiftCertificate);
-    }
-
     private GiftCertificateDTO createGiftCertificateFromController() {
         GiftCertificateDTO giftCertificateDTO = new GiftCertificateDTO();
         giftCertificateDTO.setId(1L);

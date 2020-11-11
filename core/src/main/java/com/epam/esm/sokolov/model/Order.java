@@ -38,21 +38,19 @@ public class Order {
     private Set<GiftCertificate> giftCertificates;
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(Object o) {//todo test all app, it's tend to be errornous piece of code
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Order order = (Order) o;
         return Objects.equals(id, order.id) &&
                 Objects.equals(cost, order.cost) &&
-                Objects.equals(createDate, order.createDate) &&
                 Objects.equals(createDateTimeZone, order.createDateTimeZone) &&
-                Objects.equals(lastUpdateDate, order.lastUpdateDate) &&
                 Objects.equals(lastUpdateDateTimeZone, order.lastUpdateDateTimeZone);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, cost, createDate, createDateTimeZone, lastUpdateDate, lastUpdateDateTimeZone);
+        return Objects.hash(id, cost, createDateTimeZone, lastUpdateDateTimeZone);
     }
 
     @Override
