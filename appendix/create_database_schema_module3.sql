@@ -2,8 +2,7 @@
 
 SET @OLD_UNIQUE_CHECKS = @@UNIQUE_CHECKS, UNIQUE_CHECKS = 0;
 SET @OLD_FOREIGN_KEY_CHECKS = @@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS = 0;
-SET @OLD_SQL_MODE = @@SQL_MODE, SQL_MODE =
-        'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+SET @OLD_SQL_MODE = @@SQL_MODE, SQL_MODE = ''ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION'';
 
 -- -----------------------------------------------------
 -- Schema module3
@@ -43,6 +42,9 @@ CREATE TABLE IF NOT EXISTS `module3`.`gift_certificate`
     `last_update_date`           DATETIME      NOT NULL,
     `last_update_date_time_zone` VARCHAR(50)   NOT NULL,
     `duration`                   INT           NOT NULL,
+    `operation`                  VARCHAR(100)  NULL,
+    `updated_at_time`            DATETIME      NULL,
+    `updated_at_time_zone`       VARCHAR(50)   NULL,
     PRIMARY KEY (`id`),
     UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE
 )
@@ -100,6 +102,9 @@ CREATE TABLE IF NOT EXISTS `module3`.`user_order`
     `create_date_time_zone`      VARCHAR(50)   NOT NULL,
     `last_update_date`           DATETIME      NOT NULL,
     `last_update_date_time_zone` VARCHAR(50)   NOT NULL,
+    `operation`                  VARCHAR(100)  NULL,
+    `created_at_time`            DATETIME      NULL,
+    `created_at_time_zone`       VARCHAR(50)   NULL,
     `user_account_id`            BIGINT(100)   NOT NULL,
     PRIMARY KEY (`id`, `user_account_id`),
     UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE,

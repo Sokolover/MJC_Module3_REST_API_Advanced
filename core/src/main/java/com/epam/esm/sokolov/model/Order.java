@@ -8,6 +8,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.Objects;
 import java.util.Set;
 
@@ -40,6 +41,11 @@ public class Order {
             joinColumns = @JoinColumn(name = "user_order_id"),
             inverseJoinColumns = @JoinColumn(name = "gift_certificate_id"))
     private Set<GiftCertificate> giftCertificates;
+    private String operation;
+    @Column(name = "created_at_time")
+    private LocalDateTime createdAtTime;
+    @Column(name = "created_at_time_zone")
+    private String createdAtTimeZone;
 
     @Override
     public boolean equals(Object o) {
@@ -67,5 +73,12 @@ public class Order {
                 ", lastUpdateDate=" + lastUpdateDate +
                 ", lastUpdateDateTimeZone='" + lastUpdateDateTimeZone + '\'' +
                 '}';
+    }
+
+    @PrePersist
+    public void onPrePersist(){
+        this.operation = "PERSIST";
+        this.createdAtTime = LocalDateTime.now();
+        this.createdAtTimeZone = ZonedDateTime.now().getOffset().toString();
     }
 }

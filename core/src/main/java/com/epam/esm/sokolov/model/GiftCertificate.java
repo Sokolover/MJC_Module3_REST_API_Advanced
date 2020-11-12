@@ -8,6 +8,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.Objects;
 import java.util.Set;
 
@@ -42,6 +43,11 @@ public class GiftCertificate {
             joinColumns = @JoinColumn(name = "gift_certificate_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id"))
     private Set<Tag> tags;
+    private String operation;
+    @Column(name = "updated_at_time")
+    private LocalDateTime updatedAtTime;
+    @Column(name = "updated_at_time_zone")
+    private String updatedAtTimeZone;
 
     @Override
     public boolean equals(Object o) {
@@ -77,5 +83,12 @@ public class GiftCertificate {
                 ", lastUpdateDateTimeZone='" + lastUpdateDateTimeZone + '\'' +
                 ", duration=" + duration +
                 '}';
+    }
+
+    @PreUpdate
+    public void onPreUpdate(){
+        this.operation = "UPDATE";
+        this.updatedAtTime = LocalDateTime.now();
+        this.updatedAtTimeZone = ZonedDateTime.now().getOffset().toString();
     }
 }
