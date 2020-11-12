@@ -2,7 +2,7 @@ package com.epam.esm.sokolov.service.order;
 
 import com.epam.esm.sokolov.converter.OrderConverter;
 import com.epam.esm.sokolov.dto.OrderDTO;
-import com.epam.esm.sokolov.dto.OrderDTODetails;
+import com.epam.esm.sokolov.dto.OrderDetailsDTO;
 import com.epam.esm.sokolov.exception.ServiceException;
 import com.epam.esm.sokolov.model.GiftCertificate;
 import com.epam.esm.sokolov.model.Order;
@@ -36,7 +36,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderDTODetails findOneOrderByUserIdAndOrderId(Long userId, Long orderId) {
+    public OrderDetailsDTO findOneOrderByUserIdAndOrderId(Long userId, Long orderId) {
         Order order = orderRepository.findOneOrderByUserIdAndOrderId(userId, orderId)
                 .<ServiceException>orElseThrow(() -> {
                     String message = String.format("Resource not found (order id = %s)", orderId);
@@ -100,11 +100,11 @@ public class OrderServiceImpl implements OrderService {
         orderToSave.setCost(orderCost);
     }
 
-    private OrderDTODetails populateOrderParamMap(OrderDTO orderDTO) {
-        OrderDTODetails orderDTODetails = new OrderDTODetails();
-        orderDTODetails.setCost(orderDTO.getCost());
-        orderDTODetails.setCreateDate(orderDTO.getCreateDate());
-        orderDTODetails.setLastUpdateDate(orderDTO.getLastUpdateDate());
-        return orderDTODetails;
+    private OrderDetailsDTO populateOrderParamMap(OrderDTO orderDTO) {
+        OrderDetailsDTO orderDetailsDTO = new OrderDetailsDTO();
+        orderDetailsDTO.setCost(orderDTO.getCost());
+        orderDetailsDTO.setCreateDate(orderDTO.getCreateDate());
+        orderDetailsDTO.setLastUpdateDate(orderDTO.getLastUpdateDate());
+        return orderDetailsDTO;
     }
 }

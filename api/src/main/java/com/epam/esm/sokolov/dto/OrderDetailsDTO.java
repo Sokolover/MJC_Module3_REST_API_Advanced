@@ -12,7 +12,7 @@ import java.time.ZonedDateTime;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderDTODetails extends RepresentationModel<OrderDTODetails> {
+public class OrderDetailsDTO extends RepresentationModel<OrderDetailsDTO> {
 
     private BigDecimal cost;
     private ZonedDateTime createDate;

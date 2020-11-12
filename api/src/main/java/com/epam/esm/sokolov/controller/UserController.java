@@ -1,7 +1,7 @@
 package com.epam.esm.sokolov.controller;
 
 import com.epam.esm.sokolov.dto.OrderDTO;
-import com.epam.esm.sokolov.dto.OrderDTODetails;
+import com.epam.esm.sokolov.dto.OrderDetailsDTO;
 import com.epam.esm.sokolov.dto.UserDTO;
 import com.epam.esm.sokolov.service.order.OrderService;
 import com.epam.esm.sokolov.service.user.UserService;
@@ -62,16 +62,16 @@ public class UserController {
 
     @GetMapping("/{id}/orders/{orderId}")
     @ResponseStatus(HttpStatus.OK)
-    public OrderDTODetails findOrderByUserIdAndOrderId(@PathVariable Long id, @PathVariable Long orderId) {
-        OrderDTODetails orderDTODetails = orderService.findOneOrderByUserIdAndOrderId(id, orderId);
-        orderDTODetails
+    public OrderDetailsDTO findOrderByUserIdAndOrderId(@PathVariable Long id, @PathVariable Long orderId) {
+        OrderDetailsDTO orderDetailsDTO = orderService.findOneOrderByUserIdAndOrderId(id, orderId);
+        orderDetailsDTO
                 .add(linkTo(methodOn(UserController.class)
                         .findAll(DEFAULT_PAGE_SIZE, DEFAULT_PAGE_NUMBER)).withRel(USERS_REF))
                 .add(linkTo(methodOn(UserController.class)
                         .findAllOrders(id, DEFAULT_PAGE_SIZE, DEFAULT_PAGE_NUMBER)).withSelfRel())
                 .add(linkTo(methodOn(UserController.class)
                         .findOrderByUserIdAndOrderId(id, orderId)).withSelfRel());
-        return orderDTODetails;
+        return orderDetailsDTO;
     }
 
     @GetMapping

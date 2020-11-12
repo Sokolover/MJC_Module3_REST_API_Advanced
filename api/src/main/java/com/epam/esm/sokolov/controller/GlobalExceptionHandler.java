@@ -9,6 +9,7 @@ import com.epam.esm.sokolov.service.certificate.GiftCertificateServiceImpl;
 import com.epam.esm.sokolov.service.order.OrderServiceImpl;
 import com.epam.esm.sokolov.service.tag.TagServiceImpl;
 import com.epam.esm.sokolov.service.user.UserServiceImpl;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -34,6 +35,15 @@ class GlobalExceptionHandler {
         Map<String, String> errorMap = new HashMap<>();
         errorMap.put(ERROR_MESSAGE, e.getMessage());
         errorMap.put(ERROR_CODE, String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()));
+        return errorMap;
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Map<String, String> errorHandler() {
+        Map<String, String> errorMap = new HashMap<>();
+        errorMap.put(ERROR_MESSAGE, "Could not create-update entity: there aren't such user or giftCertificate or tag");
+        errorMap.put(ERROR_CODE, String.valueOf(HttpStatus.BAD_REQUEST.value()));
         return errorMap;
     }
 

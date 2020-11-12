@@ -1,7 +1,6 @@
 package com.epam.esm.sokolov.controller;
 
 import com.epam.esm.sokolov.dto.GiftCertificateDTO;
-import com.epam.esm.sokolov.exception.ControllerException;
 import com.epam.esm.sokolov.service.certificate.GiftCertificateService;
 import io.swagger.annotations.Api;
 import org.springframework.hateoas.CollectionModel;
@@ -35,13 +34,7 @@ public class GiftCertificateController {
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public GiftCertificateDTO update(@PathVariable Long id, @RequestBody GiftCertificateDTO giftCertificateDTO) {
-        GiftCertificateDTO updatedGiftCertificateDTO;
-        try {
-            updatedGiftCertificateDTO = giftCertificateService.update(id, giftCertificateDTO);
-        } catch (Exception e) {
-            String message = "Could not create order: there aren't such giftCertificate or tag";
-            throw new ControllerException(message, HttpStatus.BAD_REQUEST, this.getClass());
-        }
+        GiftCertificateDTO updatedGiftCertificateDTO = giftCertificateService.update(id, giftCertificateDTO);
         updatedGiftCertificateDTO
                 .add(linkTo(methodOn(GiftCertificateController.class)
                         .update(id, giftCertificateDTO)).withSelfRel().withType("PATCH"))
