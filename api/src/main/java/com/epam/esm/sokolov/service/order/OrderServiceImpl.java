@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
@@ -22,6 +23,7 @@ import java.util.stream.Collectors;
 import static com.epam.esm.sokolov.constants.CommonAppConstants.INCORRECT_PAGE_SIZE_MESSAGE;
 
 @Service
+@Transactional
 public class OrderServiceImpl implements OrderService {
 
     private OrderRepository orderRepository;
@@ -50,7 +52,7 @@ public class OrderServiceImpl implements OrderService {
         Order orderToSave = orderConverter.convert(orderDTO);
         setOrderCost(orderToSave);
         setCurrentTimeToOrder(orderToSave);
-        try {
+        try {// FIXME: 12.11.2020 bug when save no existing certif is not catching here
             Order savedOrder = orderRepository.save(orderToSave);
             return orderConverter.convert(savedOrder);
         } catch (DataIntegrityViolationException e) {

@@ -3,6 +3,7 @@ package com.epam.esm.sokolov.converter;
 import com.epam.esm.sokolov.dto.OrderDTO;
 import com.epam.esm.sokolov.model.Order;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.ZonedDateTime;
@@ -17,6 +18,7 @@ public class OrderConverter {
     private GiftCertificateConverter giftCertificateConverter;
     private UserConverter userConverter;
 
+    @Autowired
     public OrderConverter(GiftCertificateConverter giftCertificateConverter, UserConverter userConverter) {
         this.giftCertificateConverter = giftCertificateConverter;
         this.userConverter = userConverter;

@@ -8,7 +8,10 @@ import com.epam.esm.sokolov.repository.tag.TagRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @Service
+@Transactional
 public class TagServiceImpl implements TagService {
 
     private TagRepository tagRepository;

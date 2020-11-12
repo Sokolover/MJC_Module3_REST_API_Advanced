@@ -17,6 +17,7 @@ import static com.epam.esm.sokolov.constants.CommonAppConstants.INCORRECT_PAGE_S
 import static com.epam.esm.sokolov.constants.CommonAppConstants.INCORRECT_TAG_NAMES_MESSAGE;
 
 @Service
+@Transactional
 public class GiftCertificateServiceImpl implements GiftCertificateService {
 
     private GiftCertificateRepository giftCertificateRepository;
@@ -30,7 +31,6 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     }
 
     @Override
-    @Transactional
     public GiftCertificateDTO update(Long id, GiftCertificateDTO dto) {
         GiftCertificate giftCertificateFromDatabase = giftCertificateRepository.findById(id)
                 .<ServiceException>orElseThrow(() -> {

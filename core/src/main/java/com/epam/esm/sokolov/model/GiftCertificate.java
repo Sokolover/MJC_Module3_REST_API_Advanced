@@ -25,12 +25,16 @@ public class GiftCertificate {
     private String name;
     private String description;
     private BigDecimal price;
+    @Column(name = "create_date")
     private LocalDateTime createDate;
+    @Column(name = "create_date_time_zone")
     private String createDateTimeZone;
+    @Column(name = "last_update_date")
     private LocalDateTime lastUpdateDate;
+    @Column(name = "last_update_date_time_zone")
     private String lastUpdateDateTimeZone;
     private Integer duration;
-    @ManyToMany(mappedBy = "giftCertificates", cascade = {CascadeType.ALL})
+    @ManyToMany(mappedBy = "giftCertificates", cascade = {CascadeType.MERGE})//{CascadeType.MERGE}
     private Set<Order> orders;
     @ManyToMany(cascade = {CascadeType.MERGE})
     @JoinTable(

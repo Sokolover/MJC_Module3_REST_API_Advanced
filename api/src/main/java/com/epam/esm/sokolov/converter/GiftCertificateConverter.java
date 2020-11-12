@@ -4,6 +4,7 @@ import com.epam.esm.sokolov.dto.GiftCertificateDTO;
 import com.epam.esm.sokolov.dto.TagDTO;
 import com.epam.esm.sokolov.model.GiftCertificate;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -18,6 +19,7 @@ public class GiftCertificateConverter {
 
     private TagConverter tagConverter;
 
+    @Autowired
     public GiftCertificateConverter(TagConverter tagConverter) {
         this.tagConverter = tagConverter;
     }
