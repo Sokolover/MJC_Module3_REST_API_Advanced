@@ -5,19 +5,19 @@ import org.springframework.http.HttpStatus;
 public class CertificateAppException extends RuntimeException {
 
     private HttpStatus statusCode;
-    private Class<?> repositoryClass;
+    private Class<?> classThrewException;
 
-    public CertificateAppException(String message, HttpStatus statusCode, Class<?> repositoryClass) {
+    public CertificateAppException(String message, HttpStatus statusCode, Class<?> exceprionalClass) {
         super(message);
         this.statusCode = statusCode;
-        this.repositoryClass = repositoryClass;
+        this.classThrewException = exceprionalClass;
     }
 
     public HttpStatus getStatusCode() {
         return statusCode;
     }
 
-    public Class<?> getRepositoryClass() {
-        return repositoryClass;
+    public Class<?> getClassThrewException() {
+        return classThrewException;
     }
 }

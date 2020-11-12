@@ -8,7 +8,6 @@ import com.epam.esm.sokolov.model.GiftCertificate;
 import com.epam.esm.sokolov.model.Order;
 import com.epam.esm.sokolov.repository.certificate.GiftCertificateRepository;
 import com.epam.esm.sokolov.repository.order.OrderRepository;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -52,13 +51,8 @@ public class OrderServiceImpl implements OrderService {
         Order orderToSave = orderConverter.convert(orderDTO);
         setOrderCost(orderToSave);
         setCurrentTimeToOrder(orderToSave);
-        try {// FIXME: 12.11.2020 bug when save no existing certif is not catching here
-            Order savedOrder = orderRepository.save(orderToSave);
-            return orderConverter.convert(savedOrder);
-        } catch (DataIntegrityViolationException e) {
-            String message = "Could not create order: there aren't such user or certificates";
-            throw new ServiceException(message, HttpStatus.BAD_REQUEST, this.getClass());
-        }
+        Order savedOrder = orderRepository.save(orderToSave);
+        return orderConverter.convert(savedOrder);
     }
 
     @Override
@@ -76,13 +70,13 @@ public class OrderServiceImpl implements OrderService {
                 .collect(Collectors.toList());
     }
 
-    private boolean isIncorrectArguments(Long pageSize, Long pageNumber) {
-        return pageSize == null || pageNumber == null || pageSize < 0 || pageNumber < 0;
-    }
-
     @Override
     public Long findOrderAmountByUserId(Long id) {
         return orderRepository.findOrderAmountByUserId(id);
+    }
+
+    private boolean isIncorrectArguments(Long pageSize, Long pageNumber) {
+        return pageSize == null || pageNumber == null || pageSize < 0 || pageNumber < 0;
     }
 
     private void setCurrentTimeToOrder(Order orderToSave) {

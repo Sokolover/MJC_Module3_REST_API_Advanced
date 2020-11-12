@@ -34,7 +34,7 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "user_account_id")
     private User user;
-    @ManyToMany//(cascade = {CascadeType.MERGE})
+    @ManyToMany
     @JoinTable(
             name = "user_order_has_gift_certificate",
             joinColumns = @JoinColumn(name = "user_order_id"),
@@ -42,7 +42,7 @@ public class Order {
     private Set<GiftCertificate> giftCertificates;
 
     @Override
-    public boolean equals(Object o) {//todo test all app, it's tend to be errornous piece of code
+    public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Order order = (Order) o;

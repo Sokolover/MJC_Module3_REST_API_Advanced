@@ -34,7 +34,7 @@ public class GiftCertificate {
     @Column(name = "last_update_date_time_zone")
     private String lastUpdateDateTimeZone;
     private Integer duration;
-    @ManyToMany(mappedBy = "giftCertificates", cascade = {CascadeType.MERGE})//{CascadeType.MERGE}
+    @ManyToMany(mappedBy = "giftCertificates", cascade = {CascadeType.MERGE})
     private Set<Order> orders;
     @ManyToMany(cascade = {CascadeType.MERGE})
     @JoinTable(

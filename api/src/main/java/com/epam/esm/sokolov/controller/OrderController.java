@@ -1,6 +1,7 @@
 package com.epam.esm.sokolov.controller;
 
 import com.epam.esm.sokolov.dto.OrderDTO;
+import com.epam.esm.sokolov.exception.ControllerException;
 import com.epam.esm.sokolov.service.order.OrderService;
 import io.swagger.annotations.Api;
 import org.springframework.http.HttpStatus;
@@ -24,7 +25,13 @@ public class OrderController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public OrderDTO save(@RequestBody OrderDTO orderDTO) {
-        OrderDTO savedOrderDTO = orderService.save(orderDTO);
+        OrderDTO savedOrderDTO;
+        try {
+            savedOrderDTO = orderService.save(orderDTO);
+        } catch (Exception e) {
+            String message = "Could not create order: there aren't such user or giftCertificates";
+            throw new ControllerException(message, HttpStatus.BAD_REQUEST, this.getClass());
+        }
         return savedOrderDTO.add(linkTo(methodOn(OrderController.class)
                 .save(orderDTO)).withSelfRel().withType("POST"));
     }

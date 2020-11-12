@@ -9,8 +9,6 @@ import org.springframework.stereotype.Service;
 import java.time.ZonedDateTime;
 import java.util.stream.Collectors;
 
-import static java.util.Objects.nonNull;
-
 @NoArgsConstructor
 @Service
 public class OrderConverter {
@@ -50,12 +48,12 @@ public class OrderConverter {
         order.setId(source.getId());
         order.setCost(source.getCost());
         ZonedDateTime createDate = source.getCreateDate();
-        if (nonNull(createDate)) {
+        if (createDate != null) {
             order.setCreateDate(DateConverter.getLocalDate(createDate));
             order.setCreateDateTimeZone(createDate.getZone().toString());
         }
         ZonedDateTime lastUpdateDate = source.getLastUpdateDate();
-        if (nonNull(lastUpdateDate)) {
+        if (lastUpdateDate != null) {
             order.setLastUpdateDate(DateConverter.getLocalDate(lastUpdateDate));
             order.setLastUpdateDateTimeZone(lastUpdateDate.getZone().toString());
         }

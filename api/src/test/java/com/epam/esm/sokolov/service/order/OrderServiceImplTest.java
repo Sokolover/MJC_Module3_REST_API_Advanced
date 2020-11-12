@@ -7,31 +7,25 @@ import com.epam.esm.sokolov.converter.UserConverter;
 import com.epam.esm.sokolov.dto.GiftCertificateDTO;
 import com.epam.esm.sokolov.dto.OrderDTO;
 import com.epam.esm.sokolov.dto.UserDTO;
-import com.epam.esm.sokolov.exception.ServiceException;
 import com.epam.esm.sokolov.model.GiftCertificate;
 import com.epam.esm.sokolov.model.Order;
 import com.epam.esm.sokolov.repository.certificate.GiftCertificateRepositoryImpl;
 import com.epam.esm.sokolov.repository.order.OrderRepositoryImpl;
-import com.epam.esm.sokolov.service.certificate.GiftCertificateMapperImpl;
-import com.epam.esm.sokolov.service.certificate.GiftCertificateServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.Spy;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.http.HttpStatus;
 
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class OrderServiceImplTest {
@@ -67,7 +61,7 @@ class OrderServiceImplTest {
         Assertions.assertEquals(new OrderDTO(), savedOrderDTOFromController);
     }
 
-    private OrderDTO createOrderDTOFromController(){
+    private OrderDTO createOrderDTOFromController() {
         OrderDTO orderDTO = new OrderDTO();
         orderDTO.setCreateDate(ZonedDateTime.now());
         orderDTO.setLastUpdateDate(ZonedDateTime.now());

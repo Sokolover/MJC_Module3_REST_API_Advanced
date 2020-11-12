@@ -18,14 +18,7 @@ public class TagConverter {
         return tagDTO;
     }
 
-    public Tag convert(TagDTO source) {
-        Tag tag = new Tag();
-        tag.setId(source.getId());
-        tag.setName(source.getName());
-        return tag;
-    }
-
-    public Set<TagDTO> convertTagDtosFromTags(Set<Tag> tags) {
+    Set<TagDTO> convertTagDtosFromTags(Set<Tag> tags) {
         if (tags == null) {
             return new HashSet<>();
         }
@@ -34,7 +27,7 @@ public class TagConverter {
                 .collect(Collectors.toSet());
     }
 
-    public Set<Tag> convertTagsFromTagDtos(Set<TagDTO> tagDTOS) {
+    Set<Tag> convertTagsFromTagDtos(Set<TagDTO> tagDTOS) {
         if (tagDTOS == null) {
             return new HashSet<>();
         }

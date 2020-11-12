@@ -15,7 +15,7 @@ public class UserConverter {
         return userDTO;
     }
 
-    public User convert(UserDTO source) {
+    User convert(UserDTO source) {
         User user = new User();
         user.setId(source.getId());
         user.setUsername(source.getUsername());

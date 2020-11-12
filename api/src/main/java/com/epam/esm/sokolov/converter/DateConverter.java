@@ -5,7 +5,7 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 
-class DateConverter {
+final class DateConverter {
 
     private DateConverter() {
     }

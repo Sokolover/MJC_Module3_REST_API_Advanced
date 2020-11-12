@@ -23,7 +23,6 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @Api(value = "UserControllerApi", produces = MediaType.APPLICATION_JSON_VALUE)
 public class UserController {
 
-
     private UserService userService;
     private OrderService orderService;
     private PaginationUtil paginationUtil;

@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService {
     }
 
     private boolean isIncorrectArguments(Long pageSize, Long pageNumber) {
-        return pageSize == null ||  pageNumber == null || pageSize < 0 || pageNumber < 0;
+        return pageSize == null || pageNumber == null || pageSize < 0 || pageNumber < 0;
     }
 
     @Override

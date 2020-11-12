@@ -1,8 +1,6 @@
 package com.epam.esm.sokolov.controller;
 
 import com.epam.esm.sokolov.exception.CertificateAppException;
-import com.epam.esm.sokolov.exception.RepositoryException;
-import com.epam.esm.sokolov.exception.ServiceException;
 import com.epam.esm.sokolov.repository.certificate.GiftCertificateRepositoryImpl;
 import com.epam.esm.sokolov.repository.order.OrderRepositoryImpl;
 import com.epam.esm.sokolov.repository.tag.TagRepositoryImpl;
@@ -39,24 +37,32 @@ class GlobalExceptionHandler {
         return errorMap;
     }
 
-    @ExceptionHandler({ServiceException.class, RepositoryException.class})
+    @ExceptionHandler(CertificateAppException.class)
     public ResponseEntity<Map<String, String>> handleRepositoryException(CertificateAppException e) {
         Map<String, String> errorMap = new HashMap<>();
         errorMap.put(ERROR_MESSAGE, e.getMessage());
 
-        if (e.getRepositoryClass() == TagServiceImpl.class || e.getRepositoryClass() == TagRepositoryImpl.class) {
+        if (e.getClassThrewException() == TagServiceImpl.class
+                || e.getClassThrewException() == TagRepositoryImpl.class
+                || e.getClassThrewException() == TagController.class) {
             errorMap.put(ERROR_CODE, e.getStatusCode().value() + TAG_ERROR_CODE);
         }
 
-        if (e.getRepositoryClass() == GiftCertificateServiceImpl.class || e.getRepositoryClass() == GiftCertificateRepositoryImpl.class) {
+        if (e.getClassThrewException() == GiftCertificateServiceImpl.class
+                || e.getClassThrewException() == GiftCertificateRepositoryImpl.class
+                || e.getClassThrewException() == GiftCertificateController.class) {
             errorMap.put(ERROR_CODE, e.getStatusCode().value() + GIFT_CERTIFICATE_ERROR_CODE);
         }
 
-        if (e.getRepositoryClass() == UserServiceImpl.class || e.getRepositoryClass() == UserRepositoryImpl.class) {
+        if (e.getClassThrewException() == UserServiceImpl.class
+                || e.getClassThrewException() == UserRepositoryImpl.class
+                || e.getClassThrewException() == UserController.class) {
             errorMap.put(ERROR_CODE, e.getStatusCode().value() + USER_ERROR_CODE);
         }
 
-        if (e.getRepositoryClass() == OrderServiceImpl.class || e.getRepositoryClass() == OrderRepositoryImpl.class) {
+        if (e.getClassThrewException() == OrderServiceImpl.class
+                || e.getClassThrewException() == OrderRepositoryImpl.class
+                || e.getClassThrewException() == OrderController.class) {
             errorMap.put(ERROR_CODE, e.getStatusCode().value() + ORDER_ERROR_CODE);
         }
 

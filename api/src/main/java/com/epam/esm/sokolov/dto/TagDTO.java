@@ -4,14 +4,13 @@ import com.epam.esm.sokolov.model.Tag;
 import lombok.*;
 import org.springframework.hateoas.RepresentationModel;
 
-import java.util.Objects;
-
 @Getter
 @Setter
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = false)
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class TagDTO  extends RepresentationModel<OrderDTO> {
+public class TagDTO extends RepresentationModel<OrderDTO> {
 
     private Long id;
     private String name;

@@ -11,8 +11,6 @@ import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.Set;
 
-import static java.util.Objects.nonNull;
-
 @NoArgsConstructor
 @Service
 public class GiftCertificateConverter {
@@ -50,12 +48,12 @@ public class GiftCertificateConverter {
         giftCertificate.setId(source.getId());
         giftCertificate.setName(source.getName());
         ZonedDateTime createDate = source.getCreateDate();
-        if (nonNull(createDate)) {
+        if (createDate != null) {
             giftCertificate.setCreateDate(DateConverter.getLocalDate(createDate));
             giftCertificate.setCreateDateTimeZone(createDate.getZone().toString());
         }
         ZonedDateTime lastUpdateDate = source.getLastUpdateDate();
-        if (nonNull(lastUpdateDate)) {
+        if (lastUpdateDate != null) {
             giftCertificate.setLastUpdateDate(DateConverter.getLocalDate(lastUpdateDate));
             giftCertificate.setLastUpdateDateTimeZone(lastUpdateDate.getZone().toString());
         }
@@ -63,10 +61,9 @@ public class GiftCertificateConverter {
         giftCertificate.setPrice(source.getPrice());
         giftCertificate.setDuration(source.getDuration());
         Set<TagDTO> tags = source.getTags();
-        if (nonNull(tags)) {
+        if (tags != null) {
             giftCertificate.setTags(tagConverter.convertTagsFromTagDtos(tags));
         }
         return giftCertificate;
-
     }
 }
