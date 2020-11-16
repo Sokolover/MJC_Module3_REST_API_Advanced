@@ -43,7 +43,14 @@ public class GiftCertificateController {
         return updatedGiftCertificateDTO;
     }
 
-    @GetMapping("/tag-names")
+    @GetMapping("/tag-names")/*
+    fixme this is NOT respect to RESTful principles:
+           here I have to pass param in URI by witch entity I'll search giftCertificates
+           rather than create pass variable. Pass variable here says that I have tag-name
+           entity in giftCertificate, but I'm not.
+           Good solution:
+           http://localhost:8080/api/gift-certificates?searchBy=tagNames&tagName=fun&tagName=action&size=5&page=1
+    */
     @ResponseStatus(HttpStatus.OK)
     public CollectionModel<GiftCertificateDTO> findByTagNames(@RequestParam(name = "tagName") List<String> tagNames,
                                                               @RequestParam("size") Long pageSize,
