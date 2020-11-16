@@ -15,7 +15,7 @@ import java.util.Optional;
 import static java.lang.String.format;
 
 @Repository
-@Transactional
+@Transactional// todo !!! check it: if in method there is a single SQL-query, then we don't need @Transactional
 public class GiftCertificateRepositoryImpl implements GiftCertificateRepository {
 
     private final SessionFactory sessionFactory;
@@ -43,6 +43,17 @@ public class GiftCertificateRepositoryImpl implements GiftCertificateRepository 
                 .setParameter("pageOffsetInQuery", pageOffsetInQuery)
                 .getResultList();
     }
+
+    /*
+    todo
+     read about
+     - merge and persist methods difference
+     - what hibernate rather than jpa
+     - how to migrate states: detach -> persist
+     - caching HTTP requests
+     - body in GET and DELETE HTTP-methods
+     - TRACE HTTP-method
+    */
 
     @Override
     public Optional<GiftCertificate> findById(Long id) {

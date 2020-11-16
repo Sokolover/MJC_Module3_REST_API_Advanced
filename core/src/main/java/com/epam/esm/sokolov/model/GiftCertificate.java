@@ -34,7 +34,8 @@ public class GiftCertificate {
     private LocalDateTime lastUpdateDate;
     @Column(name = "last_update_date_time_zone")
     private String lastUpdateDateTimeZone;
-    private Integer duration;
+    private Integer duration;/*fixme in task field is: Duration - in days (expiration period).
+                                    I have to create meaningful names for variables, for example durationInDays*/
     @ManyToMany(mappedBy = "giftCertificates", cascade = {CascadeType.MERGE})
     private Set<Order> orders;
     @ManyToMany(cascade = {CascadeType.MERGE})

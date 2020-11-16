@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserDTO> findAll(Long pageSize, Long pageNumber) {
         if (isIncorrectArguments(pageSize, pageNumber)) {
-            throw new ServiceException(INCORRECT_PAGE_SIZE_MESSAGE, HttpStatus.BAD_REQUEST, this.getClass());
+            throw new ServiceException(INCORRECT_PAGE_SIZE_MESSAGE, HttpStatus.BAD_REQUEST, this.getClass());//fixme handle status-codes in controller tier, not in service
         }
         Long pageOffsetInQuery = pageNumber * pageSize;
         List<User> users = userRepository.findAll(pageSize, pageOffsetInQuery);
