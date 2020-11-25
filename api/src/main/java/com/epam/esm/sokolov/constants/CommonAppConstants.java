@@ -10,4 +10,5 @@ public final class CommonAppConstants {
     public static final Long DEFAULT_PAGE_NUMBER = 0L;
     public static final String USERS_REF = "users";
     public static final String ORDERS_REF = "orders";
+    public static final String TAG_NAMES_SEARCH_PARAM = "tagNames";
 }

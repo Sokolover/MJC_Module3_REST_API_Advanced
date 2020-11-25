@@ -21,6 +21,7 @@ class PaginationUtil {
     private static final String LAST_PAGE = "lastPage";
 
     void addPaginationLinksToGiftCertificateDTO(
+            String searchBy,
             List<String> tagNames,
             CollectionModel<GiftCertificateDTO> giftCertificateDTOS,
             final Long pageNumber,
@@ -28,16 +29,16 @@ class PaginationUtil {
             final Long pageSize) {
 
         if (hasNextPage(pageNumber, totalPages)) {
-            giftCertificateDTOS.add(getLinkToFindAllByTagNamesMethod(tagNames, pageSize, pageNumber + 1, NEXT_PAGE));
+            giftCertificateDTOS.add(getLinkToFindAllByTagNamesMethod(searchBy, tagNames, pageSize, pageNumber + 1, NEXT_PAGE));
         }
         if (hasPreviousPage(pageNumber)) {
-            giftCertificateDTOS.add(getLinkToFindAllByTagNamesMethod(tagNames, pageSize, pageNumber - 1, PREV_PAGE));
+            giftCertificateDTOS.add(getLinkToFindAllByTagNamesMethod(searchBy, tagNames, pageSize, pageNumber - 1, PREV_PAGE));
         }
         if (hasFirstPage(pageNumber)) {
-            giftCertificateDTOS.add(getLinkToFindAllByTagNamesMethod(tagNames, pageSize, 0L, FIRST_PAGE));
+            giftCertificateDTOS.add(getLinkToFindAllByTagNamesMethod(searchBy, tagNames, pageSize, 0L, FIRST_PAGE));
         }
         if (hasLastPage(pageNumber, totalPages)) {
-            giftCertificateDTOS.add(getLinkToFindAllByTagNamesMethod(tagNames, pageSize, totalPages - 1, LAST_PAGE));
+            giftCertificateDTOS.add(getLinkToFindAllByTagNamesMethod(searchBy, tagNames, pageSize, totalPages - 1, LAST_PAGE));
         }
     }
 
@@ -82,8 +83,8 @@ class PaginationUtil {
         }
     }
 
-    private Link getLinkToFindAllByTagNamesMethod(List<String> tagNames, Long pageSize, Long pageNumber, String linkName) {
-        return linkTo(methodOn(GiftCertificateController.class).findByTagNames(tagNames, pageSize, pageNumber)).withSelfRel().withName(linkName);
+    private Link getLinkToFindAllByTagNamesMethod(String searchBy, List<String> tagNames, Long pageSize, Long pageNumber, String linkName) {
+        return linkTo(methodOn(GiftCertificateController.class).findByTagNames(searchBy, tagNames, pageSize, pageNumber)).withSelfRel().withName(linkName);
     }
 
     private Link getLinkToFindAllOrdersMethod(Long id, Long pageSize, Long pageNumber, String linkName) {
