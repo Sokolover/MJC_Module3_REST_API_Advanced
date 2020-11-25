@@ -1,5 +1,6 @@
 package com.epam.esm.sokolov.model;
 
+import com.epam.esm.sokolov.model.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -76,7 +77,7 @@ public class Order {
     }
 
     @PrePersist
-    public void onPrePersist(){
+    public void onPrePersist() {
         this.operation = "PERSIST";
         this.createdAtTime = LocalDateTime.now();
         this.createdAtTimeZone = ZonedDateTime.now().getOffset().toString();

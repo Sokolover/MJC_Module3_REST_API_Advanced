@@ -24,7 +24,7 @@ public class TagController {
         this.tagService = tagService;
     }
 
-    @GetMapping("/the-most-widely-used-tag")
+    @GetMapping("/the-most-widely-used-tag")//fixme get parameter rather than path variable
     @ResponseStatus(HttpStatus.OK)
     public TagDTO findTheMostWidelyUsedTag() {
         TagDTO tagDTO = tagService.findTheMostWidelyUsedTag();

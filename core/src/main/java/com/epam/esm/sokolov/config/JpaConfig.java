@@ -15,7 +15,7 @@ import javax.sql.DataSource;
 import java.util.Properties;
 
 @Configuration
-@ComponentScan(basePackages = "com.epam.esm.sokolov")//fixme here is logic duplication, check it
+//@ComponentScan(basePackages = "com.epam.esm.sokolov")
 @PropertySource({"classpath:/application.properties"})
 @EnableTransactionManagement
 public class JpaConfig {//todo configure properties via spring boot annotations, this approach is for plain Spring

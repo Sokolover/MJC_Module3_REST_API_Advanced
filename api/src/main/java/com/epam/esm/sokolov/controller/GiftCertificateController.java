@@ -3,6 +3,8 @@ package com.epam.esm.sokolov.controller;
 import com.epam.esm.sokolov.dto.GiftCertificateDTO;
 import com.epam.esm.sokolov.service.certificate.GiftCertificateService;
 import io.swagger.annotations.Api;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
@@ -21,15 +23,11 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @RestController
 @RequestMapping("/api/gift-certificates")
 @Api(value = "GiftCertificateControllerApi", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class GiftCertificateController {
 
-    private GiftCertificateService giftCertificateService;
-    private PaginationUtil paginationUtil;
-
-    public GiftCertificateController(GiftCertificateService giftCertificateService, PaginationUtil paginationUtil) {
-        this.giftCertificateService = giftCertificateService;
-        this.paginationUtil = paginationUtil;
-    }
+    private final GiftCertificateService giftCertificateService;
+    private final PaginationUtil paginationUtil;
 
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)

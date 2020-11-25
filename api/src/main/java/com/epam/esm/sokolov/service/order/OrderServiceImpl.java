@@ -40,7 +40,7 @@ public class OrderServiceImpl implements OrderService {
         Order order = orderRepository.findOneOrderByUserIdAndOrderId(userId, orderId)
                 .<ServiceException>orElseThrow(() -> {
                     String message = String.format("Resource not found (order id = %s)", orderId);
-                    throw new ServiceException(message, HttpStatus.NOT_FOUND, this.getClass());
+                    throw new ServiceException(message, HttpStatus.NOT_FOUND, this.getClass());//fixme move adding statusCodes operation in ExceptionHendler
                 });
         OrderDTO orderDTO = orderConverter.convert(order);
         return populateOrderParamMap(orderDTO);

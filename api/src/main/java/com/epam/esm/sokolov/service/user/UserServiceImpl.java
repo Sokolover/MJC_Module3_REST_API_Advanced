@@ -3,7 +3,7 @@ package com.epam.esm.sokolov.service.user;
 import com.epam.esm.sokolov.converter.UserConverter;
 import com.epam.esm.sokolov.dto.UserDTO;
 import com.epam.esm.sokolov.exception.ServiceException;
-import com.epam.esm.sokolov.model.User;
+import com.epam.esm.sokolov.model.user.User;
 import com.epam.esm.sokolov.repository.user.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

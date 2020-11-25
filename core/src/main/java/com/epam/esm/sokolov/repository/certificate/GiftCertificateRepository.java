@@ -1,12 +1,11 @@
 package com.epam.esm.sokolov.repository.certificate;
 
 import com.epam.esm.sokolov.model.GiftCertificate;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
-@Repository//fixme !!! check it: annotation @Component(@Service, @Repository) places only in class
+//fixme !!! check it: annotation @Component(@Service, @Repository) places only in class
 public interface GiftCertificateRepository {
 
     List<GiftCertificate> findByTagsNames(List<String> tagNamesCondition, Long pageSize, Long pageOffsetInQuery);

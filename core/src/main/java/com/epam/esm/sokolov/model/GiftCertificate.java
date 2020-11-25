@@ -87,7 +87,7 @@ public class GiftCertificate {
     }
 
     @PreUpdate
-    public void onPreUpdate(){
+    public void onPreUpdate() {
         this.operation = "UPDATE";
         this.updatedAtTime = LocalDateTime.now();
         this.updatedAtTimeZone = ZonedDateTime.now().getOffset().toString();
