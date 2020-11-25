@@ -2,7 +2,10 @@ dependencies {
 
     compile project(":core")
 
+    compile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
+
     implementation group: 'io.springfox', name: 'springfox-boot-starter', version: "${springFoxStarterVersion}"
+    implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-hateoas'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-web'

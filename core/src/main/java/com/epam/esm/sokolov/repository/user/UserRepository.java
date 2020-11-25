@@ -1,14 +1,15 @@
 package com.epam.esm.sokolov.repository.user;
 
-import com.epam.esm.sokolov.model.User;
-import org.springframework.stereotype.Repository;
+import com.epam.esm.sokolov.model.user.User;
 
 import java.util.List;
+import java.util.Optional;
 
-@Repository
 public interface UserRepository {
 
     List<User> findAll(Long pageSize, Long pageNumber);
 
     Long findUserAmount();
+
+    Optional<User> findByUsername(String username);
 }

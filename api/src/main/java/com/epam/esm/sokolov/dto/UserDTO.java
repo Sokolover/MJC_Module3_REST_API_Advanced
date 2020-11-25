@@ -1,5 +1,6 @@
 package com.epam.esm.sokolov.dto;
 
+import com.epam.esm.sokolov.model.user.Role;
 import lombok.*;
 import org.springframework.hateoas.RepresentationModel;
 
@@ -14,5 +15,5 @@ public class UserDTO extends RepresentationModel<UserDTO> {
     private Long id;
     private String username;
     private String email;
-
+    private Role role;
 }

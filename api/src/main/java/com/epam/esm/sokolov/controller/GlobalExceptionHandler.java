@@ -1,6 +1,7 @@
 package com.epam.esm.sokolov.controller;
 
 import com.epam.esm.sokolov.exception.CertificateAppException;
+import com.epam.esm.sokolov.exception.FilterException;
 import com.epam.esm.sokolov.repository.certificate.GiftCertificateRepositoryImpl;
 import com.epam.esm.sokolov.repository.order.OrderRepositoryImpl;
 import com.epam.esm.sokolov.repository.tag.TagRepositoryImpl;
@@ -47,32 +48,37 @@ class GlobalExceptionHandler {
         return errorMap;
     }
 
+    @ExceptionHandler(FilterException.class)
+    public ResponseEntity<Map<String, String>> handleFilterException(FilterException e) {
+        Map<String, String> errorMap = new HashMap<>();
+        errorMap.put(ERROR_MESSAGE, e.getMessage());
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)//todo search for an appropriate status code
+                .body(errorMap);
+    }
+
     @ExceptionHandler(CertificateAppException.class)
-    public ResponseEntity<Map<String, String>> handleRepositoryException(CertificateAppException e) {
+    public ResponseEntity<Map<String, String>> handleEntityException(CertificateAppException e) {
         Map<String, String> errorMap = new HashMap<>();
         errorMap.put(ERROR_MESSAGE, e.getMessage());
 
         if (e.getClassThrewException() == TagServiceImpl.class
-                || e.getClassThrewException() == TagRepositoryImpl.class
-                || e.getClassThrewException() == TagController.class) {
+                || e.getClassThrewException() == TagRepositoryImpl.class) {
             errorMap.put(ERROR_CODE, e.getStatusCode().value() + TAG_ERROR_CODE);
         }
 
         if (e.getClassThrewException() == GiftCertificateServiceImpl.class
-                || e.getClassThrewException() == GiftCertificateRepositoryImpl.class
-                || e.getClassThrewException() == GiftCertificateController.class) {
+                || e.getClassThrewException() == GiftCertificateRepositoryImpl.class) {
             errorMap.put(ERROR_CODE, e.getStatusCode().value() + GIFT_CERTIFICATE_ERROR_CODE);
         }
 
         if (e.getClassThrewException() == UserServiceImpl.class
-                || e.getClassThrewException() == UserRepositoryImpl.class
-                || e.getClassThrewException() == UserController.class) {
+                || e.getClassThrewException() == UserRepositoryImpl.class) {
             errorMap.put(ERROR_CODE, e.getStatusCode().value() + USER_ERROR_CODE);
         }
 
         if (e.getClassThrewException() == OrderServiceImpl.class
-                || e.getClassThrewException() == OrderRepositoryImpl.class
-                || e.getClassThrewException() == OrderController.class) {
+                || e.getClassThrewException() == OrderRepositoryImpl.class) {
             errorMap.put(ERROR_CODE, e.getStatusCode().value() + ORDER_ERROR_CODE);
         }
 

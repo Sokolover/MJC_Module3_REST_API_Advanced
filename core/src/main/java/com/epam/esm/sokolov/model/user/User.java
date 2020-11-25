@@ -1,13 +1,17 @@
-package com.epam.esm.sokolov.model;
+package com.epam.esm.sokolov.model.user;
 
+import com.epam.esm.sokolov.model.Order;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Objects;
 import java.util.Set;
+
+import static javax.persistence.EnumType.STRING;
 
 @Getter
 @Setter
@@ -15,15 +19,18 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 @Table(name = "user_account")
-public class User {
+public class User implements Serializable {//todo check if I need Serializable
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String username;
+    private String password;
     private String email;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = {CascadeType.ALL})
     private Set<Order> orders;
+    @Enumerated(STRING)
+    private Role role;
 
     public User(String username, String email) {
         this.username = username;

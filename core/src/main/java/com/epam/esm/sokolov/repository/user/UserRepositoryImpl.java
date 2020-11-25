@@ -1,12 +1,13 @@
 package com.epam.esm.sokolov.repository.user;
 
-import com.epam.esm.sokolov.model.User;
+import com.epam.esm.sokolov.model.user.User;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @Transactional
@@ -16,6 +17,15 @@ public class UserRepositoryImpl implements UserRepository {
 
     public UserRepositoryImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
+    }
+
+    @Override
+    public Optional<User> findByUsername(String username) {
+        return Optional.ofNullable(sessionFactory.getCurrentSession()
+                .createNativeQuery("SELECT * FROM user_account where user_account.username = :username",
+                        User.class)
+                .setParameter("username", username)
+                .getSingleResult());
     }
 
     @Override
