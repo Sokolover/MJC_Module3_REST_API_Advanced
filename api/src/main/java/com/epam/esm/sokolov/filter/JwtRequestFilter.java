@@ -1,10 +1,6 @@
 package com.epam.esm.sokolov.filter;
 
-import com.epam.esm.sokolov.exception.CertificateAppException;
-import com.epam.esm.sokolov.exception.FilterException;
 import com.epam.esm.sokolov.service.security.JwtUtilService;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.SignatureException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,6 +17,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static com.epam.esm.sokolov.constants.CommonAppConstants.JWT_REQUEST_ATTRIBUTE;
+import static com.epam.esm.sokolov.constants.CommonAppConstants.USERNAME_REQUEST_ATTRIBUTE;
+
 @Component
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class JwtRequestFilter extends OncePerRequestFilter {
@@ -29,49 +28,23 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     private final JwtUtilService jwtUtilService;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
-        final String requestTokenHeader = request.getHeader("Authorization");
+        String username = (String) request.getAttribute(USERNAME_REQUEST_ATTRIBUTE);
+        String jwt = (String) request.getAttribute(JWT_REQUEST_ATTRIBUTE);
 
-        String username = null;
-        String jwtToken = null;
-
-        if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
-            jwtToken = requestTokenHeader.substring(7);
-            try {
-                username = jwtUtilService.getUsernameFromToken(jwtToken);
-            }catch (SignatureException e){
-                throw new FilterException("Calculating a signature or verifying an existing signature of a JWT failed");//todo make handler handle it
-            } catch (IllegalArgumentException e) {
-                throw new FilterException("Unable to get JWT Token");
-            } catch (ExpiredJwtException e) {
-                throw new FilterException("JWT Token has expired");
-            }
-        } else {
-            logger.warn("JWT Token does not begin with Bearer String");
-        }
-
-        // Once we get the token validate it.
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
-
-            // if token is valid configure Spring Security to manually set
-            // authentication
-            if (jwtUtilService.isTokenValid(jwtToken, userDetails)) {
-
+            if (jwtUtilService.isTokenValid(jwt, userDetails)) {
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities());
                 usernamePasswordAuthenticationToken
                         .setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                // After setting the Authentication in the context, we specify
-                // that the current user is authenticated. So it passes the
-                // Spring Security Configurations successfully.
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
             }
         }
-        chain.doFilter(request, response);
+        filterChain.doFilter(request, response);
     }
 
 }
