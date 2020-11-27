@@ -11,4 +11,10 @@ public final class CommonAppConstants {
     public static final String USERS_REF = "users";
     public static final String ORDERS_REF = "orders";
     public static final String TAG_NAMES_SEARCH_PARAM = "tagNames";
+    public static final String MOST_WIDELY_USED_SEARCH_PARAM = "mostWidelyUsed";
+
+    public static final String USERNAME_REQUEST_ATTRIBUTE = "username";
+    public static final String JWT_REQUEST_ATTRIBUTE = "jwt";
+    public static final int BEARER_HEADER_OFFSET = 7;
+    public static final String BEARER = "Bearer ";
 }

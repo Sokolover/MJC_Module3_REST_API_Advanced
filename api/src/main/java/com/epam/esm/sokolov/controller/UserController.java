@@ -6,10 +6,13 @@ import com.epam.esm.sokolov.dto.UserDTO;
 import com.epam.esm.sokolov.service.order.OrderService;
 import com.epam.esm.sokolov.service.user.UserService;
 import io.swagger.annotations.Api;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,19 +24,21 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @RestController
 @RequestMapping("/api/users")
 @Api(value = "UserControllerApi", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class UserController {
 
-    private UserService userService;
-    private OrderService orderService;
-    private PaginationUtil paginationUtil;
+    private final UserService userService;
+    private final OrderService orderService;
+    private final PaginationUtil paginationUtil;
 
-    public UserController(UserService userService, OrderService orderService, PaginationUtil paginationUtil) {
-        this.userService = userService;
-        this.orderService = orderService;
-        this.paginationUtil = paginationUtil;
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public UserDTO signUp(@RequestBody UserDTO userDTO) {
+        return userService.save(userDTO);
     }
 
     @GetMapping("/{id}/orders")
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN') && (principal.username == @userServiceImpl.findById(#id).username)")
     @ResponseStatus(HttpStatus.OK)
     public CollectionModel<OrderDTO> findAllOrders(@PathVariable Long id,
                                                    @RequestParam("size") Long pageSize,
@@ -61,6 +66,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}/orders/{orderId}")
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN') && (principal.username == @userServiceImpl.findById(#id).username)")
     @ResponseStatus(HttpStatus.OK)
     public OrderDetailsDTO findOrderByUserIdAndOrderId(@PathVariable Long id, @PathVariable Long orderId) {
         OrderDetailsDTO orderDetailsDTO = orderService.findOneOrderByUserIdAndOrderId(id, orderId);

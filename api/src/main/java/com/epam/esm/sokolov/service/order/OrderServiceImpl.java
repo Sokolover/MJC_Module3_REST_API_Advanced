@@ -6,8 +6,11 @@ import com.epam.esm.sokolov.dto.OrderDetailsDTO;
 import com.epam.esm.sokolov.exception.ServiceException;
 import com.epam.esm.sokolov.model.GiftCertificate;
 import com.epam.esm.sokolov.model.Order;
-import com.epam.esm.sokolov.repository.certificate.GiftCertificateRepository;
-import com.epam.esm.sokolov.repository.order.OrderRepository;
+import com.epam.esm.sokolov.repository.GiftCertificateRepository;
+import com.epam.esm.sokolov.repository.OrderRepository;
+import com.epam.esm.sokolov.service.security.AuthenticationHandler;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -23,24 +26,20 @@ import static com.epam.esm.sokolov.constants.CommonAppConstants.INCORRECT_PAGE_S
 
 @Service
 @Transactional
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class OrderServiceImpl implements OrderService {
 
-    private OrderRepository orderRepository;
-    private OrderConverter orderConverter;
-    private GiftCertificateRepository giftCertificateRepository;
-
-    public OrderServiceImpl(OrderRepository orderRepository, OrderConverter orderConverter, GiftCertificateRepository giftCertificateRepository) {
-        this.orderRepository = orderRepository;
-        this.orderConverter = orderConverter;
-        this.giftCertificateRepository = giftCertificateRepository;
-    }
+    private final OrderRepository orderRepository;
+    private final OrderConverter orderConverter;
+    private final GiftCertificateRepository giftCertificateRepository;
+    private final AuthenticationHandler authenticationHandler;
 
     @Override
     public OrderDetailsDTO findOneOrderByUserIdAndOrderId(Long userId, Long orderId) {
-        Order order = orderRepository.findOneOrderByUserIdAndOrderId(userId, orderId)
+        Order order = orderRepository.findOrderByUserIdAndId(userId, orderId)
                 .<ServiceException>orElseThrow(() -> {
-                    String message = String.format("Resource not found (order id = %s)", orderId);
-                    throw new ServiceException(message, HttpStatus.NOT_FOUND, this.getClass());//fixme move adding statusCodes operation in ExceptionHendler
+                    String message = String.format("Resource not found (order id = %s, user id = %s)", orderId, userId);
+                    throw new ServiceException(message, HttpStatus.NOT_FOUND, this.getClass());//fixme if it possible move adding statusCodes operation in ExceptionHendler
                 });
         OrderDTO orderDTO = orderConverter.convert(order);
         return populateOrderParamMap(orderDTO);
@@ -49,10 +48,16 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderDTO save(OrderDTO orderDTO) {
         Order orderToSave = orderConverter.convert(orderDTO);
+        setUserId(orderToSave);
         setOrderCost(orderToSave);
         setCurrentTimeToOrder(orderToSave);
         Order savedOrder = orderRepository.save(orderToSave);
         return orderConverter.convert(savedOrder);
+    }
+
+    private void setUserId(Order order) {
+        Long currentUserId = authenticationHandler.getCurrentUserId();
+        order.getUser().setId(currentUserId);
     }
 
     @Override
@@ -61,18 +66,18 @@ public class OrderServiceImpl implements OrderService {
             throw new ServiceException(INCORRECT_PAGE_SIZE_MESSAGE, HttpStatus.BAD_REQUEST, this.getClass());
         }
         Long pageOffsetInQuery = pageNumber * pageSize;
-        List<Order> orders = orderRepository.findAllByUserAccountId(id, pageSize, pageOffsetInQuery);
+        List<Order> orders = orderRepository.findAllByUserId(id, pageSize, pageOffsetInQuery);
         if (CollectionUtils.isEmpty(orders)) {
             throw new ServiceException(INCORRECT_PAGE_SIZE_MESSAGE, HttpStatus.BAD_REQUEST, this.getClass());
         }
         return orders.stream()
-                .map(order -> orderConverter.convert(order))
+                .map(orderConverter::convert)
                 .collect(Collectors.toList());
     }
 
     @Override
     public Long findOrderAmountByUserId(Long id) {
-        return orderRepository.findOrderAmountByUserId(id);
+        return orderRepository.countOrderByUserId(id);
     }
 
     private boolean isIncorrectArguments(Long pageSize, Long pageNumber) {
@@ -93,7 +98,7 @@ public class OrderServiceImpl implements OrderService {
                 .stream()
                 .map(GiftCertificate::getId)
                 .collect(Collectors.toList());
-        BigDecimal orderCost = giftCertificateRepository.findAllById(giftCertificateIds)
+        BigDecimal orderCost = giftCertificateRepository.findAllByIds(giftCertificateIds)
                 .stream()
                 .map(GiftCertificate::getPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);

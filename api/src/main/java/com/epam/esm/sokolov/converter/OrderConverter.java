@@ -1,7 +1,10 @@
 package com.epam.esm.sokolov.converter;
 
 import com.epam.esm.sokolov.dto.OrderDTO;
+import com.epam.esm.sokolov.dto.UserDTO;
 import com.epam.esm.sokolov.model.Order;
+import com.epam.esm.sokolov.model.user.User;
+import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,16 +14,11 @@ import java.util.stream.Collectors;
 
 @NoArgsConstructor
 @Service
+@AllArgsConstructor(onConstructor_ = @Autowired)
 public class OrderConverter {
 
     private GiftCertificateConverter giftCertificateConverter;
     private UserConverter userConverter;
-
-    @Autowired
-    public OrderConverter(GiftCertificateConverter giftCertificateConverter, UserConverter userConverter) {
-        this.giftCertificateConverter = giftCertificateConverter;
-        this.userConverter = userConverter;
-    }
 
     public OrderDTO convert(Order source) {
         if (source == null) {
@@ -57,7 +55,12 @@ public class OrderConverter {
             order.setLastUpdateDate(DateConverter.getLocalDate(lastUpdateDate));
             order.setLastUpdateDateTimeZone(lastUpdateDate.getZone().toString());
         }
-        order.setUser(userConverter.convert(source.getUserDTO()));
+        UserDTO userDTO = source.getUserDTO();
+        if (userDTO == null) {
+            order.setUser(new User());
+        } else {
+            order.setUser(userConverter.convert(userDTO));
+        }
         order.setGiftCertificates(source.getGiftCertificateDTOs()
                 .stream()
                 .map(giftCertificate -> giftCertificateConverter.convert(giftCertificate))

@@ -3,6 +3,7 @@ package com.epam.esm.sokolov.converter;
 import com.epam.esm.sokolov.dto.GiftCertificateDTO;
 import com.epam.esm.sokolov.dto.TagDTO;
 import com.epam.esm.sokolov.model.GiftCertificate;
+import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,14 +14,10 @@ import java.util.Set;
 
 @NoArgsConstructor
 @Service
+@AllArgsConstructor(onConstructor_ = @Autowired)
 public class GiftCertificateConverter {
 
     private TagConverter tagConverter;
-
-    @Autowired
-    public GiftCertificateConverter(TagConverter tagConverter) {
-        this.tagConverter = tagConverter;
-    }
 
     public GiftCertificateDTO convert(GiftCertificate source) {
         GiftCertificateDTO giftCertificateDTO = new GiftCertificateDTO();
@@ -38,7 +35,7 @@ public class GiftCertificateConverter {
         }
         giftCertificateDTO.setDescription(source.getDescription());
         giftCertificateDTO.setPrice(source.getPrice());
-        giftCertificateDTO.setDuration(source.getDuration());
+        giftCertificateDTO.setDurationInDays(source.getDurationInDays());
         giftCertificateDTO.setTags(tagConverter.convertTagDtosFromTags(source.getTags()));
         return giftCertificateDTO;
     }
@@ -59,7 +56,7 @@ public class GiftCertificateConverter {
         }
         giftCertificate.setDescription(source.getDescription());
         giftCertificate.setPrice(source.getPrice());
-        giftCertificate.setDuration(source.getDuration());
+        giftCertificate.setDurationInDays(source.getDurationInDays());
         Set<TagDTO> tags = source.getTags();
         if (tags != null) {
             giftCertificate.setTags(tagConverter.convertTagsFromTagDtos(tags));

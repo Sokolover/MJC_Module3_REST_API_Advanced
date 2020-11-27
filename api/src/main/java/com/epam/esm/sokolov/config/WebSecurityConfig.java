@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -17,9 +19,20 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
-@EnableWebSecurity
+//@EnableWebSecurity//todo check if i need it
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
+    private static final String ADMIN = "ADMIN";
+    private static final String USER = "USER";
+
+    private static final String[] AUTH_WHITELIST = {
+            "/v2/api-docs",
+            "/swagger-resources",
+            "/swagger-resources/**",
+            "/swagger-ui.html"
+    };
 
     @Qualifier("userDetailsServiceImpl")
     private final UserDetailsService userDetailsService;
@@ -40,12 +53,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/tags/**").hasRole("USER")
-                .antMatchers("/gift-certificates/tag-names").hasRole("USER")
-                .antMatchers("/orders/**").hasRole("USER")
-                .antMatchers("/users/**").hasRole("USER")
-                .antMatchers("/gift-certificates/{id}").hasRole("ADMIN")
-                .antMatchers("/token/**").permitAll()
+                .antMatchers(AUTH_WHITELIST).permitAll()
+                .antMatchers(HttpMethod.POST, "/api/orders").hasAnyRole(USER, ADMIN)
+                .antMatchers(HttpMethod.PATCH, "/api/gift-certificates/{id}").hasRole(ADMIN)
+                .antMatchers(HttpMethod.GET, "/api/users/{id}/orders").hasAnyRole(USER, ADMIN)
+                .antMatchers(HttpMethod.GET, "/api/users/{id}/orders/{orderId}").hasAnyRole(USER, ADMIN)
+                .antMatchers(HttpMethod.GET, "/api/users").hasAnyRole(USER, ADMIN)
+//                .antMatchers(HttpMethod.POST, "/api/orders").permitAll()
+//                .antMatchers(HttpMethod.PATCH, "/api/gift-certificates/{id}").permitAll()
+//                .antMatchers(HttpMethod.GET, "/api/users/{id}/orders").permitAll()
+//                .antMatchers(HttpMethod.GET, "/api/users/{id}/orders/{orderId}").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/gift-certificates").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/users").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/tags").permitAll()
+                .antMatchers("/api/token").permitAll()
+                .anyRequest().authenticated()
                 .and()
                 .exceptionHandling()
                 .and()

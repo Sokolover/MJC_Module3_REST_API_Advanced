@@ -4,7 +4,9 @@ import com.epam.esm.sokolov.converter.GiftCertificateConverter;
 import com.epam.esm.sokolov.dto.GiftCertificateDTO;
 import com.epam.esm.sokolov.exception.ServiceException;
 import com.epam.esm.sokolov.model.GiftCertificate;
-import com.epam.esm.sokolov.repository.certificate.GiftCertificateRepository;
+import com.epam.esm.sokolov.repository.GiftCertificateRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -18,17 +20,12 @@ import static com.epam.esm.sokolov.constants.CommonAppConstants.INCORRECT_TAG_NA
 
 @Service
 @Transactional
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class GiftCertificateServiceImpl implements GiftCertificateService {
 
-    private GiftCertificateRepository giftCertificateRepository;
-    private GiftCertificateConverter giftCertificateConverter;
-    private GiftCertificateMapper giftCertificateMapper;
-
-    public GiftCertificateServiceImpl(GiftCertificateRepository giftCertificateRepository, GiftCertificateConverter giftCertificateConverter, GiftCertificateMapper giftCertificateMapper) {
-        this.giftCertificateRepository = giftCertificateRepository;
-        this.giftCertificateConverter = giftCertificateConverter;
-        this.giftCertificateMapper = giftCertificateMapper;
-    }
+    private final GiftCertificateRepository giftCertificateRepository;
+    private final GiftCertificateConverter giftCertificateConverter;
+    private final GiftCertificateMapper giftCertificateMapper;
 
     @Override
     public GiftCertificateDTO update(Long id, GiftCertificateDTO dto) {
@@ -50,7 +47,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
             throw new ServiceException(message, HttpStatus.BAD_REQUEST, this.getClass());
         }
         Long pageOffsetInQuery = pageNumber * pageSize;
-        List<GiftCertificate> giftCertificates = giftCertificateRepository.findByTagsNames(tagNames, pageSize, pageOffsetInQuery);
+        List<GiftCertificate> giftCertificates = giftCertificateRepository.findByTagNames(tagNames, pageSize, pageOffsetInQuery);
         if (CollectionUtils.isEmpty(giftCertificates)) {
             String message = String.format("%s, %s", INCORRECT_PAGE_SIZE_MESSAGE, INCORRECT_TAG_NAMES_MESSAGE);
             throw new ServiceException(message, HttpStatus.BAD_REQUEST, this.getClass());
@@ -66,6 +63,6 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 
     @Override
     public Long findGiftCertificateAmountByTagNames(List<String> tagNames) {
-        return giftCertificateRepository.findGiftCertificateAmountByTagNames(tagNames);
+        return giftCertificateRepository.countGiftCertificatesByTagNames(tagNames);
     }
 }

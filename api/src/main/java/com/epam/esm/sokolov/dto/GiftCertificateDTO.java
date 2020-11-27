@@ -29,7 +29,7 @@ public class GiftCertificateDTO extends RepresentationModel<GiftCertificateDTO> 
     @JsonSerialize(using = ZonedDateTimeSerializer.class)
     @JsonDeserialize(using = CustomDateDeserializer.class)
     private ZonedDateTime lastUpdateDate;
-    private Integer duration;
+    private Integer durationInDays;
     private Set<TagDTO> tags;
 
 }

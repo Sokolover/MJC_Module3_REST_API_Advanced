@@ -1,8 +1,10 @@
 package com.epam.esm.sokolov.exception;
 
-public class FilterException extends RuntimeException {
+import org.springframework.http.HttpStatus;
 
-    public FilterException(String message) {
-        super(message);
+public class FilterException extends CertificateAppException {
+
+    public FilterException(String message, HttpStatus httpStatus) {
+        super(message, httpStatus);
     }
 }

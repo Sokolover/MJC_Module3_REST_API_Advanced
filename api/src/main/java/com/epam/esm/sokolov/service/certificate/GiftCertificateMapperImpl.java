@@ -41,9 +41,9 @@ public class GiftCertificateMapperImpl implements GiftCertificateMapper {
         if (lastUpdateDateTimeZone != null) {
             giftCertificateFromDatabase.setLastUpdateDateTimeZone(lastUpdateDateTimeZone);
         }
-        Integer duration = giftCertificateFromController.getDuration();
+        Integer duration = giftCertificateFromController.getDurationInDays();
         if (duration != null) {
-            giftCertificateFromDatabase.setDuration(duration);
+            giftCertificateFromDatabase.setDurationInDays(duration);
         }
         Set<Tag> tags = giftCertificateFromController.getTags();
         if (tags != null) {
