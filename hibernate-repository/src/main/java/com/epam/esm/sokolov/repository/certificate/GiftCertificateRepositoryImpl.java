@@ -15,7 +15,7 @@ import java.util.Optional;
 import static java.lang.String.format;
 
 @Repository
-@Transactional// todo !!! check it: if in method there is a single SQL-query, then we don't need @Transactional
+// todo !!! check it: if in method there is a single SQL-query, then we don't need @Transactional
 public class GiftCertificateRepositoryImpl implements GiftCertificateRepository {
 
     private final SessionFactory sessionFactory;
@@ -70,6 +70,7 @@ public class GiftCertificateRepositoryImpl implements GiftCertificateRepository 
     }
 
     @Override
+    @Transactional
     public GiftCertificate save(GiftCertificate giftCertificate) {
         sessionFactory.getCurrentSession().saveOrUpdate(giftCertificate);
         return giftCertificate;

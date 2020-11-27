@@ -4,11 +4,10 @@ import com.epam.esm.sokolov.model.Tag;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 
-import javax.transaction.Transactional;
 import java.util.Optional;
 
 @Repository
-@Transactional
+//@Transactional
 public class TagRepositoryImpl implements TagRepository {
 
     private final SessionFactory sessionFactory;

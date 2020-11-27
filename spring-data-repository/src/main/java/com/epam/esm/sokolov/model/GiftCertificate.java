@@ -34,8 +34,8 @@ public class GiftCertificate {
     private LocalDateTime lastUpdateDate;
     @Column(name = "last_update_date_time_zone")
     private String lastUpdateDateTimeZone;
-    private Integer duration;/*fixme in task field is: Duration - in days (expiration period).
-                                    I have to create meaningful names for variables, for example durationInDays*/
+    @Column(name = "duration_in_days")
+    private Integer durationInDays;
     @ManyToMany(mappedBy = "giftCertificates", cascade = {CascadeType.MERGE})
     private Set<Order> orders;
     @ManyToMany(cascade = {CascadeType.MERGE})
@@ -63,12 +63,12 @@ public class GiftCertificate {
                 Objects.equals(createDateTimeZone, that.createDateTimeZone) &&
                 Objects.equals(lastUpdateDate, that.lastUpdateDate) &&
                 Objects.equals(lastUpdateDateTimeZone, that.lastUpdateDateTimeZone) &&
-                Objects.equals(duration, that.duration);
+                Objects.equals(durationInDays, that.durationInDays);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, price, createDate, createDateTimeZone, lastUpdateDate, lastUpdateDateTimeZone, duration);
+        return Objects.hash(id, name, description, price, createDate, createDateTimeZone, lastUpdateDate, lastUpdateDateTimeZone, durationInDays);
     }
 
     @Override
@@ -82,7 +82,7 @@ public class GiftCertificate {
                 ", createDateTimeZone='" + createDateTimeZone + '\'' +
                 ", lastUpdateDate=" + lastUpdateDate +
                 ", lastUpdateDateTimeZone='" + lastUpdateDateTimeZone + '\'' +
-                ", duration=" + duration +
+                ", duration=" + durationInDays +
                 '}';
     }
 

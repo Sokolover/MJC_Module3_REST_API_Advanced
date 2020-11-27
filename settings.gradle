@@ -1,4 +1,5 @@
 rootProject.name = 'module3'
 include 'api'
-include 'core'
+//include 'hibernate-repository'
+include 'spring-data-repository'
 

@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-@Transactional
+//@Transactional
 public class UserRepositoryImpl implements UserRepository {
 
     private final SessionFactory sessionFactory;
@@ -20,6 +20,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
+    @Transactional
     public Optional<User> findByUsername(String username) {
         return Optional.ofNullable(sessionFactory.getCurrentSession()
                 .createNativeQuery("SELECT * FROM user_account where user_account.username = :username",

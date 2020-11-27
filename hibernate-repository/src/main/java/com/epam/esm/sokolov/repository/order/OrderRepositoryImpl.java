@@ -15,7 +15,6 @@ import java.util.Optional;
 import static java.lang.String.format;
 
 @Repository
-@Transactional
 public class OrderRepositoryImpl implements OrderRepository {
 
     private final SessionFactory sessionFactory;
@@ -57,6 +56,7 @@ public class OrderRepositoryImpl implements OrderRepository {
     }
 
     @Override
+    @Transactional
     public Order save(Order order) {
         sessionFactory.getCurrentSession().saveOrUpdate(order);
         return order;

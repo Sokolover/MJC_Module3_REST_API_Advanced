@@ -6,12 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Objects;
 import java.util.Set;
-
-import static javax.persistence.EnumType.STRING;
 
 @Getter
 @Setter
@@ -19,7 +15,7 @@ import static javax.persistence.EnumType.STRING;
 @NoArgsConstructor
 @Entity
 @Table(name = "user_account")
-public class User implements Serializable {//todo check if I need Serializable
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,13 +25,11 @@ public class User implements Serializable {//todo check if I need Serializable
     private String email;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = {CascadeType.ALL})
     private Set<Order> orders;
-    @Enumerated(STRING)
-    private Role role;
-
-    public User(String username, String email) {
-        this.username = username;
-        this.email = email;
-    }
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "user_account_has_user_role",
+            joinColumns = @JoinColumn(name = "user_account_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_role_id"))
+    private Set<Role> roles;
 
     @Override
     public boolean equals(Object o) {
