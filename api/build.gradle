@@ -1,15 +1,15 @@
 dependencies {
 
-    compile project(":core")
+    compile project(":spring-data-repository")
 
-    compile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
-
+    compile group: 'io.jsonwebtoken', name: 'jjwt', version: "${jjwtVersion}"
     implementation group: 'io.springfox', name: 'springfox-boot-starter', version: "${springFoxStarterVersion}"
+
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-hateoas'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
