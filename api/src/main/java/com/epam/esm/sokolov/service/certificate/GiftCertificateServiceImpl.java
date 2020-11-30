@@ -63,6 +63,6 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 
     @Override
     public Long findGiftCertificateAmountByTagNames(List<String> tagNames) {
-        return giftCertificateRepository.countGiftCertificatesByTagNames(tagNames);
+        return giftCertificateRepository.countGiftCertificatesByTagsNameIn(tagNames);
     }
 }

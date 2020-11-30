@@ -45,6 +45,7 @@ public class UserServiceImpl implements UserService {
         Role roleUser = roleRepository.findByName(ROLE_USER).orElseThrow(
                 () -> new ServiceException("No such role exception"));
         user.setRoles(Collections.singleton(roleUser));
+//        user.setRoles(Collections.singleton(new Role(ROLE_USER)));
     }
 
     @Override

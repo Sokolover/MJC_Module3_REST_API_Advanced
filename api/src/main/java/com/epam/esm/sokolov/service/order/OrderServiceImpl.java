@@ -98,7 +98,7 @@ public class OrderServiceImpl implements OrderService {
                 .stream()
                 .map(GiftCertificate::getId)
                 .collect(Collectors.toList());
-        BigDecimal orderCost = giftCertificateRepository.findAllByIds(giftCertificateIds)
+        BigDecimal orderCost = giftCertificateRepository.findAllByIdIn(giftCertificateIds)
                 .stream()
                 .map(GiftCertificate::getPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);

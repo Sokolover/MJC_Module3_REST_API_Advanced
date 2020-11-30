@@ -1,12 +1,12 @@
 package com.epam.esm.sokolov.service.security;
 
+import com.epam.esm.sokolov.exception.ServiceException;
 import com.epam.esm.sokolov.model.user.User;
 import com.epam.esm.sokolov.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -28,7 +28,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private User findUserByUsername(String username) {
         Optional<User> userOptional = userRepository.findUserByUsername(username);
         return userOptional.orElseThrow(
-                () -> new UsernameNotFoundException(format("User with username '%s' not found", username))
+                () -> new ServiceException(format("User with username '%s' not found", username))
         );
     }
 }

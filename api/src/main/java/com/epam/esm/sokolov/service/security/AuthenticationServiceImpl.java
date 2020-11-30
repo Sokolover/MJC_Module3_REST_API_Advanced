@@ -1,6 +1,7 @@
 package com.epam.esm.sokolov.service.security;
 
 import com.epam.esm.sokolov.dto.AuthenticationRequest;
+import com.epam.esm.sokolov.exception.ServiceException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -33,7 +34,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
             authenticationManager.authenticate(authenticationToken);
         } catch (BadCredentialsException e) {
-            throw new BadCredentialsException("Incorrect username or password", e);
+            throw new ServiceException("Incorrect username or password");
         }
     }
 }

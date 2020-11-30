@@ -25,17 +25,8 @@ public interface GiftCertificateRepository extends JpaRepository<GiftCertificate
                                          @Param("pageSize") Long pageSize,
                                          @Param("pageOffsetInQuery") Long pageOffsetInQuery);
 
-    @Query(value = "SELECT * " +
-            "FROM gift_certificate " +
-            "WHERE gift_certificate.id IN :ids ", nativeQuery = true)
-    List<GiftCertificate> findAllByIds(@Param("ids") List<Long> ids);
+    List<GiftCertificate> findAllByIdIn(@Param("ids") List<Long> ids);
 
-    @Query(value = "SELECT DISTINCT COUNT(*)\n" +
-            "FROM gift_certificate\n" +
-            "         INNER JOIN tag_has_gift_certificate\n" +
-            "                    ON gift_certificate.id = tag_has_gift_certificate.gift_certificate_id\n" +
-            "         INNER JOIN tag\n" +
-            "                    ON tag.id = tag_has_gift_certificate.tag_id\n" +
-            "WHERE tag.name IN :tagNamesCondition ", nativeQuery = true)
-    Long countGiftCertificatesByTagNames(@Param("tagNamesCondition") List<String> tagNamesCondition);
+    Long countGiftCertificatesByTagsNameIn(@Param("tagNamesCondition") List<String> tagNamesCondition);
+
 }

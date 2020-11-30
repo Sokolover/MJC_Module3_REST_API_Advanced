@@ -3,6 +3,7 @@ package com.epam.esm.sokolov.filter;
 import com.epam.esm.sokolov.exception.FilterException;
 import com.epam.esm.sokolov.service.security.JwtUtilService;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,8 @@ public class JwtValidator extends OncePerRequestFilter {
                 String username = jwtUtilService.getUsernameFromToken(jwtToken);
                 request.setAttribute(USERNAME_REQUEST_ATTRIBUTE, username);
                 request.setAttribute(JWT_REQUEST_ATTRIBUTE, jwtToken);
+            } catch (MalformedJwtException e) {
+                throw new FilterException(e.getMessage(), HttpStatus.UNAUTHORIZED);
             } catch (SignatureException e) {
                 throw new FilterException("Calculating a signature or verifying an existing signature of a JWT failed", HttpStatus.UNAUTHORIZED);
             } catch (IllegalArgumentException e) {
@@ -46,11 +49,6 @@ public class JwtValidator extends OncePerRequestFilter {
                 throw new FilterException("JWT Token has expired", HttpStatus.UNAUTHORIZED);
             }
         }
-//        else {//todo ask about case if header "Bearer " will be wrong
-//            String message = "JWT Token does not begin with Bearer String";
-//            logger.error(message);
-//            throw new FilterException(message, HttpStatus.UNAUTHORIZED);
-//        }
     }
 
     @Override

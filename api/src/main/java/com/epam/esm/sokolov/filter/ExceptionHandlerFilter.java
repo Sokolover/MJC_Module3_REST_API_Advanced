@@ -36,7 +36,6 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
     private void setResponseProperties(HttpServletResponse response, FilterException e) {
         response.setStatus(e.getHttpStatus().value());
         response.setContentType(APPLICATION_JSON_VALUE);
-
         response.setCharacterEncoding(UTF_8.name());
     }
 
