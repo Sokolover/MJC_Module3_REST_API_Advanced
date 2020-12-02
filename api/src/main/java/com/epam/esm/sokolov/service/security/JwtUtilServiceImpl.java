@@ -8,14 +8,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.function.Function;
 
 @Service
 public class JwtUtilServiceImpl implements JwtUtilService, Serializable {
 
+    private static final String AUTHORITIES_CLAIM = "authorities";
     @Value("${jwt.expiration.time}")
     private long jwtTokenValidity;
     @Value("${jwt.secret}")
@@ -27,8 +27,13 @@ public class JwtUtilServiceImpl implements JwtUtilService, Serializable {
     }
 
     public String generateToken(UserDetails userDetails) {
-        Map<String, Object> claims = new HashMap<>();
-        return doGenerateToken(claims, userDetails.getUsername());
+        return Jwts.builder()
+                .claim(AUTHORITIES_CLAIM, userDetails.getAuthorities())
+                .setSubject(userDetails.getUsername())
+                .setIssuedAt(new Date())
+                .setExpiration(java.sql.Date.valueOf(LocalDate.now().plusDays(jwtTokenValidity)))
+                .signWith(SignatureAlgorithm.HS512, secret)
+                .compact();
     }
 
     public String getUsernameFromToken(String token) {
@@ -54,15 +59,5 @@ public class JwtUtilServiceImpl implements JwtUtilService, Serializable {
     private Boolean isTokenExpired(String token) {
         final Date expiration = getExpirationDateFromToken(token);
         return expiration.before(new Date());
-    }
-
-    private String doGenerateToken(Map<String, Object> claims, String subject) {
-        return Jwts.builder()
-                .setClaims(claims)
-                .setSubject(subject)
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + jwtTokenValidity * 1000))
-                .signWith(SignatureAlgorithm.HS512, secret)
-                .compact();
     }
 }
