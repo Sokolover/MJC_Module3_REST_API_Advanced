@@ -10,7 +10,6 @@ import org.springframework.hateoas.RepresentationModel;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.Set;

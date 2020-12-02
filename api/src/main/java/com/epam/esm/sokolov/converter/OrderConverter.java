@@ -29,7 +29,10 @@ public class OrderConverter {
         orderDTO.setCost(source.getCost());
         orderDTO.setCreateDate(DateConverter.getZonedDateTime(source.getCreateDate(), source.getCreateDateTimeZone()));
         orderDTO.setLastUpdateDate(DateConverter.getZonedDateTime(source.getLastUpdateDate(), source.getLastUpdateDateTimeZone()));
-        orderDTO.setUserDTO(userConverter.convert(source.getUser()));
+        User user = source.getUser();
+        if (user != null) {
+            orderDTO.setUserDTO(userConverter.convert(user));
+        }
         orderDTO.setGiftCertificateDTOs(source.getGiftCertificates()
                 .stream()
                 .map(giftCertificate -> giftCertificateConverter.convert(giftCertificate))

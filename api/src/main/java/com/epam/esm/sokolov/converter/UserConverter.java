@@ -2,6 +2,7 @@ package com.epam.esm.sokolov.converter;
 
 import com.epam.esm.sokolov.dto.RoleDTO;
 import com.epam.esm.sokolov.dto.UserDTO;
+import com.epam.esm.sokolov.model.user.Role;
 import com.epam.esm.sokolov.model.user.User;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -22,7 +23,10 @@ public class UserConverter {
         userDTO.setId(source.getId());
         userDTO.setUsername(source.getUsername());
         userDTO.setEmail(source.getEmail());
-        userDTO.setRoleDTOS(roleConverter.convertRoleDtosFromRoles(source.getRoles()));
+        Set<Role> roles = source.getRoles();
+        if (roles != null) {
+            userDTO.setRoleDTOS(roleConverter.convertRoleDtosFromRoles(roles));
+        }
         return userDTO;
     }
 

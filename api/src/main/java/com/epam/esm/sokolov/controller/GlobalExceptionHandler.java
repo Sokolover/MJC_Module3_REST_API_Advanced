@@ -108,7 +108,7 @@ class GlobalExceptionHandler {
             errorResponse.setErrorCode(e.getHttpStatus().value() + ORDER_ERROR_CODE);
         }
 
-        if(e.getClassThrewException() == AuthenticationServiceImpl.class){
+        if (e.getClassThrewException() == AuthenticationServiceImpl.class) {
             errorResponse.setErrorCode(e.getHttpStatus().value() + AUTHENTICATION_ERROR_CODE);
         }
 

@@ -6,14 +6,15 @@ import com.epam.esm.sokolov.dto.GiftCertificateDTO;
 import com.epam.esm.sokolov.dto.TagDTO;
 import com.epam.esm.sokolov.model.GiftCertificate;
 import com.epam.esm.sokolov.model.Tag;
-import com.epam.esm.sokolov.repository.certificate.GiftCertificateRepositoryImpl;
+import com.epam.esm.sokolov.repository.GiftCertificateRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.Spy;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -22,14 +23,13 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
-@SpringBootTest
-//fixme don't need it here, it's unit-test, not integration
+@ExtendWith(MockitoExtension.class)
 class GiftCertificateServiceImplTest {
 
     @InjectMocks
     private GiftCertificateServiceImpl giftCertificateService;
     @Mock
-    private GiftCertificateRepositoryImpl giftCertificateRepository;
+    private GiftCertificateRepository giftCertificateRepository;
     @Spy
     @InjectMocks
     private GiftCertificateConverter giftCertificateConverter = new GiftCertificateConverter();
@@ -44,6 +44,8 @@ class GiftCertificateServiceImplTest {
 
     @Test
     void shouldUpdateGiftCertificateAllFieldsFromGiftCertificateDTO() {
+
+
         GiftCertificateDTO giftCertificateDTOFromController = createGiftCertificateFromController();
         GiftCertificate giftCertificateFromDatabase = createGiftCertificateFromDatabase();
         Mockito.doReturn(Optional.of(giftCertificateFromDatabase)).when(giftCertificateRepository)
@@ -64,7 +66,7 @@ class GiftCertificateServiceImplTest {
         giftCertificateDTO.setPrice(new BigDecimal("2"));
         giftCertificateDTO.setCreateDate(ZonedDateTime.parse("2020-10-23T09:00:00+03:00"));
         giftCertificateDTO.setLastUpdateDate(ZonedDateTime.parse("2020-10-23T14:00:00+03:00"));
-        giftCertificateDTO.setDuration(2);
+        giftCertificateDTO.setDurationInDays(2);
         Set<TagDTO> tagDTOS = new HashSet<>();
         tagDTOS.add(new TagDTO(1L, "tag1upd"));
         giftCertificateDTO.setTags(tagDTOS);
@@ -81,7 +83,7 @@ class GiftCertificateServiceImplTest {
         giftCertificate.setCreateDateTimeZone("+03:00");
         giftCertificate.setLastUpdateDate(LocalDateTime.parse("2020-11-11T12:00:00"));
         giftCertificate.setLastUpdateDateTimeZone("+03:00");
-        giftCertificate.setDuration(1);
+        giftCertificate.setDurationInDays(1);
         Set<Tag> tags = new HashSet<>();
         tags.add(new Tag(1L, "tag1"));
         tags.add(new Tag(2L, "tag2"));
@@ -99,7 +101,7 @@ class GiftCertificateServiceImplTest {
         giftCertificate.setCreateDateTimeZone("+03:00");
         giftCertificate.setLastUpdateDate(LocalDateTime.parse("2020-10-23T11:00:00"));
         giftCertificate.setLastUpdateDateTimeZone("+03:00");
-        giftCertificate.setDuration(2);
+        giftCertificate.setDurationInDays(2);
         Set<Tag> tags = new HashSet<>();
         tags.add(new Tag(1L, "tag1upd"));
         giftCertificate.setTags(tags);

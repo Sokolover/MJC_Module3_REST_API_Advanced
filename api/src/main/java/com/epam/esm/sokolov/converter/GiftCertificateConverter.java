@@ -3,6 +3,7 @@ package com.epam.esm.sokolov.converter;
 import com.epam.esm.sokolov.dto.GiftCertificateDTO;
 import com.epam.esm.sokolov.dto.TagDTO;
 import com.epam.esm.sokolov.model.GiftCertificate;
+import com.epam.esm.sokolov.model.Tag;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,10 @@ public class GiftCertificateConverter {
         giftCertificateDTO.setDescription(source.getDescription());
         giftCertificateDTO.setPrice(source.getPrice());
         giftCertificateDTO.setDurationInDays(source.getDurationInDays());
-        giftCertificateDTO.setTags(tagConverter.convertTagDtosFromTags(source.getTags()));
+        Set<Tag> tags = source.getTags();
+        if (tags != null) {
+            giftCertificateDTO.setTags(tagConverter.convertTagDtosFromTags(tags));
+        }
         return giftCertificateDTO;
     }
 

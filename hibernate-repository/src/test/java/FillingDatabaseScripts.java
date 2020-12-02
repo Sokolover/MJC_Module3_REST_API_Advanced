@@ -4,11 +4,9 @@ import com.epam.esm.sokolov.dto.GiftCertificateDTO;
 import com.epam.esm.sokolov.dto.OrderDTO;
 import com.epam.esm.sokolov.dto.UserDTO;
 import com.epam.esm.sokolov.model.GiftCertificate;
-import com.epam.esm.sokolov.repository.UserRepository;
 import com.epam.esm.sokolov.service.order.OrderServiceImpl;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.Query;
 import java.math.BigDecimal;
@@ -23,37 +21,6 @@ class FillingDatabaseScripts {
     OrderServiceImpl orderService;
     @Autowired
     SessionFactory sessionFactory;
-    @Autowired
-    UserRepository userRepository;
-    @Autowired
-    PasswordEncoder passwordEncoder;
-
-//        @Transactional
-//    @Modifying(clearAutomatically = true)
-//    @org.springframework.data.jpa.repository.Query(value = "INSERT INTO user_account_has_user_role (user_account_id, user_role_id) " +
-//            "VALUES (:user_id, 1) ", nativeQuery = true)
-//    void updateUsersRoles(@Param("user_id") Long id);
-//    @GetMapping("/update")
-//    public void updateUserPasswords() {
-//        for (int i = 7; i < 1001; i++) {
-//            userRepository.updateUsersRoles((long) i);
-//        }
-//    }
-
-//        @Transactional
-//    @Modifying(clearAutomatically = true)
-//    @org.springframework.data.jpa.repository.Query(value = "UPDATE user_account u " +
-//            "SET u.password = :password1 " +
-//            "WHERE u.id = :id ", nativeQuery = true)
-//    void updateUserPassword(@Param("id") Long id,
-//                            @Param("password1") String password);
-//    public void updateUserPasswords() {
-//        for (int i = 5; i < 1001; i++) {
-//            long id = i;
-//            String encodedPassword = passwordEncoder.encode("123");
-//            userRepository.updateUserPassword(id, encodedPassword);
-//        }
-//    }
 
     /*
         filling user_order and user_order_has_gift_certificate table script
