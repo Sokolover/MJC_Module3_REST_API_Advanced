@@ -48,10 +48,6 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         }
         Long pageOffsetInQuery = pageNumber * pageSize;
         List<GiftCertificate> giftCertificates = giftCertificateRepository.findByTagNames(tagNames, pageSize, pageOffsetInQuery);
-        if (CollectionUtils.isEmpty(giftCertificates)) {
-            String message = String.format("%s, %s", INCORRECT_PAGE_SIZE_MESSAGE, INCORRECT_TAG_NAMES_MESSAGE);
-            throw new ServiceException(message, HttpStatus.BAD_REQUEST, this.getClass());
-        }
         return giftCertificates.stream()
                 .map(giftCertificateConverter::convert)
                 .collect(Collectors.toList());
