@@ -34,11 +34,23 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO save(UserDTO userDTO) {
+        validateBeforeSave(userDTO);
         User user = userConverter.convert(userDTO);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         setRoles(user);//todo find how to save roles more effectively
         User savedUser = userRepository.save(user);
         return userConverter.convert(savedUser);
+    }
+
+    private void validateBeforeSave(UserDTO userDTO) {
+        if (!userDTO.getPassword().equals(userDTO.getPasswordConfirmation())) {
+            throw new ServiceException("Wrong password confirmation", HttpStatus.BAD_REQUEST, UserServiceImpl.class);
+        }
+        userRepository.findUserByUsername(userDTO.getUsername())
+                .ifPresent(user -> {
+                    String message = String.format("User with username '%s' already registered", user.getUsername());
+                    throw new ServiceException(message, HttpStatus.BAD_REQUEST, UserServiceImpl.class);
+                });
     }
 
     private void setRoles(User user) {

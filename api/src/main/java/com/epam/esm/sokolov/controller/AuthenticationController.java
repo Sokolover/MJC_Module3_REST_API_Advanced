@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/api/token")
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
@@ -18,7 +20,7 @@ public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
     @PostMapping
-    public ResponseEntity<String> generate(@RequestBody AuthenticationRequest authenticationRequest) {
+    public ResponseEntity<String> generate(@RequestBody @Valid AuthenticationRequest authenticationRequest) {
         return ResponseEntity.ok(authenticationService.generateToken(authenticationRequest));
     }
 }

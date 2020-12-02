@@ -3,6 +3,7 @@ package com.epam.esm.sokolov.filter;
 import com.epam.esm.sokolov.service.security.JwtUtilService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,6 +25,7 @@ import static com.epam.esm.sokolov.constants.CommonAppConstants.USERNAME_REQUEST
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class JwtRequestFilter extends OncePerRequestFilter {
 
+    @Qualifier("userDetailsServiceImpl")
     private final UserDetailsService userDetailsService;
     private final JwtUtilService jwtUtilService;
 

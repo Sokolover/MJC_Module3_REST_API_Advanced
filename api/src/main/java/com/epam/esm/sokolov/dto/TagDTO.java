@@ -4,6 +4,8 @@ import com.epam.esm.sokolov.model.Tag;
 import lombok.*;
 import org.springframework.hateoas.RepresentationModel;
 
+import javax.validation.constraints.NotBlank;
+
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = false)
@@ -13,6 +15,7 @@ import org.springframework.hateoas.RepresentationModel;
 public class TagDTO extends RepresentationModel<OrderDTO> {
 
     private Long id;
+    @NotBlank(message = "is mandatory")
     private String name;
 
     public TagDTO(Tag tag) {

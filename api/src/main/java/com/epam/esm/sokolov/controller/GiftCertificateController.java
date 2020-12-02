@@ -12,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -32,7 +33,7 @@ public class GiftCertificateController {
     @PatchMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.OK)
-    public GiftCertificateDTO update(@PathVariable Long id, @RequestBody GiftCertificateDTO giftCertificateDTO) {
+    public GiftCertificateDTO update(@PathVariable Long id, @Valid @RequestBody GiftCertificateDTO giftCertificateDTO) {
         GiftCertificateDTO updatedGiftCertificateDTO = giftCertificateService.update(id, giftCertificateDTO);
         updatedGiftCertificateDTO
                 .add(linkTo(methodOn(GiftCertificateController.class)

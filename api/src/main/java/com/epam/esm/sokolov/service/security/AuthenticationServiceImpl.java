@@ -4,6 +4,8 @@ import com.epam.esm.sokolov.dto.AuthenticationRequest;
 import com.epam.esm.sokolov.exception.ServiceException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Service;
 public class AuthenticationServiceImpl implements AuthenticationService {
 
     private final JwtUtilService jwtUtilService;
+    @Qualifier("userDetailsServiceImpl")
     private final UserDetailsService userDetailsService;
     private final AuthenticationManager authenticationManager;
 
@@ -34,7 +37,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
             authenticationManager.authenticate(authenticationToken);
         } catch (BadCredentialsException e) {
-            throw new ServiceException("Incorrect username or password");
+            throw new ServiceException("Incorrect username or password", HttpStatus.BAD_REQUEST, AuthenticationServiceImpl.class);
         }
     }
 }

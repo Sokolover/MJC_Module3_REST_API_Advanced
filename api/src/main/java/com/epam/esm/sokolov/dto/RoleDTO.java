@@ -4,6 +4,8 @@ import com.epam.esm.sokolov.model.user.Role;
 import lombok.*;
 import org.springframework.hateoas.RepresentationModel;
 
+import javax.validation.constraints.NotBlank;
+
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = false)
@@ -13,6 +15,7 @@ import org.springframework.hateoas.RepresentationModel;
 public class RoleDTO extends RepresentationModel<UserDTO> {
 
     private Long id;
+    @NotBlank(message = "is mandatory")
     private String name;
 
     public RoleDTO(Role role) {

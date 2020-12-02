@@ -17,4 +17,8 @@ public final class CommonAppConstants {
     public static final String JWT_REQUEST_ATTRIBUTE = "jwt";
     public static final int BEARER_HEADER_OFFSET = 7;
     public static final String BEARER = "Bearer ";
+
+    public static final String ERROR_MESSAGE = "errorMessage";
+
+    public static final String EMAIL_PATTERN = "^(.+)@(.+)$";
 }

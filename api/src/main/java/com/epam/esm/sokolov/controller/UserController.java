@@ -15,6 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 import static com.epam.esm.sokolov.constants.CommonAppConstants.*;
@@ -33,7 +34,7 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public UserDTO signUp(@RequestBody UserDTO userDTO) {
+    public UserDTO signUp(@RequestBody @Valid UserDTO userDTO) {
         return userService.save(userDTO);
     }
 
