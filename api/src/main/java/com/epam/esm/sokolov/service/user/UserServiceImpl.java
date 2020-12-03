@@ -37,7 +37,7 @@ public class UserServiceImpl implements UserService {
         validateBeforeSave(userDTO);
         User user = userConverter.convert(userDTO);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        setRoles(user);//todo find how to save roles more effectively
+        setRoles(user);
         User savedUser = userRepository.save(user);
         return userConverter.convert(savedUser);
     }
@@ -57,7 +57,6 @@ public class UserServiceImpl implements UserService {
         Role roleUser = roleRepository.findByName(ROLE_USER).orElseThrow(
                 () -> new ServiceException("No such role exception"));
         user.setRoles(Collections.singleton(roleUser));
-//        user.setRoles(Collections.singleton(new Role(ROLE_USER)));
     }
 
     @Override

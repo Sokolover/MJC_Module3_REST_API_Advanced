@@ -39,7 +39,7 @@ public class OrderServiceImpl implements OrderService {
         Order order = orderRepository.findOrderByUserIdAndId(userId, orderId)
                 .<ServiceException>orElseThrow(() -> {
                     String message = String.format("Resource not found (order id = %s, user id = %s)", orderId, userId);
-                    throw new ServiceException(message, HttpStatus.NOT_FOUND, this.getClass());//fixme if it possible move adding statusCodes operation in ExceptionHendler
+                    throw new ServiceException(message, HttpStatus.NOT_FOUND, this.getClass());//fixme it's not possible to move option 'adding statusCodes operation' in ExceptionHandler
                 });
         OrderDTO orderDTO = orderConverter.convert(order);
         return populateOrderParamMap(orderDTO);

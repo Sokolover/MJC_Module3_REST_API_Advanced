@@ -39,7 +39,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}/orders")
-    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN') && (principal.username == @userServiceImpl.findById(#id).username)")
+    @PreAuthorize("principal.username == @userServiceImpl.findById(#id).username")
     @ResponseStatus(HttpStatus.OK)
     public CollectionModel<OrderDTO> findAllOrders(@PathVariable Long id,
                                                    @RequestParam("size") Long pageSize,
@@ -67,7 +67,8 @@ public class UserController {
     }
 
     @GetMapping("/{id}/orders/{orderId}")
-    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN') && (principal.username == @userServiceImpl.findById(#id).username)")
+    //asAnyRole('ROLE_USER', 'ROLE_ADMIN') &&
+    @PreAuthorize("principal.username == @userServiceImpl.findById(#id).username")
     @ResponseStatus(HttpStatus.OK)
     public OrderDetailsDTO findOrderByUserIdAndOrderId(@PathVariable Long id, @PathVariable Long orderId) {
         OrderDetailsDTO orderDetailsDTO = orderService.findOneOrderByUserIdAndOrderId(id, orderId);
