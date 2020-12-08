@@ -39,7 +39,7 @@ public class OrderServiceImpl implements OrderService {
         Order order = orderRepository.findOrderByUserIdAndId(userId, orderId)
                 .<ServiceException>orElseThrow(() -> {
                     String message = String.format("Resource not found (order id = %s, user id = %s)", orderId, userId);
-                    throw new ServiceException(message, HttpStatus.NOT_FOUND, this.getClass());//fixme it's not possible to move option 'adding statusCodes operation' in ExceptionHandler
+                    throw new ServiceException(message, HttpStatus.NOT_FOUND, this.getClass());
                 });
         OrderDTO orderDTO = orderConverter.convert(order);
         return populateOrderParamMap(orderDTO);
@@ -81,7 +81,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     private boolean isIncorrectArguments(Long pageSize, Long pageNumber) {
-        return pageSize == null || pageNumber == null || pageSize < 0 || pageNumber < 0;
+        return pageSize == null || pageNumber == null || pageSize <= 0 || pageNumber < 0;
     }
 
     private void setCurrentTimeToOrder(Order orderToSave) {

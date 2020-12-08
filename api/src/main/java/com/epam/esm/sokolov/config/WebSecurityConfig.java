@@ -11,7 +11,6 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -56,13 +55,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/api/users/{id}/orders").hasAnyRole(USER, ADMIN)
                 .antMatchers(HttpMethod.GET, "/api/users/{id}/orders/{orderId}").hasAnyRole(USER, ADMIN)
                 .antMatchers(HttpMethod.GET, "/api/users").hasAnyRole(USER, ADMIN)
-//                .antMatchers(HttpMethod.POST, "/api/orders").permitAll()
-//                .antMatchers(HttpMethod.PATCH, "/api/gift-certificates/{id}").permitAll()
-//                .antMatchers(HttpMethod.GET, "/api/users/{id}/orders").permitAll()
-//                .antMatchers(HttpMethod.GET, "/api/users/{id}/orders/{orderId}").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/tags/most-widely-used-tag").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/gift-certificates").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/users").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/tags/most-widely-used-tag").permitAll()
                 .antMatchers("/api/token").permitAll()
                 .anyRequest().authenticated()
                 .and()

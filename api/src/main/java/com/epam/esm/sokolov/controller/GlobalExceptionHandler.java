@@ -92,7 +92,7 @@ class GlobalExceptionHandler {
         ErrorResponse errorResponse = new ErrorResponse();
         errorResponse.setErrorMessages(Collections.singletonMap(ERROR_MESSAGE, e.getMessage()));
 
-        if (e.getClassThrewException() == TagServiceImpl.class || e.getClassThrewException() == TagController.class) {
+        if (e.getClassThrewException() == TagServiceImpl.class) {
             errorResponse.setErrorCode(e.getHttpStatus().value() + TAG_ERROR_CODE);
         }
 

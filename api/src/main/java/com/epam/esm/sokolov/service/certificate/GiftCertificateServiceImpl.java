@@ -53,7 +53,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     }
 
     private boolean isIncorrectArguments(List<String> tagNames, Long pageSize, Long pageNumber) {
-        return tagNames == null || pageSize == null || pageNumber == null || pageSize < 0 || pageNumber < 0;
+        return tagNames == null || pageSize == null || pageNumber == null || pageSize <= 0 || pageNumber < 0;
     }
 
     @Override

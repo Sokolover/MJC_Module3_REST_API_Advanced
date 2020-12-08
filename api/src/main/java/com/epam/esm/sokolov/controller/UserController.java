@@ -67,7 +67,6 @@ public class UserController {
     }
 
     @GetMapping("/{id}/orders/{orderId}")
-    //asAnyRole('ROLE_USER', 'ROLE_ADMIN') &&
     @PreAuthorize("principal.username == @userServiceImpl.findById(#id).username")
     @ResponseStatus(HttpStatus.OK)
     public OrderDetailsDTO findOrderByUserIdAndOrderId(@PathVariable Long id, @PathVariable Long orderId) {

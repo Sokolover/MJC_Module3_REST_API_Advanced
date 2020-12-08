@@ -37,10 +37,6 @@ class GiftCertificateServiceImplTest {
     private GiftCertificateMapperImpl giftCertificateMapper;
     @Spy
     private TagConverter tagConverter;
-    /*
-    todo for unit tests it's better to do small tests
-        with mocking converters rather than spy (a lot of logic testing, take a lot of time)
-     */
 
     @Test
     void shouldUpdateGiftCertificateAllFieldsFromGiftCertificateDTO() {
