@@ -1,5 +1,5 @@
 dependencies {
-    compile group: 'mysql', name: 'mysql-connector-java', version: "${mySqlVersion}"
+    implementation group: 'mysql', name: 'mysql-connector-java', version: "${mySqlVersion}"
 
     implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.springframework.boot:spring-boot-starter-security'
