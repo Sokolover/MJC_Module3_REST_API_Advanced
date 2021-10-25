@@ -1,0 +1,6 @@
+dependencies {
+    implementation('org.springframework.boot:spring-boot-starter-web')
+        implementation project(":api")
+//        implementation project(":spring-data-repository")
+        implementation project(":hibernate-repository")
+}

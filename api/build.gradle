@@ -1,7 +1,7 @@
 dependencies {
 
     implementation project(":spring-data-repository")
-//    implementation project(":hibernate-repository")
+    implementation project(":hibernate-repository")
 
     implementation group: 'io.jsonwebtoken', name: 'jjwt', version: "${jjwtVersion}"
     implementation group: 'io.springfox', name: 'springfox-boot-starter', version: "${springFoxStarterVersion}"
