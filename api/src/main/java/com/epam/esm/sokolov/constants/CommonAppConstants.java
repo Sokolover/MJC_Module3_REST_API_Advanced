@@ -14,6 +14,7 @@ public final class CommonAppConstants {
     public static final String BEARER = "Bearer ";
     public static final String ERROR_MESSAGE = "errorMessage";
     public static final String EMAIL_PATTERN = "^(.+)@(.+)$";
+    public static final String CONVERT_ERROR_MESSAGE = "Can't convert %s entity - source is null";
 
     private CommonAppConstants() {
     }

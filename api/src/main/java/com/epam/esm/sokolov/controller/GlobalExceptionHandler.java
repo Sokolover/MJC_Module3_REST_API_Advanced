@@ -1,10 +1,11 @@
 package com.epam.esm.sokolov.controller;
 
 import com.epam.esm.sokolov.exception.CertificateAppException;
+import com.epam.esm.sokolov.exception.ConverterException;
 import com.epam.esm.sokolov.exception.ErrorResponse;
+import com.epam.esm.sokolov.security.AuthenticationServiceImpl;
 import com.epam.esm.sokolov.service.certificate.GiftCertificateServiceImpl;
 import com.epam.esm.sokolov.service.order.OrderServiceImpl;
-import com.epam.esm.sokolov.security.AuthenticationServiceImpl;
 import com.epam.esm.sokolov.service.tag.TagServiceImpl;
 import com.epam.esm.sokolov.service.user.UserServiceImpl;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -85,6 +86,12 @@ class GlobalExceptionHandler {
     public ErrorResponse errorHandler() {
         String message = "Could not create-update entity: there aren't such user or giftCertificate or tag";
         return new ErrorResponse(message, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ConverterException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorResponse converterErrorHandler(ConverterException e) {
+        return new ErrorResponse(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(CertificateAppException.class)

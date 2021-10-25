@@ -1,74 +1,91 @@
 package com.epam.esm.sokolov.converter;
 
+import com.epam.esm.sokolov.dto.GiftCertificateDTO;
 import com.epam.esm.sokolov.dto.OrderDTO;
 import com.epam.esm.sokolov.dto.UserDTO;
+import com.epam.esm.sokolov.exception.ConverterException;
+import com.epam.esm.sokolov.model.GiftCertificate;
 import com.epam.esm.sokolov.model.Order;
 import com.epam.esm.sokolov.model.user.User;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
-import java.util.stream.Collectors;
+import java.util.Set;
 
-@NoArgsConstructor
+import static com.epam.esm.sokolov.constants.CommonAppConstants.CONVERT_ERROR_MESSAGE;
+import static org.springframework.util.CollectionUtils.isEmpty;
+
 @Service
+@NoArgsConstructor
 @AllArgsConstructor(onConstructor_ = @Autowired)
 public class OrderConverter {
 
     private GiftCertificateConverter giftCertificateConverter;
     private UserConverter userConverter;
+    private ModelMapper modelMapper;
 
     public OrderDTO convert(Order source) {
         if (source == null) {
-            return new OrderDTO();
+            throw new ConverterException(String.format(CONVERT_ERROR_MESSAGE, source.getClass().getSimpleName()));
         }
-        OrderDTO orderDTO = new OrderDTO();
-        orderDTO.setId(source.getId());
-        orderDTO.setCost(source.getCost());
-        orderDTO.setCreateDate(DateConverter.getZonedDateTime(source.getCreateDate(), source.getCreateDateTimeZone()));
-        orderDTO.setLastUpdateDate(DateConverter.getZonedDateTime(source.getLastUpdateDate(), source.getLastUpdateDateTimeZone()));
+
+        OrderDTO result = modelMapper.map(source, OrderDTO.class);
+
+        LocalDateTime createDate = source.getCreateDate();
+        String createDateTimeZone = source.getCreateDateTimeZone();
+        if (createDate != null && createDateTimeZone != null) {
+            result.setCreateDate(DateConverter.getZonedDateTime(createDate, createDateTimeZone));
+        }
+
+        LocalDateTime lastUpdateDate = source.getLastUpdateDate();
+        String lastUpdateDateTimeZone = source.getLastUpdateDateTimeZone();
+        if (lastUpdateDate != null && lastUpdateDateTimeZone != null) {
+            result.setLastUpdateDate(DateConverter.getZonedDateTime(lastUpdateDate, lastUpdateDateTimeZone));
+        }
+
         User user = source.getUser();
         if (user != null) {
-            orderDTO.setUserDTO(userConverter.convert(user));
+            result.setUserDTO(userConverter.convert(user));
         }
-        orderDTO.setGiftCertificateDTOs(source.getGiftCertificates()
-                .stream()
-                .map(giftCertificate -> giftCertificateConverter.convert(giftCertificate))
-                .collect(Collectors.toSet())
-        );
-        return orderDTO;
+        if (!isEmpty(source.getGiftCertificates())) {
+            Set<GiftCertificateDTO> giftCertificateDTOS = giftCertificateConverter.convertGiftCertificatesToGiftCertificateDTOs(source);
+            result.setGiftCertificateDTOs(giftCertificateDTOS);
+        }
+
+        return result;
     }
 
     public Order convert(OrderDTO source) {
         if (source == null) {
-            return new Order();
+            throw new ConverterException(String.format(CONVERT_ERROR_MESSAGE, source.getClass().getSimpleName()));
         }
-        Order order = new Order();
-        order.setId(source.getId());
-        order.setCost(source.getCost());
+
+        Order result = modelMapper.map(source, Order.class);
+
         ZonedDateTime createDate = source.getCreateDate();
         if (createDate != null) {
-            order.setCreateDate(DateConverter.getLocalDate(createDate));
-            order.setCreateDateTimeZone(createDate.getZone().toString());
+            result.setCreateDate(DateConverter.getLocalDate(createDate));
+            result.setCreateDateTimeZone(createDate.getZone().toString());
         }
+
         ZonedDateTime lastUpdateDate = source.getLastUpdateDate();
         if (lastUpdateDate != null) {
-            order.setLastUpdateDate(DateConverter.getLocalDate(lastUpdateDate));
-            order.setLastUpdateDateTimeZone(lastUpdateDate.getZone().toString());
+            result.setLastUpdateDate(DateConverter.getLocalDate(lastUpdateDate));
+            result.setLastUpdateDateTimeZone(lastUpdateDate.getZone().toString());
         }
+
         UserDTO userDTO = source.getUserDTO();
-        if (userDTO == null) {
-            order.setUser(new User());
-        } else {
-            order.setUser(userConverter.convert(userDTO));
+        result.setUser(userConverter.convert(userDTO));
+        if (!isEmpty(source.getGiftCertificateDTOs())) {
+            Set<GiftCertificate> giftCertificates = giftCertificateConverter.convertGiftCertificateDTOsToGiftCertificates(source);
+            result.setGiftCertificates(giftCertificates);
         }
-        order.setGiftCertificates(source.getGiftCertificateDTOs()
-                .stream()
-                .map(giftCertificate -> giftCertificateConverter.convert(giftCertificate))
-                .collect(Collectors.toSet())
-        );
-        return order;
+
+        return result;
     }
 }
