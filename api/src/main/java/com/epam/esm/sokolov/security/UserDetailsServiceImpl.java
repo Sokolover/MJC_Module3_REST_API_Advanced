@@ -1,4 +1,4 @@
-package com.epam.esm.sokolov.service.security;
+package com.epam.esm.sokolov.security;
 
 import com.epam.esm.sokolov.exception.ServiceException;
 import com.epam.esm.sokolov.model.user.User;

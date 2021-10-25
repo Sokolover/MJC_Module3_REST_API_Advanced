@@ -1,6 +1,6 @@
 package com.epam.esm.sokolov.filter;
 
-import com.epam.esm.sokolov.service.security.JwtUtilService;
+import com.epam.esm.sokolov.security.JwtUtilService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

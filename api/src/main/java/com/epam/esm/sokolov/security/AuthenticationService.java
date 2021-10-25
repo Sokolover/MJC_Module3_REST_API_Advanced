@@ -1,4 +1,4 @@
-package com.epam.esm.sokolov.service.security;
+package com.epam.esm.sokolov.security;
 
 import com.epam.esm.sokolov.dto.AuthenticationRequest;
 

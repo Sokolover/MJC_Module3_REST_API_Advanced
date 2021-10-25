@@ -8,7 +8,7 @@ import com.epam.esm.sokolov.model.GiftCertificate;
 import com.epam.esm.sokolov.model.Order;
 import com.epam.esm.sokolov.repository.GiftCertificateRepository;
 import com.epam.esm.sokolov.repository.OrderRepository;
-import com.epam.esm.sokolov.service.security.AuthenticationHandler;
+import com.epam.esm.sokolov.security.AuthenticationHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

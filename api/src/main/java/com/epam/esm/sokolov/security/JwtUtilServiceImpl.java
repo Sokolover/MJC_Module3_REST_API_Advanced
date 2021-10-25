@@ -1,4 +1,4 @@
-package com.epam.esm.sokolov.service.security;
+package com.epam.esm.sokolov.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

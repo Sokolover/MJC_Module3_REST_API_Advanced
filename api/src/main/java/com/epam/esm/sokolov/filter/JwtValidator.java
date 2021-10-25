@@ -1,7 +1,7 @@
 package com.epam.esm.sokolov.filter;
 
 import com.epam.esm.sokolov.exception.FilterException;
-import com.epam.esm.sokolov.service.security.JwtUtilService;
+import com.epam.esm.sokolov.security.JwtUtilService;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureException;

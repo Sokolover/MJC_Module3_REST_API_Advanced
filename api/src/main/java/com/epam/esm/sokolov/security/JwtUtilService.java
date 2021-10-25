@@ -1,4 +1,4 @@
-package com.epam.esm.sokolov.service.security;
+package com.epam.esm.sokolov.security;
 
 import org.springframework.security.core.userdetails.UserDetails;
 

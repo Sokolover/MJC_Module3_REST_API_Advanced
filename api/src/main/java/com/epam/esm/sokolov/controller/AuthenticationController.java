@@ -1,7 +1,7 @@
 package com.epam.esm.sokolov.controller;
 
 import com.epam.esm.sokolov.dto.AuthenticationRequest;
-import com.epam.esm.sokolov.service.security.AuthenticationService;
+import com.epam.esm.sokolov.security.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
