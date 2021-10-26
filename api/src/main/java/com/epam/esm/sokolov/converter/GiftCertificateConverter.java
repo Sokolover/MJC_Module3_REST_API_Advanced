@@ -1,11 +1,8 @@
 package com.epam.esm.sokolov.converter;
 
 import com.epam.esm.sokolov.dto.GiftCertificateDTO;
-import com.epam.esm.sokolov.dto.OrderDTO;
 import com.epam.esm.sokolov.dto.TagDTO;
-import com.epam.esm.sokolov.exception.ConverterException;
 import com.epam.esm.sokolov.model.GiftCertificate;
-import com.epam.esm.sokolov.model.Order;
 import com.epam.esm.sokolov.model.Tag;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -19,7 +16,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.epam.esm.sokolov.constants.CommonAppConstants.CONVERT_ERROR_MESSAGE;
 import static org.springframework.util.CollectionUtils.isEmpty;
 
 @Service
@@ -32,7 +28,7 @@ public class GiftCertificateConverter {
 
     public GiftCertificateDTO convert(GiftCertificate source) {
         if (source == null) {
-            throw new ConverterException(String.format(CONVERT_ERROR_MESSAGE, source.getClass().getSimpleName()));
+            return new GiftCertificateDTO();
         }
 
         GiftCertificateDTO result = modelMapper.map(source, GiftCertificateDTO.class);
@@ -49,16 +45,17 @@ public class GiftCertificateConverter {
             result.setLastUpdateDate(DateConverter.getZonedDateTime(lastUpdateDate, lastUpdateDateTimeZone));
         }
 
-        Set<Tag> tags = source.getTags();
-        if (!isEmpty(tags)) {
-            result.setTags(tagConverter.convertTagsToTagDTOs(source));
+        Set<Tag> sourceTags = source.getTags();
+        if (!isEmpty(sourceTags)) {
+            Set<TagDTO> resultTags = tagConverter.convertTagsToTagDTOs(sourceTags);
+            result.setTags(resultTags);
         }
         return result;
     }
 
     public GiftCertificate convert(GiftCertificateDTO source) {
         if (source == null) {
-            throw new ConverterException(String.format(CONVERT_ERROR_MESSAGE, source.getClass().getSimpleName()));
+            return new GiftCertificate();
         }
 
         GiftCertificate result = modelMapper.map(source, GiftCertificate.class);
@@ -75,27 +72,28 @@ public class GiftCertificateConverter {
             result.setLastUpdateDateTimeZone(lastUpdateDate.getZone().toString());
         }
 
-        Set<TagDTO> tags = source.getTags();
-        if (!isEmpty(tags)) {
-            result.setTags(tagConverter.convertTagDTOsToTags(source));
+        Set<TagDTO> sourceTags = source.getTags();
+        if (!isEmpty(sourceTags)) {
+            Set<Tag> resultTags = tagConverter.convertTagDTOsToTags(sourceTags);
+            result.setTags(resultTags);
         }
         return result;
     }
 
-    public Set<GiftCertificateDTO> convertGiftCertificatesToGiftCertificateDTOs(Order source) {
-        if (source.getGiftCertificates() == null) {
+    public Set<GiftCertificateDTO> convertGiftCertificatesToGiftCertificateDTOs(Set<GiftCertificate> source) {
+        if (source == null) {
             return new HashSet<>();
         }
-        return source.getGiftCertificates().stream()
+        return source.stream()
                 .map(this::convert)
                 .collect(Collectors.toSet());
     }
 
-    public Set<GiftCertificate> convertGiftCertificateDTOsToGiftCertificates(OrderDTO source) {
-        if (source.getGiftCertificateDTOs() == null) {
+    public Set<GiftCertificate> convertGiftCertificateDTOsToGiftCertificates(Set<GiftCertificateDTO> source) {
+        if (source == null) {
             return new HashSet<>();
         }
-        return source.getGiftCertificateDTOs().stream()
+        return source.stream()
                 .map(this::convert)
                 .collect(Collectors.toSet());
     }

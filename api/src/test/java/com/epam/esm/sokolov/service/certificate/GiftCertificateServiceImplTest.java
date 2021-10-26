@@ -32,7 +32,7 @@ class GiftCertificateServiceImplTest {
     private GiftCertificateRepository giftCertificateRepository;
     @Spy
     @InjectMocks
-    private GiftCertificateConverter giftCertificateConverter = new GiftCertificateConverter();
+    private final GiftCertificateConverter giftCertificateConverter = new GiftCertificateConverter();
     @Spy
     private GiftCertificateMapperImpl giftCertificateMapper;
     @Spy

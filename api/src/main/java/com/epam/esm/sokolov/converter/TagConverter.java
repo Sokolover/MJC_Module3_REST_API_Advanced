@@ -1,9 +1,6 @@
 package com.epam.esm.sokolov.converter;
 
-import com.epam.esm.sokolov.dto.GiftCertificateDTO;
 import com.epam.esm.sokolov.dto.TagDTO;
-import com.epam.esm.sokolov.exception.ConverterException;
-import com.epam.esm.sokolov.model.GiftCertificate;
 import com.epam.esm.sokolov.model.Tag;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -15,8 +12,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.epam.esm.sokolov.constants.CommonAppConstants.CONVERT_ERROR_MESSAGE;
-
 @Service
 @NoArgsConstructor
 @AllArgsConstructor(onConstructor_ = @Autowired)
@@ -26,32 +21,32 @@ public class TagConverter {
 
     public TagDTO convert(Tag source) {
         if (source == null) {
-            throw new ConverterException(String.format(CONVERT_ERROR_MESSAGE, source.getClass().getSimpleName()));
+            return new TagDTO();
         }
         return modelMapper.map(source, TagDTO.class);
     }
 
     public Tag convert(TagDTO source) {
         if (source == null) {
-            throw new ConverterException(String.format(CONVERT_ERROR_MESSAGE, source.getClass().getSimpleName()));
+            return new Tag();
         }
         return modelMapper.map(source, Tag.class);
     }
 
-    public Set<TagDTO> convertTagsToTagDTOs(GiftCertificate source) {
-        if (source.getTags() == null) {
+    public Set<TagDTO> convertTagsToTagDTOs(Set<Tag> tags) {
+        if (tags == null) {
             return new HashSet<>();
         }
-        return source.getTags().stream()
+        return tags.stream()
                 .map(this::convert)
                 .collect(Collectors.toSet());
     }
 
-    public Set<Tag> convertTagDTOsToTags(GiftCertificateDTO source) {
-        if (source.getTags() == null) {
+    public Set<Tag> convertTagDTOsToTags(Set<TagDTO> tagDTOs) {
+        if (tagDTOs == null) {
             return new HashSet<>();
         }
-        return source.getTags().stream()
+        return tagDTOs.stream()
                 .map(this::convert)
                 .collect(Collectors.toSet());
     }

@@ -3,7 +3,6 @@ package com.epam.esm.sokolov.converter;
 import com.epam.esm.sokolov.dto.GiftCertificateDTO;
 import com.epam.esm.sokolov.dto.OrderDTO;
 import com.epam.esm.sokolov.dto.UserDTO;
-import com.epam.esm.sokolov.exception.ConverterException;
 import com.epam.esm.sokolov.model.GiftCertificate;
 import com.epam.esm.sokolov.model.Order;
 import com.epam.esm.sokolov.model.user.User;
@@ -17,7 +16,6 @@ import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.Set;
 
-import static com.epam.esm.sokolov.constants.CommonAppConstants.CONVERT_ERROR_MESSAGE;
 import static org.springframework.util.CollectionUtils.isEmpty;
 
 @Service
@@ -31,7 +29,7 @@ public class OrderConverter {
 
     public OrderDTO convert(Order source) {
         if (source == null) {
-            throw new ConverterException(String.format(CONVERT_ERROR_MESSAGE, source.getClass().getSimpleName()));
+            return new OrderDTO();
         }
 
         OrderDTO result = modelMapper.map(source, OrderDTO.class);
@@ -50,10 +48,14 @@ public class OrderConverter {
 
         User user = source.getUser();
         if (user != null) {
-            result.setUserDTO(userConverter.convert(user));
+            UserDTO userDTO = userConverter.convert(user);
+            result.setUserDTO(userDTO);
         }
-        if (!isEmpty(source.getGiftCertificates())) {
-            Set<GiftCertificateDTO> giftCertificateDTOS = giftCertificateConverter.convertGiftCertificatesToGiftCertificateDTOs(source);
+
+        Set<GiftCertificate> giftCertificates = source.getGiftCertificates();
+        if (!isEmpty(giftCertificates)) {
+            Set<GiftCertificateDTO> giftCertificateDTOS = giftCertificateConverter
+                    .convertGiftCertificatesToGiftCertificateDTOs(giftCertificates);
             result.setGiftCertificateDTOs(giftCertificateDTOS);
         }
 
@@ -62,7 +64,7 @@ public class OrderConverter {
 
     public Order convert(OrderDTO source) {
         if (source == null) {
-            throw new ConverterException(String.format(CONVERT_ERROR_MESSAGE, source.getClass().getSimpleName()));
+            return new Order();
         }
 
         Order result = modelMapper.map(source, Order.class);
@@ -80,9 +82,13 @@ public class OrderConverter {
         }
 
         UserDTO userDTO = source.getUserDTO();
-        result.setUser(userConverter.convert(userDTO));
-        if (!isEmpty(source.getGiftCertificateDTOs())) {
-            Set<GiftCertificate> giftCertificates = giftCertificateConverter.convertGiftCertificateDTOsToGiftCertificates(source);
+        User user = userConverter.convert(userDTO);
+        result.setUser(user);
+
+        Set<GiftCertificateDTO> giftCertificateDTOs = source.getGiftCertificateDTOs();
+        if (!isEmpty(giftCertificateDTOs)) {
+            Set<GiftCertificate> giftCertificates = giftCertificateConverter
+                    .convertGiftCertificateDTOsToGiftCertificates(giftCertificateDTOs);
             result.setGiftCertificates(giftCertificates);
         }
 
