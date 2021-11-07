@@ -7,11 +7,11 @@ import java.util.Optional;
 
 public interface OrderRepository {
 
-    List<Order> findAllByUserAccountId(Long id, Long size, Long page);
+    List<Order> findAllByUserId(Long id, Long size, Long page);
 
-    Optional<Order> findOneOrderByUserIdAndOrderId(Long userId, Long orderId);
+    Optional<Order> findOrderByUserIdAndId(Long userId, Long orderId);
 
     Order save(Order order);
 
-    Long findOrderAmountByUserId(Long id);
+    Long countOrderByUserId(Long id);
 }

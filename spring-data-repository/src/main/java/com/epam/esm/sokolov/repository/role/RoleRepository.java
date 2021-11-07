@@ -1,4 +1,4 @@
-package com.epam.esm.sokolov.repository;
+package com.epam.esm.sokolov.repository.role;
 
 import com.epam.esm.sokolov.model.user.Role;
 import org.springframework.data.jpa.repository.JpaRepository;

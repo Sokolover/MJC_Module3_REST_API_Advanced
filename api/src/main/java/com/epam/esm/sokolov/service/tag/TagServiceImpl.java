@@ -4,7 +4,7 @@ import com.epam.esm.sokolov.converter.TagConverter;
 import com.epam.esm.sokolov.dto.TagDTO;
 import com.epam.esm.sokolov.exception.ServiceException;
 import com.epam.esm.sokolov.model.Tag;
-import com.epam.esm.sokolov.repository.TagRepository;
+import com.epam.esm.sokolov.repository.tag.TagRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
