@@ -4,14 +4,13 @@ import com.epam.esm.sokolov.dto.GiftCertificateDTO;
 import com.epam.esm.sokolov.dto.TagDTO;
 import com.epam.esm.sokolov.model.GiftCertificate;
 import com.epam.esm.sokolov.model.Tag;
-import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -20,11 +19,20 @@ import static org.springframework.util.CollectionUtils.isEmpty;
 
 @Service
 @NoArgsConstructor
-@AllArgsConstructor(onConstructor_ = @Autowired)
 public class GiftCertificateConverter {
 
     private TagConverter tagConverter;
     private ModelMapper modelMapper;
+    private ModelMapper mapperGiftCertificateDTOToGiftCertificate;
+
+    @Autowired
+    public GiftCertificateConverter(TagConverter tagConverter,
+                                    ModelMapper modelMapper,
+                                    @Qualifier("mapperGiftCertificateDTOToGiftCertificate") ModelMapper mapperGiftCertificateDTOToGiftCertificate) {
+        this.tagConverter = tagConverter;
+        this.modelMapper = modelMapper;
+        this.mapperGiftCertificateDTOToGiftCertificate = mapperGiftCertificateDTOToGiftCertificate;
+    }
 
     public GiftCertificateDTO convert(GiftCertificate source) {
         if (source == null) {
@@ -58,19 +66,7 @@ public class GiftCertificateConverter {
             return new GiftCertificate();
         }
 
-        GiftCertificate result = modelMapper.map(source, GiftCertificate.class);
-
-        ZonedDateTime createDate = source.getCreateDate();
-        if (createDate != null) {
-            result.setCreateDate(DateConverter.getLocalDate(createDate));
-            result.setCreateDateTimeZone(createDate.getZone().toString());
-        }
-
-        ZonedDateTime lastUpdateDate = source.getLastUpdateDate();
-        if (lastUpdateDate != null) {
-            result.setLastUpdateDate(DateConverter.getLocalDate(lastUpdateDate));
-            result.setLastUpdateDateTimeZone(lastUpdateDate.getZone().toString());
-        }
+        GiftCertificate result = mapperGiftCertificateDTOToGiftCertificate.map(source, GiftCertificate.class);
 
         Set<TagDTO> sourceTags = source.getTags();
         if (!isEmpty(sourceTags)) {
