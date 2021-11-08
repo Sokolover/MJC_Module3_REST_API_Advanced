@@ -7,13 +7,13 @@ import java.util.Optional;
 
 public interface GiftCertificateRepository {
 
-    List<GiftCertificate> findByTagsNames(List<String> tagNamesCondition, Long pageSize, Long pageOffsetInQuery);
+    List<GiftCertificate> findByTagNames(List<String> tagNamesCondition, Long pageSize, Long pageOffsetInQuery);
 
     Optional<GiftCertificate> findById(Long id);
 
     GiftCertificate save(GiftCertificate giftCertificate);
 
-    List<GiftCertificate> findAllById(List<Long> ids);
+    List<GiftCertificate> findAllByIdIn(List<Long> ids);
 
-    Long findGiftCertificateAmountByTagNames(List<String> tagNamesCondition);
+    Long countGiftCertificatesByTagsNameIn(List<String> tagNamesCondition);
 }

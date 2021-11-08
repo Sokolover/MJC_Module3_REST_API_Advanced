@@ -6,7 +6,7 @@ import com.epam.esm.sokolov.dto.GiftCertificateDTO;
 import com.epam.esm.sokolov.dto.TagDTO;
 import com.epam.esm.sokolov.model.GiftCertificate;
 import com.epam.esm.sokolov.model.Tag;
-import com.epam.esm.sokolov.repository.GiftCertificateRepository;
+import com.epam.esm.sokolov.repository.certificate.GiftCertificateRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

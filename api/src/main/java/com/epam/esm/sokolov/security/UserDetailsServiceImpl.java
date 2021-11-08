@@ -2,7 +2,7 @@ package com.epam.esm.sokolov.security;
 
 import com.epam.esm.sokolov.exception.ServiceException;
 import com.epam.esm.sokolov.model.user.User;
-import com.epam.esm.sokolov.repository.UserRepository;
+import com.epam.esm.sokolov.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

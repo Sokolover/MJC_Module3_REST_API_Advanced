@@ -4,7 +4,7 @@ import com.epam.esm.sokolov.converter.GiftCertificateConverter;
 import com.epam.esm.sokolov.dto.GiftCertificateDTO;
 import com.epam.esm.sokolov.exception.ServiceException;
 import com.epam.esm.sokolov.model.GiftCertificate;
-import com.epam.esm.sokolov.repository.GiftCertificateRepository;
+import com.epam.esm.sokolov.repository.certificate.GiftCertificateRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

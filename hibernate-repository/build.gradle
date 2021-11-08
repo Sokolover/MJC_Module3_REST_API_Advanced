@@ -1,5 +1,9 @@
+apply plugin: 'idea'
+
 dependencies {
     implementation group: 'mysql', name: 'mysql-connector-java', version: "${mySqlVersion}"
+    // https://mvnrepository.com/artifact/org.hibernate/hibernate-jpamodelgen
+    compileOnly group: 'org.hibernate', name: 'hibernate-jpamodelgen', version: "${hibernateJpamodelgenVersion}"
 
     implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.springframework.boot:spring-boot-starter-security'
@@ -7,6 +11,13 @@ dependencies {
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa'
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+}
+
+idea {
+    module {
+        sourceDirs += file("build/generated/source/apt/main")
+        generatedSourceDirs += file("build/generated/source/apt/main")
     }
 }
 

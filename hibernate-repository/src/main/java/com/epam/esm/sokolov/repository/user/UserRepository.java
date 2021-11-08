@@ -9,7 +9,11 @@ public interface UserRepository {
 
     List<User> findAll(Long pageSize, Long pageNumber);
 
-    Long findUserAmount();
+    Optional<User> findUserByUsername(String username);
 
-    Optional<User> findByUsername(String username);
+    User save(User user);
+
+    Optional<User> findById(Long id);
+
+    Long count();
 }
