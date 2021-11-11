@@ -24,27 +24,88 @@ public class GiftCertificateRepositoryImpl implements GiftCertificateRepository 
 
     private final EntityManagerFactory entityManagerFactory;
 
+    /*
+     fixme method returns right GiftCertificates list, but GiftCertificate contains only Tag, that is IN tagNamesCondition
+
+        Example:
+
+        Request: http://localhost:8080/api/gift-certificates?searchBy=tagNames&tagName=films&tagName=tag197&size=10&page=0
+
+        Spring Data JPA returns right value with all tags:
+         {
+             "id": 1,
+             "name": "giftCertificate1",
+             "description": "5 any films",
+             "price": 5.50,
+             "createDate": "2020-10-23T09:37:39+03:00",
+             "lastUpdateDate": "2020-10-23T15:37:39+03:00",
+             "durationInDays": 5,
+             "tags": [
+                 {
+                     "id": 2,
+                     "name": "films"
+                 },
+                 {
+                     "id": 1,
+                     "name": "fun"
+                 }
+             ]
+         }
+
+         Hibernate returns without "fun" tag!:
+         {
+             "id": 1,
+             "name": "giftCertificate1",
+             "description": "5 any films",
+             "price": 5.50,
+             "createDate": "2020-10-23T09:37:39+03:00",
+             "lastUpdateDate": "2020-10-23T15:37:39+03:00",
+             "durationInDays": 5,
+             "tags": [
+                 {
+                     "id": 2,
+                     "name": "films"
+                 }
+             ]
+         }
+     */
     @Override
     public List<GiftCertificate> findByTagNames(List<String> tagNamesCondition, Long pageSize, Long pageOffsetInQuery) {
         try (Session session = entityManagerFactory.unwrap(SessionFactory.class).openSession()) {
-            return session.createNativeQuery(
-                    "SELECT DISTINCT gift_certificate.*\n" +
-                            "FROM gift_certificate\n" +
-                            "         INNER JOIN tag_has_gift_certificate\n" +
-                            "                    ON gift_certificate.id = tag_has_gift_certificate.gift_certificate_id\n" +
-                            "         INNER JOIN tag\n" +
-                            "                    ON tag.id = tag_has_gift_certificate.tag_id\n" +
-                            "WHERE tag.name IN :tagNamesCondition " +
-                            "ORDER BY gift_certificate.id " +
-                            "LIMIT :pageSize " +
-                            "OFFSET :pageOffsetInQuery ",
-                    GiftCertificate.class
-            ).setParameter("tagNamesCondition", tagNamesCondition)
-                    .setParameter("pageSize", pageSize)
-                    .setParameter("pageOffsetInQuery", pageOffsetInQuery)
+            return session.createQuery("SELECT gc\n" +
+                            "FROM GiftCertificate gc\n" +
+                            "     JOIN FETCH gc.tags tags\n" +
+                            "WHERE tags.name IN :tagNamesCondition\n" +
+                            "ORDER BY gc.id",
+                    GiftCertificate.class)
+                    .setParameter("tagNamesCondition", tagNamesCondition)
+                    .setMaxResults(Math.toIntExact(pageSize))
+                    .setFirstResult(Math.toIntExact(pageOffsetInQuery))
                     .getResultList();
         }
     }
+
+//    @Override
+//    public List<GiftCertificate> findByTagNames(List<String> tagNamesCondition, Long pageSize, Long pageOffsetInQuery) {
+//        try (Session session = entityManagerFactory.unwrap(SessionFactory.class).openSession()) {
+//            return session.createNativeQuery(
+//                    "SELECT DISTINCT gift_certificate.*\n" +
+//                            "FROM gift_certificate\n" +
+//                            "         INNER JOIN tag_has_gift_certificate\n" +
+//                            "                    ON gift_certificate.id = tag_has_gift_certificate.gift_certificate_id\n" +
+//                            "         INNER JOIN tag\n" +
+//                            "                    ON tag.id = tag_has_gift_certificate.tag_id\n" +
+//                            "WHERE tag.name IN :tagNamesCondition " +
+//                            "ORDER BY gift_certificate.id " +
+//                            "LIMIT :pageSize " +
+//                            "OFFSET :pageOffsetInQuery ",
+//                    GiftCertificate.class
+//            ).setParameter("tagNamesCondition", tagNamesCondition)
+//                    .setParameter("pageSize", pageSize)
+//                    .setParameter("pageOffsetInQuery", pageOffsetInQuery)
+//                    .getResultList();
+//        }
+//    }
 
     @Override
     public Optional<GiftCertificate> findById(Long id) {
