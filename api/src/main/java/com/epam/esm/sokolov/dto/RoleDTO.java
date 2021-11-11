@@ -5,8 +5,8 @@ import org.springframework.hateoas.RepresentationModel;
 
 import javax.validation.constraints.NotBlank;
 
-@Getter
-@Setter
+@Data
+@Builder
 @EqualsAndHashCode(callSuper = false)
 @ToString
 @AllArgsConstructor

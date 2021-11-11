@@ -1,7 +1,8 @@
 package com.epam.esm.sokolov.converter;
 
 import com.epam.esm.sokolov.dto.RoleDTO;
-import com.epam.esm.sokolov.dto.UserDTO;
+import com.epam.esm.sokolov.dto.UserInDTO;
+import com.epam.esm.sokolov.dto.UserOutDTO;
 import com.epam.esm.sokolov.model.user.Role;
 import com.epam.esm.sokolov.model.user.User;
 import org.junit.jupiter.api.Test;
@@ -43,16 +44,15 @@ class UserConverterTest {
 
         Mockito.doReturn(getRoleDTOs()).when(roleConverter).convertRolesToRoleDTOs(roles);
 
-        UserDTO result = userConverter.convert(user);
+        UserOutDTO result = userConverter.convert(user);
         assertEquals(user.getId(), result.getId());
         assertEquals(user.getUsername(), result.getUsername());
-        assertEquals(user.getPassword(), result.getPassword());
         assertEquals(user.getEmail(), result.getEmail());
     }
 
     @Test
     void convertUserDTOToUser() {
-        UserDTO userDTO = new UserDTO();
+        UserInDTO userDTO = new UserInDTO();
         userDTO.setId(1L);
         userDTO.setUsername("username");
         userDTO.setPassword("qwe123");
@@ -71,15 +71,19 @@ class UserConverterTest {
 
     private Set<Role> getRoles() {
         Set<Role> roles = new HashSet<>();
-        roles.add(new Role(1L, "USER"));
-        roles.add(new Role(2L, "ADMIN"));
+        Role user = Role.builder().id(1L).name("USER").build();
+        Role admin = Role.builder().id(2L).name("ADMIN").build();
+        roles.add(user);
+        roles.add(admin);
         return roles;
     }
 
     private Set<RoleDTO> getRoleDTOs() {
         Set<RoleDTO> roleDTOs = new HashSet<>();
-        roleDTOs.add(new RoleDTO(1L, "USER"));
-        roleDTOs.add(new RoleDTO(2L, "ADMIN"));
+        RoleDTO user = RoleDTO.builder().id(1L).name("USER").build();
+        RoleDTO admin = RoleDTO.builder().id(2L).name("ADMIN").build();
+        roleDTOs.add(user);
+        roleDTOs.add(admin);
         return roleDTOs;
     }
 }

@@ -5,10 +5,8 @@ import lombok.*;
 import javax.persistence.*;
 import java.util.Set;
 
-@EqualsAndHashCode
-@ToString
-@Getter
-@Setter
+@Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -24,8 +22,4 @@ public class Tag {
     @ManyToMany(mappedBy = "tags", cascade = {CascadeType.MERGE})
     private Set<GiftCertificate> giftCertificates;
 
-    public Tag(Long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
 }

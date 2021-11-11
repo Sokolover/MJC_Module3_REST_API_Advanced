@@ -1,16 +1,13 @@
 package com.epam.esm.sokolov.model.user;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Set;
 
-@Getter
-@Setter
+@Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -24,8 +21,4 @@ public class Role {
     @ManyToMany(mappedBy = "roles", cascade = {CascadeType.MERGE})
     private Set<User> users;
 
-    public Role(Long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
 }

@@ -26,13 +26,13 @@ import java.util.Set;
 @ExtendWith(MockitoExtension.class)
 class GiftCertificateServiceImplTest {
 
+    @Spy
+    @InjectMocks
+    private final GiftCertificateConverter giftCertificateConverter = new GiftCertificateConverter();
     @InjectMocks
     private GiftCertificateServiceImpl giftCertificateService;
     @Mock
     private GiftCertificateRepository giftCertificateRepository;
-    @Spy
-    @InjectMocks
-    private final GiftCertificateConverter giftCertificateConverter = new GiftCertificateConverter();
     @Spy
     private TagConverter tagConverter;
 
@@ -79,8 +79,10 @@ class GiftCertificateServiceImplTest {
         giftCertificate.setLastUpdateDateTimeZone("+03:00");
         giftCertificate.setDurationInDays(1);
         Set<Tag> tags = new HashSet<>();
-        tags.add(new Tag(1L, "tag1"));
-        tags.add(new Tag(2L, "tag2"));
+        Tag tag1 = Tag.builder().id(1L).name("tag1").build();
+        Tag tag2 = Tag.builder().id(2L).name("tag2").build();
+        tags.add(tag1);
+        tags.add(tag2);
         giftCertificate.setTags(tags);
         return giftCertificate;
     }
@@ -97,7 +99,8 @@ class GiftCertificateServiceImplTest {
         giftCertificate.setLastUpdateDateTimeZone("+03:00");
         giftCertificate.setDurationInDays(2);
         Set<Tag> tags = new HashSet<>();
-        tags.add(new Tag(1L, "tag1upd"));
+        Tag tag1upd = Tag.builder().id(1L).name("tag1upd").build();
+        tags.add(tag1upd);
         giftCertificate.setTags(tags);
         return giftCertificate;
     }

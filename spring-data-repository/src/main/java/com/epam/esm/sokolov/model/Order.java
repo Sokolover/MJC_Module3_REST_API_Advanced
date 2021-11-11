@@ -9,8 +9,7 @@ import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.Set;
 
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity

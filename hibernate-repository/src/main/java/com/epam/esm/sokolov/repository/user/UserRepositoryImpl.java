@@ -39,6 +39,16 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
+    public Optional<User> findUserByEmail(String email) {
+        try (Session session = entityManagerFactory.unwrap(SessionFactory.class).openSession()) {
+            return Optional.ofNullable(session.createNativeQuery(
+                    "SELECT * FROM user_account where user_account.email = :email", User.class)
+                    .setParameter("email", email)
+                    .getSingleResult());
+        }
+    }
+
+    @Override
     public List<User> findAll(Long pageSize, Long pageNumber) {
         try (Session session = entityManagerFactory.unwrap(SessionFactory.class).openSession()) {
             return session.createNativeQuery(

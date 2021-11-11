@@ -8,10 +8,7 @@ import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.Set;
 
-@EqualsAndHashCode
-@ToString
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
