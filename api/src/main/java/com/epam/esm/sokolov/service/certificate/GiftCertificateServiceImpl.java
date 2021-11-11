@@ -6,6 +6,7 @@ import com.epam.esm.sokolov.exception.ServiceException;
 import com.epam.esm.sokolov.model.GiftCertificate;
 import com.epam.esm.sokolov.repository.certificate.GiftCertificateRepository;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 
     private final GiftCertificateRepository giftCertificateRepository;
     private final GiftCertificateConverter giftCertificateConverter;
-    private final GiftCertificateMapper giftCertificateMapper;
+    private final ModelMapper modelMapper;
 
     @Override
     public GiftCertificateDTO update(Long id, GiftCertificateDTO dto) {
@@ -34,7 +35,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
                     throw new ServiceException(message, HttpStatus.NOT_FOUND, this.getClass());
                 });
         GiftCertificate giftCertificateFromController = giftCertificateConverter.convert(dto);
-        giftCertificateMapper.updateGiftCertificateFromDto(giftCertificateFromDatabase, giftCertificateFromController);
+        modelMapper.map(giftCertificateFromController, giftCertificateFromDatabase);
         GiftCertificate savedGiftCertificate = giftCertificateRepository.save(giftCertificateFromDatabase);
         return giftCertificateConverter.convert(savedGiftCertificate);
     }

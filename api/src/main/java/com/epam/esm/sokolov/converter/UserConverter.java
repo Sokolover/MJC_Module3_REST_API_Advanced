@@ -6,40 +6,51 @@ import com.epam.esm.sokolov.model.user.Role;
 import com.epam.esm.sokolov.model.user.User;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
 
-@NoArgsConstructor
+import static org.springframework.util.CollectionUtils.isEmpty;
+
 @Service
+@NoArgsConstructor
 @AllArgsConstructor(onConstructor_ = @Autowired)
 public class UserConverter {
 
     private RoleConverter roleConverter;
+    private ModelMapper modelMapper;
 
     public UserDTO convert(User source) {
-        UserDTO userDTO = new UserDTO();
-        userDTO.setId(source.getId());
-        userDTO.setUsername(source.getUsername());
-        userDTO.setEmail(source.getEmail());
-        Set<Role> roles = source.getRoles();
-        if (roles != null) {
-            userDTO.setRoleDTOS(roleConverter.convertRoleDtosFromRoles(roles));
+        if (source == null) {
+            return new UserDTO();
         }
-        return userDTO;
+
+        UserDTO result = modelMapper.map(source, UserDTO.class);
+
+        Set<Role> sourceRoles = source.getRoles();
+        if (!isEmpty(sourceRoles)) {
+            Set<RoleDTO> roles = roleConverter.convertRolesToRoleDTOs(sourceRoles);
+            result.setRoleDTOS(roles);
+        }
+
+        return result;
     }
 
     public User convert(UserDTO source) {
-        User user = new User();
-        user.setId(source.getId());
-        user.setUsername(source.getUsername());
-        user.setEmail(source.getEmail());
-        user.setPassword(source.getPassword());
-        Set<RoleDTO> roleDTOS = source.getRoleDTOS();
-        if (roleDTOS != null) {
-            user.setRoles(roleConverter.convertRolesFromRoleDtos(roleDTOS));
+        if (source == null) {
+            return new User();
         }
-        return user;
+
+        User result = modelMapper.map(source, User.class);
+
+        Set<RoleDTO> sourceRoleDTOs = source.getRoleDTOS();
+        if (!isEmpty(sourceRoleDTOs)) {
+            Set<Role> roles = roleConverter.convertRoleDTOsToRoles(sourceRoleDTOs);
+            result.setRoles(roles);
+        }
+
+        return result;
     }
 }

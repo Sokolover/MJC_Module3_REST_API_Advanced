@@ -4,67 +4,93 @@ import com.epam.esm.sokolov.dto.GiftCertificateDTO;
 import com.epam.esm.sokolov.dto.TagDTO;
 import com.epam.esm.sokolov.model.GiftCertificate;
 import com.epam.esm.sokolov.model.Tag;
-import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
+import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
-@NoArgsConstructor
+import static org.springframework.util.CollectionUtils.isEmpty;
+
 @Service
-@AllArgsConstructor(onConstructor_ = @Autowired)
+@NoArgsConstructor
 public class GiftCertificateConverter {
 
     private TagConverter tagConverter;
+    private ModelMapper modelMapper;
+    private ModelMapper mapperGiftCertificateDTOToGiftCertificate;
+
+    @Autowired
+    public GiftCertificateConverter(TagConverter tagConverter,
+                                    ModelMapper modelMapper,
+                                    @Qualifier("mapperGiftCertificateDTOToGiftCertificate") ModelMapper mapperGiftCertificateDTOToGiftCertificate) {
+        this.tagConverter = tagConverter;
+        this.modelMapper = modelMapper;
+        this.mapperGiftCertificateDTOToGiftCertificate = mapperGiftCertificateDTOToGiftCertificate;
+    }
 
     public GiftCertificateDTO convert(GiftCertificate source) {
-        GiftCertificateDTO giftCertificateDTO = new GiftCertificateDTO();
-        giftCertificateDTO.setId(source.getId());
-        giftCertificateDTO.setName(source.getName());
+        if (source == null) {
+            return new GiftCertificateDTO();
+        }
+
+        GiftCertificateDTO result = modelMapper.map(source, GiftCertificateDTO.class);
+
         LocalDateTime createDate = source.getCreateDate();
         String createDateTimeZone = source.getCreateDateTimeZone();
         if (createDate != null && createDateTimeZone != null) {
-            giftCertificateDTO.setCreateDate(DateConverter.getZonedDateTime(createDate, createDateTimeZone));
+            result.setCreateDate(DateConverter.getZonedDateTime(createDate, createDateTimeZone));
         }
+
         LocalDateTime lastUpdateDate = source.getLastUpdateDate();
         String lastUpdateDateTimeZone = source.getLastUpdateDateTimeZone();
         if (lastUpdateDate != null && lastUpdateDateTimeZone != null) {
-            giftCertificateDTO.setLastUpdateDate(DateConverter.getZonedDateTime(lastUpdateDate, lastUpdateDateTimeZone));
+            result.setLastUpdateDate(DateConverter.getZonedDateTime(lastUpdateDate, lastUpdateDateTimeZone));
         }
-        giftCertificateDTO.setDescription(source.getDescription());
-        giftCertificateDTO.setPrice(source.getPrice());
-        giftCertificateDTO.setDurationInDays(source.getDurationInDays());
-        Set<Tag> tags = source.getTags();
-        if (tags != null) {
-            giftCertificateDTO.setTags(tagConverter.convertTagDtosFromTags(tags));
+
+        Set<Tag> sourceTags = source.getTags();
+        if (!isEmpty(sourceTags)) {
+            Set<TagDTO> resultTags = tagConverter.convertTagsToTagDTOs(sourceTags);
+            result.setTags(resultTags);
         }
-        return giftCertificateDTO;
+        return result;
     }
 
     public GiftCertificate convert(GiftCertificateDTO source) {
-        GiftCertificate giftCertificate = new GiftCertificate();
-        giftCertificate.setId(source.getId());
-        giftCertificate.setName(source.getName());
-        ZonedDateTime createDate = source.getCreateDate();
-        if (createDate != null) {
-            giftCertificate.setCreateDate(DateConverter.getLocalDate(createDate));
-            giftCertificate.setCreateDateTimeZone(createDate.getZone().toString());
+        if (source == null) {
+            return new GiftCertificate();
         }
-        ZonedDateTime lastUpdateDate = source.getLastUpdateDate();
-        if (lastUpdateDate != null) {
-            giftCertificate.setLastUpdateDate(DateConverter.getLocalDate(lastUpdateDate));
-            giftCertificate.setLastUpdateDateTimeZone(lastUpdateDate.getZone().toString());
+
+        GiftCertificate result = mapperGiftCertificateDTOToGiftCertificate.map(source, GiftCertificate.class);
+
+        Set<TagDTO> sourceTags = source.getTags();
+        if (!isEmpty(sourceTags)) {
+            Set<Tag> resultTags = tagConverter.convertTagDTOsToTags(sourceTags);
+            result.setTags(resultTags);
         }
-        giftCertificate.setDescription(source.getDescription());
-        giftCertificate.setPrice(source.getPrice());
-        giftCertificate.setDurationInDays(source.getDurationInDays());
-        Set<TagDTO> tags = source.getTags();
-        if (tags != null) {
-            giftCertificate.setTags(tagConverter.convertTagsFromTagDtos(tags));
+        return result;
+    }
+
+    public Set<GiftCertificateDTO> convertGiftCertificatesToGiftCertificateDTOs(Set<GiftCertificate> source) {
+        if (source == null) {
+            return new HashSet<>();
         }
-        return giftCertificate;
+        return source.stream()
+                .map(this::convert)
+                .collect(Collectors.toSet());
+    }
+
+    public Set<GiftCertificate> convertGiftCertificateDTOsToGiftCertificates(Set<GiftCertificateDTO> source) {
+        if (source == null) {
+            return new HashSet<>();
+        }
+        return source.stream()
+                .map(this::convert)
+                .collect(Collectors.toSet());
     }
 }

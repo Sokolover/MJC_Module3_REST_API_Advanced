@@ -2,9 +2,9 @@ package com.epam.esm.sokolov.controller;
 
 import com.epam.esm.sokolov.exception.CertificateAppException;
 import com.epam.esm.sokolov.exception.ErrorResponse;
+import com.epam.esm.sokolov.security.AuthenticationServiceImpl;
 import com.epam.esm.sokolov.service.certificate.GiftCertificateServiceImpl;
 import com.epam.esm.sokolov.service.order.OrderServiceImpl;
-import com.epam.esm.sokolov.security.AuthenticationServiceImpl;
 import com.epam.esm.sokolov.service.tag.TagServiceImpl;
 import com.epam.esm.sokolov.service.user.UserServiceImpl;
 import org.springframework.dao.DataIntegrityViolationException;

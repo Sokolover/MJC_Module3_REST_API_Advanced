@@ -5,6 +5,8 @@ dependencies {
 
     implementation group: 'io.jsonwebtoken', name: 'jjwt', version: "${jjwtVersion}"
     implementation group: 'io.springfox', name: 'springfox-boot-starter', version: "${springFoxStarterVersion}"
+    implementation group: 'org.modelmapper', name: 'modelmapper', version: "${modelMapperVersion}"
+    implementation group: 'org.apache.commons', name: 'commons-lang3', version: "${apacheCommonsLang3Version}"
 
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-security'
