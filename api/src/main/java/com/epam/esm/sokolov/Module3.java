@@ -5,6 +5,7 @@ import com.epam.esm.sokolov.dto.GiftCertificateDTO;
 import com.epam.esm.sokolov.dto.OrderDTO;
 import com.epam.esm.sokolov.model.GiftCertificate;
 import com.epam.esm.sokolov.model.Order;
+import org.modelmapper.Conditions;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
@@ -28,7 +29,9 @@ public class Module3 {
     @Bean
     @Primary
     public ModelMapper modelMapper() {
-        return new ModelMapper();
+        ModelMapper modelMapper = new ModelMapper();
+        modelMapper.getConfiguration().setPropertyCondition(Conditions.isNotNull());
+        return modelMapper;
     }
 
     @Bean

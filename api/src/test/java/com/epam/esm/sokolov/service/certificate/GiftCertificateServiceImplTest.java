@@ -34,8 +34,6 @@ class GiftCertificateServiceImplTest {
     @InjectMocks
     private final GiftCertificateConverter giftCertificateConverter = new GiftCertificateConverter();
     @Spy
-    private GiftCertificateMapperImpl giftCertificateMapper;
-    @Spy
     private TagConverter tagConverter;
 
     @Test
