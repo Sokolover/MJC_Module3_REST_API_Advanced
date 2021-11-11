@@ -2,7 +2,8 @@ package com.epam.esm.sokolov.controller;
 
 import com.epam.esm.sokolov.dto.OrderDTO;
 import com.epam.esm.sokolov.dto.OrderDetailsDTO;
-import com.epam.esm.sokolov.dto.UserDTO;
+import com.epam.esm.sokolov.dto.UserInDTO;
+import com.epam.esm.sokolov.dto.UserOutDTO;
 import com.epam.esm.sokolov.service.order.OrderService;
 import com.epam.esm.sokolov.service.user.UserService;
 import io.swagger.annotations.Api;
@@ -34,8 +35,8 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public UserDTO signUp(@RequestBody @Valid UserDTO userDTO) {
-        return userService.save(userDTO);
+    public UserOutDTO signUp(@RequestBody @Valid UserInDTO userInDTO) {
+        return userService.signUp(userInDTO);
     }
 
     @GetMapping("/{id}/orders")
@@ -83,24 +84,24 @@ public class UserController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public CollectionModel<UserDTO> findAll(@RequestParam("size") Long pageSize,
-                                            @RequestParam("page") Long pageNumber
+    public CollectionModel<UserOutDTO> findAll(@RequestParam("size") Long pageSize,
+                                               @RequestParam("page") Long pageNumber
     ) {
-        List<UserDTO> userDTOS = userService.findAll(pageSize, pageNumber);
-        userDTOS.forEach(userDTO -> userDTO
+        List<UserOutDTO> userOutDTOS = userService.findAll(pageSize, pageNumber);
+        userOutDTOS.forEach(userDTO -> userDTO
                 .add(linkTo(methodOn(UserController.class)
                         .findAllOrders(userDTO.getId(), DEFAULT_PAGE_SIZE, DEFAULT_PAGE_NUMBER)).withRel(ORDERS_REF))
         );
         Link link = linkTo(methodOn(UserController.class)
                 .findAll(pageSize, pageNumber)).withRel(USERS_REF);
-        CollectionModel<UserDTO> userDTOCollectionModel = CollectionModel.of(userDTOS, link);
+        CollectionModel<UserOutDTO> userOutDTOCollectionModel = CollectionModel.of(userOutDTOS, link);
         Long totalPages = userService.findUserAmount() / pageSize;
         paginationUtil.addPaginationLinksToUserDTO(
-                userDTOCollectionModel,
+                userOutDTOCollectionModel,
                 pageNumber,
                 totalPages,
                 pageSize
         );
-        return userDTOCollectionModel;
+        return userOutDTOCollectionModel;
     }
 }

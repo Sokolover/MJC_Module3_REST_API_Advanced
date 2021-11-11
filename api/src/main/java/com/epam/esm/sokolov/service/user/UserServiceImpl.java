@@ -1,7 +1,8 @@
 package com.epam.esm.sokolov.service.user;
 
 import com.epam.esm.sokolov.converter.UserConverter;
-import com.epam.esm.sokolov.dto.UserDTO;
+import com.epam.esm.sokolov.dto.UserInDTO;
+import com.epam.esm.sokolov.dto.UserOutDTO;
 import com.epam.esm.sokolov.exception.ServiceException;
 import com.epam.esm.sokolov.model.user.Role;
 import com.epam.esm.sokolov.model.user.User;
@@ -33,22 +34,27 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public UserDTO save(UserDTO userDTO) {
-        validateBeforeSave(userDTO);
-        User user = userConverter.convert(userDTO);
+    public UserOutDTO signUp(UserInDTO userInDTO) {
+        validateBeforeSave(userInDTO);
+        User user = userConverter.convert(userInDTO);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         setRoles(user);
         User savedUser = userRepository.save(user);
         return userConverter.convert(savedUser);
     }
 
-    private void validateBeforeSave(UserDTO userDTO) {
-        if (!userDTO.getPassword().equals(userDTO.getPasswordConfirmation())) {
+    private void validateBeforeSave(UserInDTO userInDTO) {
+        if (!userInDTO.getPassword().equals(userInDTO.getPasswordConfirmation())) {
             throw new ServiceException("Wrong password confirmation", HttpStatus.BAD_REQUEST, UserServiceImpl.class);
         }
-        userRepository.findUserByUsername(userDTO.getUsername())
+        userRepository.findUserByUsername(userInDTO.getUsername())
                 .ifPresent(user -> {
                     String message = String.format("User with username '%s' already registered", user.getUsername());
+                    throw new ServiceException(message, HttpStatus.BAD_REQUEST, UserServiceImpl.class);
+                });
+        userRepository.findUserByEmail(userInDTO.getEmail())
+                .ifPresent(user -> {
+                    String message = String.format("User with email '%s' already registered", user.getEmail());
                     throw new ServiceException(message, HttpStatus.BAD_REQUEST, UserServiceImpl.class);
                 });
     }
@@ -68,7 +74,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDTO> findAll(Long pageSize, Long pageNumber) {
+    public List<UserOutDTO> findAll(Long pageSize, Long pageNumber) {
         if (isIncorrectArguments(pageSize, pageNumber)) {
             throw new ServiceException(INCORRECT_PAGE_SIZE_MESSAGE, HttpStatus.BAD_REQUEST, this.getClass());
         }

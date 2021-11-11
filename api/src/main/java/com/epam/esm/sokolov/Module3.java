@@ -39,6 +39,7 @@ public class Module3 {
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.getConfiguration()
                 .setSkipNullEnabled(true)
+                .setAmbiguityIgnored(true)
                 .setPropertyCondition(context -> context.getSource() != null);
         modelMapper.createTypeMap(OrderDTO.class, Order.class)
                 .addMappings(mapping -> mapping.using(fromZonedDateTimeToLocalDateTime).map(OrderDTO::getCreateDate, Order::setCreateDate))

@@ -27,7 +27,8 @@ public class OrderDTO extends RepresentationModel<OrderDTO> {
     @JsonSerialize(using = ZonedDateTimeSerializer.class)
     @JsonDeserialize(using = CustomDateDeserializer.class)
     private ZonedDateTime lastUpdateDate;
-    private UserDTO userDTO;
+    private UserInDTO userInDTO;
+    private UserOutDTO userOutDTO;
     private Set<GiftCertificateDTO> giftCertificateDTOs;
 
 }

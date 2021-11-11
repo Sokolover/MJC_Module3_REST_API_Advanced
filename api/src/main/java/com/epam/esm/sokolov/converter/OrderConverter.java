@@ -2,7 +2,8 @@ package com.epam.esm.sokolov.converter;
 
 import com.epam.esm.sokolov.dto.GiftCertificateDTO;
 import com.epam.esm.sokolov.dto.OrderDTO;
-import com.epam.esm.sokolov.dto.UserDTO;
+import com.epam.esm.sokolov.dto.UserInDTO;
+import com.epam.esm.sokolov.dto.UserOutDTO;
 import com.epam.esm.sokolov.model.GiftCertificate;
 import com.epam.esm.sokolov.model.Order;
 import com.epam.esm.sokolov.model.user.User;
@@ -58,8 +59,8 @@ public class OrderConverter {
 
         User user = source.getUser();
         if (user != null) {
-            UserDTO userDTO = userConverter.convert(user);
-            result.setUserDTO(userDTO);
+            UserOutDTO userOutDTO = userConverter.convert(user);
+            result.setUserOutDTO(userOutDTO);
         }
 
         Set<GiftCertificate> giftCertificates = source.getGiftCertificates();
@@ -79,9 +80,9 @@ public class OrderConverter {
 
         Order result = mapperOrderToOrderDTO.map(source, Order.class);
 
-        UserDTO userDTO = source.getUserDTO();
-        if (userDTO != null) {
-            User user = userConverter.convert(userDTO);
+        UserInDTO userInDTO = source.getUserInDTO();
+        if (userInDTO != null) {
+            User user = userConverter.convert(userInDTO);
             result.setUser(user);
         }
 

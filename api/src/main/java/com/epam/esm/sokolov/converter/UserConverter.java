@@ -1,7 +1,8 @@
 package com.epam.esm.sokolov.converter;
 
 import com.epam.esm.sokolov.dto.RoleDTO;
-import com.epam.esm.sokolov.dto.UserDTO;
+import com.epam.esm.sokolov.dto.UserInDTO;
+import com.epam.esm.sokolov.dto.UserOutDTO;
 import com.epam.esm.sokolov.model.user.Role;
 import com.epam.esm.sokolov.model.user.User;
 import lombok.AllArgsConstructor;
@@ -22,12 +23,12 @@ public class UserConverter {
     private RoleConverter roleConverter;
     private ModelMapper modelMapper;
 
-    public UserDTO convert(User source) {
+    public UserOutDTO convert(User source) {
         if (source == null) {
-            return new UserDTO();
+            return new UserOutDTO();
         }
 
-        UserDTO result = modelMapper.map(source, UserDTO.class);
+        UserOutDTO result = modelMapper.map(source, UserOutDTO.class);
 
         Set<Role> sourceRoles = source.getRoles();
         if (!isEmpty(sourceRoles)) {
@@ -38,7 +39,7 @@ public class UserConverter {
         return result;
     }
 
-    public User convert(UserDTO source) {
+    public User convert(UserInDTO source) {
         if (source == null) {
             return new User();
         }

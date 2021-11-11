@@ -15,7 +15,7 @@ import static com.epam.esm.sokolov.constants.CommonAppConstants.EMAIL_PATTERN;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDTO extends RepresentationModel<UserDTO> {
+public class UserInDTO extends RepresentationModel<UserInDTO> {
 
     private Long id;
     @NotBlank(message = "is mandatory")
@@ -27,4 +27,5 @@ public class UserDTO extends RepresentationModel<UserDTO> {
     @NotBlank(message = "is mandatory")
     private String passwordConfirmation;
     private Set<RoleDTO> roleDTOS;
+
 }

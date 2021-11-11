@@ -2,7 +2,7 @@ package com.epam.esm.sokolov.controller;
 
 import com.epam.esm.sokolov.dto.GiftCertificateDTO;
 import com.epam.esm.sokolov.dto.OrderDTO;
-import com.epam.esm.sokolov.dto.UserDTO;
+import com.epam.esm.sokolov.dto.UserOutDTO;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Link;
 import org.springframework.stereotype.Service;
@@ -64,22 +64,22 @@ class PaginationUtil {
     }
 
     void addPaginationLinksToUserDTO(
-            CollectionModel<UserDTO> userDTOS,
+            CollectionModel<UserOutDTO> userOutDTOS,
             final Long pageNumber,
             final Long totalPages,
             final Long pageSize) {
 
         if (hasNextPage(pageNumber, totalPages)) {
-            userDTOS.add(getLinkToFindAllUsersMethod(pageSize, pageNumber + 1, NEXT_PAGE));
+            userOutDTOS.add(getLinkToFindAllUsersMethod(pageSize, pageNumber + 1, NEXT_PAGE));
         }
         if (hasPreviousPage(pageNumber)) {
-            userDTOS.add(getLinkToFindAllUsersMethod(pageSize, pageNumber - 1, PREV_PAGE));
+            userOutDTOS.add(getLinkToFindAllUsersMethod(pageSize, pageNumber - 1, PREV_PAGE));
         }
         if (hasFirstPage(pageNumber)) {
-            userDTOS.add(getLinkToFindAllUsersMethod(pageSize, 0L, FIRST_PAGE));
+            userOutDTOS.add(getLinkToFindAllUsersMethod(pageSize, 0L, FIRST_PAGE));
         }
         if (hasLastPage(pageNumber, totalPages)) {
-            userDTOS.add(getLinkToFindAllUsersMethod(pageSize, totalPages - 1, LAST_PAGE));
+            userOutDTOS.add(getLinkToFindAllUsersMethod(pageSize, totalPages - 1, LAST_PAGE));
         }
     }
 

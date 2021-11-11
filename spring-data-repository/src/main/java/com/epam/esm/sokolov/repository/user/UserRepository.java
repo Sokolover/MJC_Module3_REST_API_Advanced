@@ -23,6 +23,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findUserByUsername(String username);
 
+    Optional<User> findUserByEmail(String email);
+
     @Transactional
     @Modifying(clearAutomatically = true)
     @org.springframework.data.jpa.repository.Query(value = "INSERT INTO user_account_has_user_role (user_account_id, user_role_id) " +
