@@ -6,6 +6,7 @@ import com.epam.esm.sokolov.dto.OrderDetailsDTO;
 import com.epam.esm.sokolov.exception.ServiceException;
 import com.epam.esm.sokolov.model.GiftCertificate;
 import com.epam.esm.sokolov.model.Order;
+import com.epam.esm.sokolov.model.user.User;
 import com.epam.esm.sokolov.repository.certificate.GiftCertificateRepository;
 import com.epam.esm.sokolov.repository.order.OrderRepository;
 import com.epam.esm.sokolov.security.AuthenticationHandler;
@@ -57,7 +58,11 @@ public class OrderServiceImpl implements OrderService {
 
     private void setUserId(Order order) {
         Long currentUserId = authenticationHandler.getCurrentUserId();
-        order.getUser().setId(currentUserId);
+        if (order.getUser() == null) {
+            User user = new User();
+            user.setId(currentUserId);
+            order.setUser(user);
+        }
     }
 
     @Override
