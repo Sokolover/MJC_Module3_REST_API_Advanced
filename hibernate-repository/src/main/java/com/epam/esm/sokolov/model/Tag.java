@@ -1,9 +1,6 @@
 package com.epam.esm.sokolov.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -20,6 +17,8 @@ public class Tag {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @ManyToMany(mappedBy = "tags", cascade = {CascadeType.MERGE})
     private Set<GiftCertificate> giftCertificates;
 

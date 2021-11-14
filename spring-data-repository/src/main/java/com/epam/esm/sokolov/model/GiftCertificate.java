@@ -9,6 +9,8 @@ import java.time.ZonedDateTime;
 import java.util.Set;
 
 @Data
+@ToString(exclude = {"orders", "tags", "operation", "updatedAtTime", "updatedAtTimeZone"})
+@EqualsAndHashCode(exclude = {"createDate", "lastUpdateDate", "orders", "tags", "operation", "updatedAtTime", "updatedAtTimeZone"})
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -21,39 +23,26 @@ public class GiftCertificate {
     private String name;
     private String description;
     private BigDecimal price;
-    @EqualsAndHashCode.Exclude
     @Column(name = "create_date")
     private LocalDateTime createDate;
     @Column(name = "create_date_time_zone")
     private String createDateTimeZone;
     @Column(name = "last_update_date")
-    @EqualsAndHashCode.Exclude
     private LocalDateTime lastUpdateDate;
     @Column(name = "last_update_date_time_zone")
     private String lastUpdateDateTimeZone;
     @Column(name = "duration_in_days")
     private Integer durationInDays;
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
     @ManyToMany(mappedBy = "giftCertificates", cascade = {CascadeType.MERGE})
     private Set<Order> orders;
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
     @ManyToMany(cascade = {CascadeType.MERGE})
-    @JoinTable(
-            name = "tag_has_gift_certificate",
+    @JoinTable(name = "tag_has_gift_certificate",
             joinColumns = @JoinColumn(name = "gift_certificate_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id"))
     private Set<Tag> tags;
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
     private String operation;
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
     @Column(name = "updated_at_time")
     private LocalDateTime updatedAtTime;
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
     @Column(name = "updated_at_time_zone")
     private String updatedAtTimeZone;
 

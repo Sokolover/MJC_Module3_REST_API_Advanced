@@ -18,6 +18,8 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @ManyToMany(mappedBy = "roles", cascade = {CascadeType.MERGE})
     private Set<User> users;
 

@@ -10,6 +10,8 @@ import java.time.ZonedDateTime;
 import java.util.Set;
 
 @Data
+@ToString(exclude = {"user", "giftCertificates", "operation", "createdAtTime", "createdAtTimeZone"})
+@EqualsAndHashCode(exclude = {"createDate", "lastUpdateDate", "user", "giftCertificates", "operation", "createdAtTime", "createdAtTimeZone"})
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -20,38 +22,25 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private BigDecimal cost;
-    @EqualsAndHashCode.Exclude
     @Column(name = "create_date")
     private LocalDateTime createDate;
     @Column(name = "create_date_time_zone")
     private String createDateTimeZone;
-    @EqualsAndHashCode.Exclude
     @Column(name = "last_update_date")
     private LocalDateTime lastUpdateDate;
     @Column(name = "last_update_date_time_zone")
     private String lastUpdateDateTimeZone;
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
     @ManyToOne
     @JoinColumn(name = "user_account_id")
     private User user;
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
     @ManyToMany
-    @JoinTable(
-            name = "user_order_has_gift_certificate",
+    @JoinTable(name = "user_order_has_gift_certificate",
             joinColumns = @JoinColumn(name = "user_order_id"),
             inverseJoinColumns = @JoinColumn(name = "gift_certificate_id"))
     private Set<GiftCertificate> giftCertificates;
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
     private String operation;
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
     @Column(name = "created_at_time")
     private LocalDateTime createdAtTime;
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
     @Column(name = "created_at_time_zone")
     private String createdAtTimeZone;
 
