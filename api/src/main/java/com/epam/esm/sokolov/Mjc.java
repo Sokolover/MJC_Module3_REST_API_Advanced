@@ -17,13 +17,13 @@ import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 
 @SpringBootApplication
-public class Module3 {
+public class Mjc {
 
     private final Converter<ZonedDateTime, LocalDateTime> fromZonedDateTimeToLocalDateTime = context -> DateConverter.getLocalDate(context.getSource());
     private final Converter<ZonedDateTime, String> fromZonedDateTimeToString = context -> context.getSource().getZone().toString();
 
     public static void main(String[] args) {
-        SpringApplication.run(Module3.class, args);
+        SpringApplication.run(Mjc.class, args);
     }
 
     @Bean

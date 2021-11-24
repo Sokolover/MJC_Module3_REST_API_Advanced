@@ -15,15 +15,15 @@ DROP TABLE IF EXISTS gift_certificate,
     user_role CASCADE;
 
 -- -----------------------------------------------------
--- Schema module3
+-- Schema mjc
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `module3` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-USE `module3`;
+CREATE SCHEMA IF NOT EXISTS `mjc` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+USE `mjc`;
 
 -- -----------------------------------------------------
--- Table `module3`.`tag`
+-- Table `mjc`.`tag`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `module3`.`tag`
+CREATE TABLE IF NOT EXISTS `mjc`.`tag`
 (
     `id`   BIGINT(100)  NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(200) NOT NULL,
@@ -35,9 +35,9 @@ CREATE TABLE IF NOT EXISTS `module3`.`tag`
 
 
 -- -----------------------------------------------------
--- Table `module3`.`gift_certificate`
+-- Table `mjc`.`gift_certificate`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `module3`.`gift_certificate`
+CREATE TABLE IF NOT EXISTS `mjc`.`gift_certificate`
 (
     `id`                         BIGINT(100)   NOT NULL AUTO_INCREMENT,
     `name`                       VARCHAR(200)  NOT NULL,
@@ -58,9 +58,9 @@ CREATE TABLE IF NOT EXISTS `module3`.`gift_certificate`
 
 
 -- -----------------------------------------------------
--- Table `module3`.`tag_has_gift_certificate`
+-- Table `mjc`.`tag_has_gift_certificate`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `module3`.`tag_has_gift_certificate`
+CREATE TABLE IF NOT EXISTS `mjc`.`tag_has_gift_certificate`
 (
     `tag_id`              BIGINT(100) NOT NULL,
     `gift_certificate_id` BIGINT(100) NOT NULL,
@@ -69,12 +69,12 @@ CREATE TABLE IF NOT EXISTS `module3`.`tag_has_gift_certificate`
     INDEX `fk_tag_has_gift_certificate_tag_idx` (`tag_id` ASC) VISIBLE,
     CONSTRAINT `fk_tag_has_gift_certificate_tag`
         FOREIGN KEY (`tag_id`)
-            REFERENCES `module3`.`tag` (`id`)
+            REFERENCES `mjc`.`tag` (`id`)
             ON DELETE NO ACTION
             ON UPDATE NO ACTION,
     CONSTRAINT `fk_tag_has_gift_certificate_gift_certificate1`
         FOREIGN KEY (`gift_certificate_id`)
-            REFERENCES `module3`.`gift_certificate` (`id`)
+            REFERENCES `mjc`.`gift_certificate` (`id`)
             ON DELETE NO ACTION
             ON UPDATE NO ACTION
 )
@@ -82,9 +82,9 @@ CREATE TABLE IF NOT EXISTS `module3`.`tag_has_gift_certificate`
 
 
 -- -----------------------------------------------------
--- Table `module3`.`user_account`
+-- Table `mjc`.`user_account`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `module3`.`user_account`
+CREATE TABLE IF NOT EXISTS `mjc`.`user_account`
 (
     `id`       BIGINT(100)  NOT NULL AUTO_INCREMENT,
     `username` VARCHAR(200) NOT NULL,
@@ -99,9 +99,9 @@ CREATE TABLE IF NOT EXISTS `module3`.`user_account`
 
 
 -- -----------------------------------------------------
--- Table `module3`.`user_order`
+-- Table `mjc`.`user_order`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `module3`.`user_order`
+CREATE TABLE IF NOT EXISTS `mjc`.`user_order`
 (
     `id`                         BIGINT(100)   NOT NULL AUTO_INCREMENT,
     `cost`                       DECIMAL(9, 2) NOT NULL,
@@ -118,7 +118,7 @@ CREATE TABLE IF NOT EXISTS `module3`.`user_order`
     INDEX `fk_user_order_user_account1_idx` (`user_account_id` ASC) VISIBLE,
     CONSTRAINT `fk_user_order_user_account1`
         FOREIGN KEY (`user_account_id`)
-            REFERENCES `module3`.`user_account` (`id`)
+            REFERENCES `mjc`.`user_account` (`id`)
             ON DELETE NO ACTION
             ON UPDATE NO ACTION
 )
@@ -126,9 +126,9 @@ CREATE TABLE IF NOT EXISTS `module3`.`user_order`
 
 
 -- -----------------------------------------------------
--- Table `module3`.`user_order_has_gift_certificate`
+-- Table `mjc`.`user_order_has_gift_certificate`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `module3`.`user_order_has_gift_certificate`
+CREATE TABLE IF NOT EXISTS `mjc`.`user_order_has_gift_certificate`
 (
     `user_order_id`       BIGINT(100) NOT NULL,
     `gift_certificate_id` BIGINT(100) NOT NULL,
@@ -137,12 +137,12 @@ CREATE TABLE IF NOT EXISTS `module3`.`user_order_has_gift_certificate`
     INDEX `fk_user_order_has_gift_certificate_user_order1_idx` (`user_order_id` ASC) VISIBLE,
     CONSTRAINT `fk_user_order_has_gift_certificate_user_order1`
         FOREIGN KEY (`user_order_id`)
-            REFERENCES `module3`.`user_order` (`id`)
+            REFERENCES `mjc`.`user_order` (`id`)
             ON DELETE NO ACTION
             ON UPDATE NO ACTION,
     CONSTRAINT `fk_user_order_has_gift_certificate_gift_certificate1`
         FOREIGN KEY (`gift_certificate_id`)
-            REFERENCES `module3`.`gift_certificate` (`id`)
+            REFERENCES `mjc`.`gift_certificate` (`id`)
             ON DELETE NO ACTION
             ON UPDATE NO ACTION
 )
@@ -150,9 +150,9 @@ CREATE TABLE IF NOT EXISTS `module3`.`user_order_has_gift_certificate`
 
 
 -- -----------------------------------------------------
--- Table `module3`.`user_role`
+-- Table `mjc`.`user_role`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `module3`.`user_role`
+CREATE TABLE IF NOT EXISTS `mjc`.`user_role`
 (
     `id`   BIGINT(100)  NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(100) NOT NULL,
@@ -164,9 +164,9 @@ CREATE TABLE IF NOT EXISTS `module3`.`user_role`
 
 
 -- -----------------------------------------------------
--- Table `module3`.`user_account_has_user_role`
+-- Table `mjc`.`user_account_has_user_role`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `module3`.`user_account_has_user_role`
+CREATE TABLE IF NOT EXISTS `mjc`.`user_account_has_user_role`
 (
     `user_account_id` BIGINT(100) NOT NULL,
     `user_role_id`    BIGINT(100) NOT NULL,
@@ -175,12 +175,12 @@ CREATE TABLE IF NOT EXISTS `module3`.`user_account_has_user_role`
     INDEX `fk_user_account_has_user_role_user_account1_idx` (`user_account_id` ASC) VISIBLE,
     CONSTRAINT `fk_user_account_has_user_role_user_account1`
         FOREIGN KEY (`user_account_id`)
-            REFERENCES `module3`.`user_account` (`id`)
+            REFERENCES `mjc`.`user_account` (`id`)
             ON DELETE NO ACTION
             ON UPDATE NO ACTION,
     CONSTRAINT `fk_user_account_has_user_role_user_role1`
         FOREIGN KEY (`user_role_id`)
-            REFERENCES `module3`.`user_role` (`id`)
+            REFERENCES `mjc`.`user_role` (`id`)
             ON DELETE NO ACTION
             ON UPDATE NO ACTION
 )

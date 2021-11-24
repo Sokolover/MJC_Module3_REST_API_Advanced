@@ -1,4 +1,4 @@
-read about:
+**read about:**
 
 - merge and persist methods difference
 - what hibernate have, and jpa not (how hibernate extends jpa)
@@ -7,7 +7,7 @@ read about:
 - body in GET and DELETE HTTP-methods
 - TRACE HTTP-method
 
-todo in project:
+**todo in project:**
 
 - Docker
 - CI/CD

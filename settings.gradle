@@ -1,4 +1,4 @@
-rootProject.name = 'module3'
+rootProject.name = 'mjc'
 include 'api'
 include 'hibernate-repository'
 include 'spring-data-repository'
