@@ -4,7 +4,7 @@
 2) Open "MySQL 8.0 Command Line Client" and execute command "use mjc" to switch application database
 3) Run scripts in terminal from step 2:
     - appendix/module4/create_database_schema_module4.sql
-    - insert scripts from appendix/module4/dump_after_inserting_a_lot_of_rows.sql
+    - appendix/module4/dump_after_inserting_a_lot_of_rows/module4_all_data.sql
 4) Select needed repository submodule (see below "To change repository type (Hibernate/Spring JPA) comment unwanted repository in")
 5) Run application (see below "To run application from terminal")
 
