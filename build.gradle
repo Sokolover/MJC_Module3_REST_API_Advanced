@@ -1,0 +1,46 @@
+plugins {
+    id 'java-library'
+    id 'org.springframework.boot' version "${springBoot}"
+    id 'io.spring.dependency-management' version "${dependencyManagement}"
+}
+
+allprojects {
+    group = 'com.epam.esm'
+    version = '1.0'
+    sourceCompatibility = 1.8
+}
+
+repositories {
+    mavenCentral()
+}
+
+subprojects {
+
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'java-library'
+    apply plugin: 'java'
+
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        compileOnly group: 'org.projectlombok', name: 'lombok', version: "${lombokVersion}"
+        annotationProcessor group: 'org.projectlombok', name: 'lombok', version: "${lombokVersion}"
+    }
+    test {
+        useJUnitPlatform()
+    }
+}
+
+dependencies {
+    implementation('org.springframework.boot:spring-boot-starter-web')
+    implementation project(":api")
+    implementation project(":spring-data-repository")
+//    implementation project(":hibernate-repository")
+}
+
+bootJar {
+    enabled = true
+    mainClassName = 'com.epam.esm.sokolov.Mjc'
+}
